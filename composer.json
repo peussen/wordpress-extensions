@@ -1,0 +1,22 @@
+{
+    "name": "harperjones/wordpress-extensions",
+    "description": "Various extensions and support classes you can use when building Wordpress sites",
+    "type": "library",
+    "keywords": ["Wordpress","Themeplugin","Shortcode"],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "peter.eussen",
+            "email": "peter.eussen@harperjones.nl"
+        }
+    ],
+    "autoload": {
+      "psr-4": { "HarperJones\\Wordpress\\": "src"}
+    },
+    "require": {
+      "php": ">=5.4",
+      "symfony/http-foundation": "~2.6",
+      "pimple/pimple": "~3.0"
+    },
+    "minimum-stability": "dev"
+}
