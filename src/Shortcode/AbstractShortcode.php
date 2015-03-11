@@ -153,7 +153,7 @@ abstract class AbstractShortcode
 	{
 		foreach( $options as $method ) {
 			if ( method_exists($this,$method)) {
-				$response = call_user_func_array($this->$method,$args);
+				$response = call_user_func_array(array($this,$method),$args);
 
 				if ( $response instanceof View ) {
 					return $response->render();
