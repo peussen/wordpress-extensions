@@ -43,6 +43,11 @@ final class View
 		}
 	}
 
+	public function attributes()
+	{
+		return $this->attributes;
+	}
+
 	public function get($attribute,$default = null)
 	{
 		if ( isset($this->attributes[$attribute])) {
@@ -94,14 +99,13 @@ final class View
 	{
 		global $posts, $post, $wp_did_header, $wp_query, $wp_rewrite, $wpdb, $wp_version, $wp, $id, $comment, $user_ID;
 
+		// Ensure view is set
+		$_view = $this;
+
 		ob_start();
 
 		if ( $attributes !== false && $attributes !== null) {
-			$this->attributes = $attributes;
-		}
-
-		if ( !isset($attributes['_view'])) {
-			$attributes['_view'] = $this;
+			$this->attributes = array_merge($this->attributes,$attributes);
 		}
 
 		extract( $this->attributes, EXTR_SKIP );
