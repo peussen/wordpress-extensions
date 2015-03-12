@@ -9,7 +9,7 @@
 namespace HarperJones\Wordpress\Theme\Addon;
 
 
-use HarperJones\Wordpress\Theme\Plugin;
+use HarperJones\Wordpress\Theme\Addon;
 
 final class DirectoryLoader implements LoaderInterface
 {
@@ -21,7 +21,7 @@ final class DirectoryLoader implements LoaderInterface
 	}
 
 	/**
-	 * Should load all files and return a list of plugins that was loaded
+	 * Should load all files and return a list of addons that was loaded
 	 * @return array
 	 */
 	public function autoload()
@@ -33,11 +33,11 @@ final class DirectoryLoader implements LoaderInterface
 			}
 		}
 
-		$directory_plugins = glob($this->addonsDir . '/*',GLOB_ONLYDIR|GLOB_NOSORT);
+		$directory_addons = glob($this->addonsDir . '/*',GLOB_ONLYDIR|GLOB_NOSORT);
 		$addons           = array();
 
-		foreach( $directory_plugins as $loadable ) {
-			$addon = Plugin::readPluginDefinition($loadable);
+		foreach( $directory_addons as $loadable ) {
+			$addon = addon::readaddonDefinition($loadable);
 
 			if ( $addon ) {
 				$name = (isset($addon->namespace) ? rtrim($addon->namespace,"\\") . "\\" : '') . $addon->name;

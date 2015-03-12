@@ -44,7 +44,7 @@ class Manager
 	public function __construct($addonDir = 'addons/', $autoload = true)
 	{
 		$this->themeDir  = rtrim(get_template_directory(),'/') . '/';
-		$this->addonDir = rtrim($addonDir,'/') . '/';
+		$this->addonDir  = rtrim($addonDir,'/') . '/';
 		$this->assets    = new AssetBundler();
 
 		$this->registerAutoload(new DirectoryLoader($this->getaddonDirectory()));
