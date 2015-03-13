@@ -60,6 +60,16 @@ class MailWrapper
 				$message = wpautop($settings['message']); // Fix message already
 			}
 
+			$styling = apply_filters('formatted_mail_content_styling','');
+
+			if ( $styling ) {
+				$styling = esc_attr($styling);
+				$message = str_replace(
+					array('<td>','<p>'),
+					array('<td style="' . $styling . '">', '<p style="' . $styling . '">'),
+					$message
+				);
+			}
 			/**
 			 *
 			 * @filter formatted_mail_template
