@@ -9,6 +9,7 @@
 namespace HarperJones\Wordpress\Shortcode;
 
 
+use HarperJones\Wordpress\Http\WordpressRequest;
 use HarperJones\Wordpress\Theme\View;
 use HarperJones\Wordpress\WordpressException;
 use League\Url\Url;
@@ -80,7 +81,7 @@ abstract class AbstractShortcode
 			$this->shortcode
 		);
 
-		$request = Request::createFromGlobals();
+		$request = WordpressRequest::createFromGlobals();
 		$options = array(
 			'get_' . $request->get('_action','index'),
 			'action_' . $request->get('_action','index'),
