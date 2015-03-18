@@ -9,6 +9,12 @@ namespace HarperJones\Wordpress\Http;
 
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Request which also handles wordpress url type requests (page/7) etc
+ *
+ * @package HarperJones\Wordpress\Http
+ * @since 0.1.2
+ */
 class WordpressRequest extends Request
 {
 	public function initialize( array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null )
