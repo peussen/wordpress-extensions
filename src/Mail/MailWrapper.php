@@ -65,7 +65,7 @@ class MailWrapper
 			if ( $styling ) {
 				$styling = esc_attr($styling);
 				$message = str_replace(
-					array('<td>','<p>'),
+					array('<td>','<p>','<span>','<div>'),
 					array('<td style="' . $styling . '">', '<p style="' . $styling . '">'),
 					$message
 				);
