@@ -61,6 +61,11 @@ abstract class AbstractShortcode
 
 	protected function register($shortcode = null)
 	{
+		// Instantiate request before all plugins are doing stuff to the request
+		// Like gravity forms which moves uploaded files out of the way
+		
+		$this->request = WordpressRequest::createFromGlobals();
+
 		if ( !defined('ABSPATH')) {
 			throw new WordpressException('No Wordpress instance found');
 		}
@@ -109,7 +114,7 @@ abstract class AbstractShortcode
 			$this->shortcode
 		);
 
-		$request = WordpressRequest::createFromGlobals();
+		$request = $this->request; //WordpressRequest::createFromGlobals();
 		$options = array(
 			'get_' . $request->get('_action','index'),
 			'action_' . $request->get('_action','index'),
@@ -124,8 +129,7 @@ abstract class AbstractShortcode
 			$request->query->add(array('_action' => 'index'));
 		}
 
-		$this->request = $request;
-		$args          = array($request, $atts, $content);
+		$args = array($request, $atts, $content);
 
 		return $this->cascadeCallControllerMethod($options,$args);
 	}
