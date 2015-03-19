@@ -10,6 +10,7 @@ namespace HarperJones\Wordpress\Shortcode;
 
 
 use HarperJones\Wordpress\Http\WordpressRequest;
+use HarperJones\Wordpress\Theme\InvalidTemplate;
 use HarperJones\Wordpress\Theme\View;
 use HarperJones\Wordpress\WordpressException;
 use League\Url\Url;
@@ -36,19 +37,46 @@ abstract class AbstractShortcode
 	 */
 	protected $supportedAttributes = array();
 
-	private $shortcode;
+	/**
+	 * Shortcode tag
+	 *
+	 * @var string
+	 */
+	protected $shortcode = null;
 
 	/**
 	 * @var Symfony\Component\HttpFoundation\Request;
 	 */
 	protected $request;
 
-	protected function register($shortcode)
+	/**
+	 * Auto register the shortcode based on the shortcode attribute
+	 *
+	 * @since 0.1.3
+	 */
+	public function __construct()
+	{
+		$this->register();
+	}
+
+	protected function register($shortcode = null)
 	{
 		if ( !defined('ABSPATH')) {
 			throw new WordpressException('No Wordpress instance found');
 		}
-		$this->shortcode = $shortcode;
+
+		/**
+		 * Use the available shortcode if none was passed
+		 * @since 0.1.3
+		 */
+		if ( $shortcode === null ) {
+			if ( $this->shortcode === null ) {
+				throw new \InvalidArgumentException("Either the shortcode attribute or parameter should be set");
+			}
+		} else {
+			$this->shortcode = $shortcode;
+		}
+
 		add_shortcode($this->shortcode, array($this,'router'));
 	}
 
@@ -123,6 +151,24 @@ abstract class AbstractShortcode
 		return new View('shortcode/' . $this->shortcode . '/' . $template,$attributes);
 	}
 
+
+	/**
+	 * Checks if a view exists
+	 *
+	 * @param $template
+	 *
+	 * @return bool
+	 */
+	public function viewExists($template)
+	{
+		try {
+			$view = new View('shortcode/' . $this->shortcode . '/' . $template);
+			return true;
+		} catch (InvalidTemplate $t) {
+			return false;
+		}
+	}
+
 	/**
 	 * Creates a new URL based on the current request URL, and adds/replaced some parameters
 	 *
@@ -154,15 +200,34 @@ abstract class AbstractShortcode
 	{
 		foreach( $options as $method ) {
 			if ( method_exists($this,$method)) {
-				$response = call_user_func_array(array($this,$method),$args);
+				if ( $this->validate($args[0],$method)) {
+					$response = call_user_func_array(array($this,$method),$args);
 
-				if ( $response instanceof View ) {
-					return $response->render();
-				} if ( is_string($response) && !empty($response)) {
-					return $response;
+					if ( $response instanceof View ) {
+						return $response->render();
+					} if ( is_string($response) && !empty($response)) {
+						return $response;
+					}
+				} else if ($this->viewExists('403-forbidden')) {
+					return $this->getView('403-forbidden');
+				} else {
+					return __("No access",'roots');
 				}
 			}
 		}
 		return '';
+	}
+
+	/**
+	 * Validates if a request can be made
+	 *
+	 * @param Request $request
+	 * @param string  $method
+	 *
+	 * @return bool
+	 */
+	protected function validate(Request $request, $method)
+	{
+		return true;
 	}
 }

@@ -29,6 +29,10 @@ final class View
 	 */
 	private $attributes;
 
+	/**
+	 * @param       $template
+	 * @param array $attributes
+	 */
 	public function __construct($template,$attributes = array())
 	{
 		if ( !defined('ABSPATH')) {
