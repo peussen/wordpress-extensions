@@ -86,6 +86,10 @@ final class View
 		} catch (InvalidTemplate $e) {
 			$dir  = dirname($this->template);
 			$dir  = rtrim($dir,'/');
+
+			if ( strpos($dir,'/') !== false) {
+				$dir  = substr($dir,strpos($dir,'/')+1);
+			}
 			$view = new self( $dir . '/' . $template);
 		}
 		echo $view->render(array_merge($this->attributes,$extra));
