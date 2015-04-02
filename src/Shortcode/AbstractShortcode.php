@@ -202,22 +202,26 @@ abstract class AbstractShortcode
 	 */
 	private function cascadeCallControllerMethod($options, $args = array())
 	{
-		foreach( $options as $method ) {
-			if ( method_exists($this,$method)) {
-				if ( $this->validate($args[0],$method)) {
-					$response = call_user_func_array(array($this,$method),$args);
+		try {
+			foreach( $options as $method ) {
+				if ( method_exists($this,$method)) {
+					if ( $this->validate($args[0],$method)) {
+						$response = call_user_func_array(array($this,$method),$args);
 
-					if ( $response instanceof View ) {
-						return $response->render();
-					} if ( is_string($response) && !empty($response)) {
-						return $response;
+						if ( $response instanceof View ) {
+							return $response->render();
+						} if ( is_string($response) && !empty($response)) {
+							return $response;
+						}
+					} else if ($this->viewExists('403-forbidden')) {
+						return $this->getView('403-forbidden');
+					} else {
+						return __("No access",'roots');
 					}
-				} else if ($this->viewExists('403-forbidden')) {
-					return $this->getView('403-forbidden');
-				} else {
-					return __("No access",'roots');
 				}
 			}
+		} catch (RouterException $e) {
+			return $e->getView();
 		}
 		return '';
 	}
