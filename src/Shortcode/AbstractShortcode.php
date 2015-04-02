@@ -202,6 +202,11 @@ abstract class AbstractShortcode
 	 */
 	private function cascadeCallControllerMethod($options, $args = array())
 	{
+		/**
+		 * Catch router errors for generic error handling
+		 *
+		 * @since 0.1.4
+		 */
 		try {
 			foreach( $options as $method ) {
 				if ( method_exists($this,$method)) {
@@ -221,7 +226,7 @@ abstract class AbstractShortcode
 				}
 			}
 		} catch (RouterException $e) {
-			return $e->getView();
+			return $e->getView($args);
 		}
 		return '';
 	}

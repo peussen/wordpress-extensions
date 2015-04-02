@@ -10,13 +10,17 @@ namespace HarperJones\Wordpress\Shortcode;
 use Exception;
 use HarperJones\Wordpress\Theme\View;
 
+/**
+ * Exception which will be handled by the router to display user friendly errors
+ *
+ * @package HarperJones\Wordpress\Shortcode
+ */
 class RouterException extends \RuntimeException
 {
-	public function getView()
+	public function getView($args = array())
 	{
-		$args = array(
-			'exception' => $this
-		);
+		$args['exception'] = $this;
+
 		return new View($this->getCode(),$args);
 	}
 }
