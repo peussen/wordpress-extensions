@@ -12,6 +12,44 @@ class Setup
 {
 	static private $container = null;
 
+	/**
+	 * Directly set a value in the container
+	 * When the setting is already there, you will be given an error unless
+	 * the $force parameter is set to TRUE
+	 *
+	 * @param      $attribute
+	 * @param      $val
+	 * @param bool $force
+	 */
+	static public function set($attribute,$val,$force = false)
+	{
+		$container = self::getContainer();
+
+		if ( isset($container[$attribute]) && !$force) {
+			throw new \InvalidArgumentException("Attribute $attribute already set in container");
+		}
+
+		$container[$attribute] = $val;
+	}
+
+	/**
+	 * Obtains a value from the container, or returns the default value if it is not
+	 *
+	 * @param      $attribute
+	 * @param null $default
+	 *
+	 * @return mixed|null
+	 */
+	static public function get($attribute, $default = null)
+	{
+		$container = self::getContainer();
+
+		if ( isset($container[$attribute])) {
+			return $container[$attribute];
+		}
+		return $default;
+	}
+
 	static public function getContainer()
 	{
 		if ( self::$container === null ) {
