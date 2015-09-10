@@ -11,6 +11,23 @@ namespace HarperJones\Wordpress;
 class Setup
 {
 	static private $container = null;
+	static private $actions   = [];
+
+	/**
+	 * On an action do something
+	 *
+	 * @param $action
+	 * @param $callable
+	 */
+	static public function on($action,$callable)
+	{
+		if ( !is_callable($callable)) {
+			throw new \RuntimeException("callable attribute is not actually callable.");
+		}
+
+		self::$actions[$action][] = $callable;
+		add_action($action,$callable);
+	}
 
 	/**
 	 * Directly set a value in the container
