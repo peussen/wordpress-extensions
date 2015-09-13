@@ -10,6 +10,9 @@ use HarperJones\Wordpress\WordpressException;
  */
 final class View
 {
+	static private $viewStack = [];
+	static private $shouldInherit = false;
+
 	/**
 	 * The name of the template that needs to be rendered
 	 * @var string
@@ -33,7 +36,7 @@ final class View
 	 * @param       $template
 	 * @param array $attributes
 	 */
-	public function __construct($template,$attributes = array())
+	public function __construct($template,$attributes = array(),$inherit = null)
 	{
 		if ( !defined('ABSPATH')) {
 			throw new WordpressException("No Wordpress installation found");
@@ -45,6 +48,17 @@ final class View
 		if (empty($this->filePath)) {
 			throw new InvalidTemplate($template);
 		}
+
+		$inherit = (self::$shouldInherit && $inherit === null) || ($inherit === true);
+		if ( $inherit && self::$viewStack) {
+			$this->attributes = array_merge(self::$viewStack[count(self::$viewStack) - 1]->attributes(),$this->attributes);
+		}
+		self::$viewStack[] = $this;
+	}
+
+	public function __destruct()
+	{
+		array_pop(self::$viewStack);
 	}
 
 	public function attributes()
@@ -119,7 +133,9 @@ final class View
 		extract( $this->attributes, EXTR_SKIP );
 
 		if ( $this->filePath ) {
+			self::$shouldInherit = true;
 			require($this->filePath);
+			self::$shouldInherit = false;
 		} else {
 			throw new InvalidTemplate($this->template);
 		}

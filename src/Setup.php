@@ -21,12 +21,32 @@ class Setup
 	 */
 	static public function on($action,$callable)
 	{
+
+		if ( !is_callable($callable) && class_exists($callable)) {
+			$callable = function() {
+				Setup::set(Setup::deNamespace($callable),$callable);
+			};
+		}
+
 		if ( !is_callable($callable)) {
 			throw new \RuntimeException("callable attribute is not actually callable.");
 		}
 
 		self::$actions[$action][] = $callable;
 		add_action($action,$callable);
+	}
+
+	/**
+	 * Adds a command to the WP_CLI (when in CLI mode)
+	 *
+	 * @param $command
+	 * @param $callable
+	 */
+	static public function cli($command, $callable)
+	{
+		if ( defined('WP_CLI')) {
+			\WP_CLI::add_command($command, $callable);
+		}
 	}
 
 	/**
@@ -79,12 +99,18 @@ class Setup
 	/**
 	 * Strips the namespace part of the class
 	 *
-	 * @param $class
+	 * @param $objectOrClass
 	 *
 	 * @return string
 	 */
-	static public function deNamespace($class)
+	static public function deNamespace($objectOrClass)
 	{
+		if ( is_object($objectOrClass) ) {
+			$class = get_class($objectOrClass);
+		} else {
+			$class = $objectOrClass;
+		}
+
 		$class = trim($class, '\\');
 		if ($last_separator = strrpos($class, '\\'))
 		{
@@ -96,12 +122,18 @@ class Setup
 	/**
 	 * Obtains the namespace part of a class name
 	 *
-	 * @param $class
+	 * @param $classOrObject
 	 *
 	 * @return string
 	 */
-	static public function getNamespace($class)
+	static public function getNamespace($classOrObject)
 	{
+		if ( is_object($classOrObject)) {
+			$class = get_class($classOrObject);
+		} else {
+			$class = $classOrObject;
+		}
+
 		$class = trim($class, '\\');
 		if ($last_separator = strrpos($class, '\\'))
 		{
