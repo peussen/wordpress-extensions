@@ -77,7 +77,7 @@ class GoogleAnalytics
                     r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
                 ga('create','<?php echo $this->uaCode; ?>','auto');
                 <?php if ( $this->privacy ): ?>
-                ga('set', 'anonymizeIp', true)
+                ga('set', 'anonymizeIp', true);
                 <?php endif; ?>
                 ga('send','pageview');
             </script>
