@@ -49,11 +49,11 @@ class GoogleAnalytics
         }
 
         if ( defined('WP_ENV') && WP_ENV === 'production') {
-            \add_action('wp_footer', [$this,'renderGoogleAnalytics']);
+            add_action('wp_footer', [$this,'renderGoogleAnalytics']);
         }
 
         if ( defined("WP_DEBUG") && WP_DEBUG ) {
-            \add_action('wp_footer', [$this, 'showDebug']);
+            add_action('wp_footer', [$this, 'showDebug']);
         }
     }
 
@@ -63,6 +63,7 @@ class GoogleAnalytics
      */
     public function renderGoogleAnalytics()
     {
+        die("X");
         if ( $this->uaCode === false) {
             return;
         }
@@ -75,12 +76,6 @@ class GoogleAnalytics
                     e=o.createElement(i);r=o.getElementsByTagName(i)[0];
                     e.src='//www.google-analytics.com/analytics.js';
                     r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-                <?php else : ?>
-                function ga() {
-                    if (window.console) {
-                        console.log('Google Analytics: ' + [].slice.call(arguments));
-                    }
-                }
                 ga('create','<?php echo $this->uaCode; ?>','auto');
                 <?php if ( $this->privacy ): ?>
                 ga('set', 'anonymizeIp', true)
