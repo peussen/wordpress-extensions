@@ -63,7 +63,6 @@ class GoogleAnalytics
      */
     public function renderGoogleAnalytics()
     {
-        die("X");
         if ( $this->uaCode === false) {
             return;
         }
