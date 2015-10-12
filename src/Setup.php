@@ -20,6 +20,15 @@ class Setup
 
 	static public function bootstrap()
 	{
+		if ( did_action('after_theme_setup') ) {
+			static::postThemeSetup();
+		} else {
+			add_action('after_theme_setup', __CLASS__ . '::postThemeSetup');
+		}
+	}
+
+	static public function postThemeSetup()
+	{
 		global $_wp_theme_features;
 
 		$harperjonesFeatures = array_filter($_wp_theme_features,function($key) {
