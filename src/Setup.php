@@ -8,10 +8,48 @@
 
 namespace HarperJones\Wordpress;
 
+use HarperJones\Wordpress\Theme\Feature\FeatureInterface;
+
 class Setup
 {
+	const FEATURE_PREFIX = 'harperjones-';
+
 	static private $container = null;
 	static private $actions   = [];
+	static private $features  = [];
+
+	static public function bootstrap()
+	{
+		global $_wp_theme_features;
+
+		$harperjonesFeatures = array_filter($_wp_theme_features,function($key) {
+			return substr($key,0,strlen(static::FEATURE_PREFIX)) == static::FEATURE_PREFIX;
+		}, ARRAY_FILTER_USE_KEY);
+
+		foreach( $harperjonesFeatures as $feature ) {
+			static::addFeature($feature);
+		}
+	}
+
+	/**
+	 * @param $feature
+	 * @return HarperJones\Wordpress\Theme\Feature\FeatureInterface
+	 */
+	static public function addFeature($feature, $options = [])
+	{
+		$feature = substr($feature,strlen(static::FEATURE_PREFIX) + 1);
+
+		if ( !isset(self::$features[$feature])) {
+			$class   = __NAMESPACE__ . '\\Theme\\Feature\\' . static::dashedToClass($feature) . 'Feature';
+
+			if ( $class instanceof FeatureInterface ) {
+				self::$features[$feature] = new $class();
+				self::$features[$feature]->register($options);
+			}
+		}
+
+		return self::$features[$feature];
+	}
 
 	/**
 	 * On an action do something
@@ -237,4 +275,10 @@ class Setup
 		return true;
 	}
 
+	static public function dashedToClass($featureorfilter)
+	{
+		$entries = explode('-',$featureorfilter);
+		array_walk($entries,'ucfirst');
+		return implode('',$entries);
+	}
 }
