@@ -57,7 +57,7 @@ class MailWrapper
 			if ( $settings['message'] instanceof View) {
 				$message = $settings['message']->render($personalisation);
 			} else {
-				$message = wpautop($settings['message']); // Fix message already
+				$message = wpautop($settings['message'], false); // Fix message already
 			}
 
 			$styling = apply_filters('formatted_mail_content_styling','');
