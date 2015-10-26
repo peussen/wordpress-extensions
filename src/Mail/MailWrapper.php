@@ -70,6 +70,17 @@ class MailWrapper
 					$message
 				);
 			}
+
+
+			/// Clean woocommerce html tags ///
+			$temp_message = $message;
+			preg_match("/<body[^>]*>(.*?)<\/body>/is", $temp_message, $matches);
+			if(array_key_exists(1,$matches)) {
+				$message = $matches[1];
+			}
+			/// END ///
+
+
 			/**
 			 *
 			 * @filter formatted_mail_template
