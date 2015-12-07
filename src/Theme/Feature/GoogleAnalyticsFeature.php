@@ -28,8 +28,8 @@ class GoogleAnalyticsFeature implements FeatureInterface
     {
         if (isset($options['ua'])) {
             $ua = $options['ua'];
-        } else {
-            $ua = (isset($options[0]) ? $options[0] : false);
+        } elseif (isset($options[0])) {
+            $ua = array_shift($options);
         }
 
         $this->google = new GoogleAnalytics($ua,$options);

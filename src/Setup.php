@@ -20,10 +20,10 @@ class Setup
 
 	static public function bootstrap()
 	{
-		if ( did_action('after_theme_setup') ) {
+		if ( did_action('after_setup_theme') ) {
 			static::postThemeSetup();
 		} else {
-			add_action('after_theme_setup', __CLASS__ . '::postThemeSetup');
+			add_action('after_setup_theme', __CLASS__ . '::postThemeSetup',9999);
 		}
 	}
 
@@ -31,12 +31,16 @@ class Setup
 	{
 		global $_wp_theme_features;
 
-		$harperjonesFeatures = array_filter($_wp_theme_features,function($key) {
+		if ( $_wp_theme_features === null ) {
+			return;
+		}
+
+		$harperjonesFeatures = array_filter(array_keys($_wp_theme_features),function($key) {
 			return substr($key,0,strlen(static::FEATURE_PREFIX)) == static::FEATURE_PREFIX;
-		}, ARRAY_FILTER_USE_KEY);
+		});
 
 		foreach( $harperjonesFeatures as $feature ) {
-			static::addFeature($feature);
+			static::addFeature($feature,$_wp_theme_features[$feature]);
 		}
 	}
 
@@ -46,15 +50,13 @@ class Setup
 	 */
 	static public function addFeature($feature, $options = [])
 	{
-		$feature = substr($feature,strlen(static::FEATURE_PREFIX) + 1);
+		$feature = substr($feature,strlen(static::FEATURE_PREFIX));
 
 		if ( !isset(self::$features[$feature])) {
 			$class   = __NAMESPACE__ . '\\Theme\\Feature\\' . static::dashedToClass($feature) . 'Feature';
 
-			if ( $class instanceof FeatureInterface ) {
-				self::$features[$feature] = new $class();
-				self::$features[$feature]->register($options);
-			}
+			self::$features[$feature] = new $class();
+			self::$features[$feature]->register($options);
 		}
 
 		return self::$features[$feature];
@@ -287,7 +289,9 @@ class Setup
 	static public function dashedToClass($featureorfilter)
 	{
 		$entries = explode('-',$featureorfilter);
-		array_walk($entries,'ucfirst');
+		foreach( $entries as $i => $val ) {
+			$entries[$i] = ucfirst($val);
+		}
 		return implode('',$entries);
 	}
 }
