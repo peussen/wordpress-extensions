@@ -29,6 +29,13 @@ class GoogleAnalytics
     private $privacy= true;
 
     /**
+     * What to use as cookie domain
+     *
+     * @var string
+     */
+    public $cookieDomain = false;
+
+    /**
      * Initializes the analytics, should be called from bootstrap
      *
      * @param string    $ga
@@ -46,6 +53,10 @@ class GoogleAnalytics
 
         if ( isset($options['privacy'])) {
             $this->privacy = $options['privacy'];
+        }
+
+        if ( isset($options['domain'])) {
+            $this->cookieDomain = $options['domain'];
         }
 
         if ( defined('WP_ENV') && WP_ENV === 'production') {
@@ -75,7 +86,7 @@ class GoogleAnalytics
                     e=o.createElement(i);r=o.getElementsByTagName(i)[0];
                     e.src='//www.google-analytics.com/analytics.js';
                     r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-                ga('create','<?php echo $this->uaCode; ?>','auto');
+                ga('create','<?php echo $this->uaCode; ?>','<?php echo ($this->cookieDomain ? $this->cookieDomain : 'auto') ?>');
                 <?php if ( $this->privacy ): ?>
                 ga('set', 'anonymizeIp', true);
                 <?php endif; ?>
@@ -87,6 +98,8 @@ class GoogleAnalytics
 
     public function showDebug()
     {
-        echo '<!-- GA: ' . $this->uaCode . ' privacy: ' . ($this->privacy ? 'true' : 'false') . " -->\n";
+        echo '<!-- GA: ' . $this->uaCode .
+             ' privacy: ' . ($this->privacy ? 'true' : 'false') .
+             ' domain: ' . $this->cookieDomain . " -->\n";
     }
 }

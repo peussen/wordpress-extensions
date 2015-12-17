@@ -30,7 +30,10 @@ class GoogleAnalyticsFeature implements FeatureInterface
             $ua = $options['ua'];
         } elseif (isset($options[0])) {
             $ua = array_shift($options);
+
+            $options['domain'] = array_shift($options);
         }
+
 
         $this->google = new GoogleAnalytics($ua,$options);
     }
