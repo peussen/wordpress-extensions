@@ -1,6 +1,6 @@
 <?php
 /*
- * @author: petereussen
+ * @author: petereussen <peter.eussen@harperjones.nl>
  * @package: wordpress-extensions
  */
 
@@ -30,6 +30,7 @@ class VarnishFeature implements FeatureInterface
     protected $varnishServerIP = false;
     protected $varnishPort     = false;
     protected $flushHost       = false;
+    protected $noticeResponse  = false;
     protected $actions         = array(
         'save_post',
         'deleted_post',
@@ -110,7 +111,20 @@ class VarnishFeature implements FeatureInterface
             ]
         ];
 
-        wp_remote_request($url,$purgeRequest);
+        $response = wp_remote_request($url,$purgeRequest);
+
+        if ( isset($response['response']['code']) && $response['response']['code'] !== 200) {
+            add_option('hj-varnish-error',$response['response']);
+        }
+
+    }
+
+    /**
+     * Display admin notice so we can notify the admin's in case flush failed
+     */
+    public function displayNotice()
+    {
+        echo '<div class="error notice"><p>Varnish flush failed: ' . $this->noticeResponse['message'] . '</p></div>';
     }
 
     /**
@@ -120,6 +134,13 @@ class VarnishFeature implements FeatureInterface
     {
         foreach ($this->actions as $action) {
             add_action($action,[$this,'executeFlush']);
+        }
+
+        $this->noticeResponse = get_option('hj-varnish-error');
+
+        if ( $this->noticeResponse ) {
+            add_action('admin_notices',[$this,'displayNotice']);
+            delete_option('hj-varnish-error');
         }
     }
 
