@@ -25,7 +25,7 @@ namespace HarperJones\Wordpress\Theme\Feature;
  *
  * @package HarperJones\Wordpress\Theme\Feature
  */
-class Varnish implements FeatureInterface
+class VarnishFeature implements FeatureInterface
 {
     protected $varnishServerIP = false;
     protected $varnishPort     = false;
