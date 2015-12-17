@@ -96,6 +96,11 @@ class Varnish implements FeatureInterface
      */
     public function executeFlush()
     {
+        // Bail out when we have not found a varnish server
+        if ( empty($this->varnishServerIP)) {
+            return;
+        }
+
         $url          = 'http://' . $this->varnishServerIP . ($this->varnishPort ? ':' . $this->varnishPort : '');
         $purgeRequest = [
             'method'    => 'PURGE',
@@ -125,6 +130,16 @@ class Varnish implements FeatureInterface
      */
     private function detectVarnishSetup()
     {
+
+        $ip  = getenv('VARNISH_SERVER_IP');
+
+        if ( $ip !== false ) {
+            $this->setVarnishIp($ip);
+            $this->setVarnishPort(getenv('VARNISH_SERVER_PORT'));
+            $this->setHost(parse_url(get_bloginfo('url'),PHP_URL_HOST));
+            return true;
+        }
+
         if ( isset($_SERVER['HTTP_X_VARNISH'])) {
             if ( isset($_SERVER['HTTP_X_FORWARDED_FOR']) && isset($_SERVER['REMOTE_ADDR'])) {
                 $this->setVarnishIP($_SERVER['REMOTE_ADDR']);
