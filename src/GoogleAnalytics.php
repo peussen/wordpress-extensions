@@ -60,11 +60,11 @@ class GoogleAnalytics
         }
 
         if ( defined('WP_ENV') && WP_ENV === 'production') {
-            add_action('wp_footer', [$this,'renderGoogleAnalytics']);
+            add_action('wp_head', [$this,'renderGoogleAnalytics']);
         }
 
         if ( defined("WP_DEBUG") && WP_DEBUG ) {
-            add_action('wp_footer', [$this, 'showDebug']);
+            add_action('wp_head', [$this, 'showDebug']);
         }
     }
 
