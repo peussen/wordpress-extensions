@@ -43,9 +43,6 @@ class Setup
 		} else {
 			add_action('after_setup_theme', __CLASS__ . '::postThemeSetup',9999);
 		}
-
-
-		self::globalizeStaticMethods(ACFSupport::class);
 	}
 
 	/**
