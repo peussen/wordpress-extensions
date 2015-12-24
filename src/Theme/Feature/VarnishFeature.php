@@ -5,6 +5,9 @@
  */
 
 namespace HarperJones\Wordpress\Theme\Feature;
+use Hamcrest\Core\Set;
+use HarperJones\Wordpress\Command\VarnishCommand;
+use HarperJones\Wordpress\Setup;
 
 /**
  * Adds support for varnish caching
@@ -59,6 +62,15 @@ class VarnishFeature implements FeatureInterface
         if ($this->varnishServerIP || $this->detectVarnishSetup()) {
             $this->addHooks();
         }
+
+        Setup::set('varnish', [
+            'server' => $this->varnishServerIP,
+            'port'   => $this->varnishPort,
+            'host'   => $this->flushHost,
+            'client' => $this
+        ]);
+
+        Setup::cli('varnish', VarnishCommand::class);
     }
 
     /**
@@ -115,7 +127,9 @@ class VarnishFeature implements FeatureInterface
 
         if ( isset($response['response']['code']) && $response['response']['code'] !== 200) {
             add_option('hj-varnish-error',$response['response']);
+            return false;
         }
+        return true;
 
     }
 
