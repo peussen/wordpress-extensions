@@ -7,6 +7,7 @@ The library has several main components:
 
  - Shortcode starter class
  - Theme plugins
+ - Theme Support
 
 ## Shortcode starter class
 The shortcode starter class can be used to kickstart the development of a new
@@ -87,6 +88,22 @@ a json string and defaults to this:
 	"less": "/assets/less"
 }
 ```
+
+### Theme support
+
+Starting with 0.3.0 the use of the wordpress function `add_theme_support()` is also 
+supported in this extension. Currently there are a couple of supports you can add:
+
+* **Autoload Custom (harperjones-autoload-custom)**:
+  Autoloads all PHP files in lib/custom (or other folder if specified)
+* **Google Analytics (harperjones-google-analytics)**:
+  Adds a google analytics tracker to your pages (will be placed in the head).
+* **HTML Mail (harperjones-html-mail)**:
+  Adds HTML Mail support to wordpress
+* **Varnish (harperjones-varnish)**: 
+  Adds support for varnish and automatic varnish flush.
+
+Please see the feature documentation for usage information
 
 ### Package contents
 
