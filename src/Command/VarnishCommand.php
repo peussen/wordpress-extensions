@@ -5,7 +5,12 @@ namespace HarperJones\Wordpress\Command;
 
 use HarperJones\Wordpress\Setup;
 
-class VarnishCommand extends WP_CLI_Command
+/**
+ * Manage Varnish Proxy Server(s)
+ *
+ * @package HarperJones\Wordpress\Command
+ */
+class VarnishCommand extends \WP_CLI_Command
 {
     /**
      * Flushes the current domain from the varnish server
@@ -18,9 +23,9 @@ class VarnishCommand extends WP_CLI_Command
         if ( isset($varnishInfo['client'])) {
             if (!$varnishInfo['client']->executeFlush()) {
                 $error = get_option('hj-varnish-error');
-
-                \WP_CLI::error("Failed to flush: $error",true);
                 delete_option('hj-varnish-error');
+
+                \WP_CLI::error("Failed to flush: {$error['message']} ({$error['code']})",true);
             }
             \WP_CLI::success("Flushed");
         } else {
