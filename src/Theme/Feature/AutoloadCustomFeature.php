@@ -6,6 +6,9 @@
 
 namespace HarperJones\Wordpress\Theme\Feature;
 
+use HarperJones\Wordpress\Setup;
+use HarperJones\Wordpress\Command\CustomCommand;
+
 /**
  * Adds support for autoloading of custom files
  * Allows automatic loading of files in the 'after_setup_theme' action. Handy for autoloading
@@ -56,6 +59,8 @@ class AutoloadCustomFeature implements FeatureInterface
         } else {
             add_action('after_setup_theme',[ $this, 'loadCustomFolder' ]);
         }
+
+        Setup::cli('custom', CustomCommand::class);
     }
 
     public function loadCustomFolder()
