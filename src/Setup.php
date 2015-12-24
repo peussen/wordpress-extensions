@@ -8,14 +8,32 @@
 
 namespace HarperJones\Wordpress;
 
+use HarperJones\Wordpress\Theme\ACFSupport;
 use HarperJones\Wordpress\Theme\Feature\FeatureInterface;
 
 class Setup
 {
 	const FEATURE_PREFIX = 'harperjones-';
 
+	/**
+	 * DI container
+	 *
+	 * @var \Pimple\Container
+	 */
 	static private $container = null;
+
+	/**
+	 * List of hooked actions
+	 *
+	 * @var array
+	 */
 	static private $actions   = [];
+
+	/**
+	 * List of loaded features
+	 *
+	 * @var array
+	 */
 	static private $features  = [];
 
 	static public function bootstrap()
@@ -25,8 +43,17 @@ class Setup
 		} else {
 			add_action('after_setup_theme', __CLASS__ . '::postThemeSetup',9999);
 		}
+
+
+		self::globalizeStaticMethods(ACFSupport::class);
 	}
 
+	/**
+	 * Loads theme_support features.
+	 *
+	 * @action after_setup_theme
+	 * @return void
+	 */
 	static public function postThemeSetup()
 	{
 		global $_wp_theme_features;
@@ -55,8 +82,10 @@ class Setup
 		if ( !isset(self::$features[$feature])) {
 			$class   = __NAMESPACE__ . '\\Theme\\Feature\\' . static::dashedToClass($feature) . 'Feature';
 
-			self::$features[$feature] = new $class();
-			self::$features[$feature]->register($options);
+			if ( class_exists($class)) {
+				self::$features[$feature] = new $class();
+				self::$features[$feature]->register($options);
+			}
 		}
 
 		return self::$features[$feature];
