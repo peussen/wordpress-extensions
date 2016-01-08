@@ -5,9 +5,6 @@
  */
 
 namespace HarperJones\Wordpress\Theme\Feature;
-use Hamcrest\Core\Set;
-use HarperJones\Wordpress\Command\VarnishCommand;
-use HarperJones\Wordpress\Setup;
 
 /**
  * Adds support for varnish caching
@@ -62,15 +59,6 @@ class VarnishFeature implements FeatureInterface
         if ($this->varnishServerIP || $this->detectVarnishSetup()) {
             $this->addHooks();
         }
-
-        Setup::set('varnish', [
-            'server' => $this->varnishServerIP,
-            'port'   => $this->varnishPort,
-            'host'   => $this->flushHost,
-            'client' => $this
-        ]);
-
-        Setup::cli('varnish', VarnishCommand::class);
     }
 
     /**
@@ -127,18 +115,24 @@ class VarnishFeature implements FeatureInterface
 
         if ( isset($response['response']['code']) && $response['response']['code'] !== 200) {
             add_option('hj-varnish-error',$response['response']);
-            return false;
+        } else {
+            add_option('hj-varnish-error',['code' => 200, 'message' => $this->flushHost]);
         }
-        return true;
 
     }
 
     /**
      * Display admin notice so we can notify the admin's in case flush failed
+     *
+     * @since 0.3.4: also show succesful messages
      */
     public function displayNotice()
     {
-        echo '<div class="error notice"><p>Varnish flush failed: ' . $this->noticeResponse['message'] . '</p></div>';
+        if ( isset($this->noticeResponse['code']) && $this->noticeResponse['code'] === 200 ) {
+            echo '<div class="updated notice"><p>Flushed varnish cache for: ' . $this->noticeResponse['message'] . '</p></div>';
+        } else {
+            echo '<div class="error notice"><p>Varnish flush failed: ' . $this->noticeResponse['message'] . '</p></div>';
+        }
     }
 
     /**
@@ -156,6 +150,50 @@ class VarnishFeature implements FeatureInterface
             add_action('admin_notices',[$this,'displayNotice']);
             delete_option('hj-varnish-error');
         }
+
+        /**
+         * Add admin bar flush action
+         * @since 0.3.4
+         */
+        add_action('wp_before_admin_bar_render',[$this,'addAdminBarItem']);
+        add_action('wp_ajax_flush_varnish',[$this,'adminFlush']);
+    }
+
+    /**
+     * Handles Flush Requests from the Admin bar
+     *
+     * @action wp_ajax_flush_varnish
+     * @since 0.3.4
+     */
+    public function adminFlush()
+    {
+        if ( is_user_logged_in() && current_user_can('edit_pages') ) {
+            $this->executeFlush();
+        }
+
+        $url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : admin_url();
+        wp_safe_redirect($url);
+        exit();
+    }
+
+    /**
+     * Add flush option to the admin bar so admins can flush manually
+     *
+     * @action wp_before_admin_bar_render
+     * @since 0.3.4
+     */
+    public function addAdminBarItem()
+    {
+        global $wp_admin_bar;
+
+        // We abuse the ajax handler to get back to this feature
+        $wp_admin_bar->add_node([
+            'id'    => 'varnishflush',
+            'title' => 'Flush Cache',
+            'href'  => admin_url('admin-ajax.php') . '?action=flush_varnish',
+            'parent'=> false,
+            //'meta'  => array( 'class' => 'my-toolbar-page' )
+        ]);
     }
 
     /**
