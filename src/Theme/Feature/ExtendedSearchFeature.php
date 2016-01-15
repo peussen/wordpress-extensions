@@ -7,8 +7,8 @@
 namespace HarperJones\Wordpress\Theme\Feature;
 
 
-use HarperJones\Wordpress\Search\ComplexSearch;
-use HarperJones\Wordpress\Search\SearchHelpers;
+use HarperJones\Wordpress\Search\ExtendedSearch;
+use HarperJones\Wordpress\Search\ExtendedSearchHelpers;
 use HarperJones\Wordpress\Setup;
 
 class ExtendedSearchFeature implements FeatureInterface
@@ -22,12 +22,12 @@ class ExtendedSearchFeature implements FeatureInterface
 
         add_action('init',[$this,'applyFilters'],30);
 
-        Setup::globalizeStaticMethods(SearchHelpers::class);
+        Setup::globalizeStaticMethods(ExtendedSearchHelpers::class);
     }
 
     public function applyFilters()
     {
-        $search = ComplexSearch::register();
+        $search = ExtendedSearch::register();
 
         if ( $this->postTypes === true) {
             $this->postTypes = get_post_types(['public' => true],'names');
@@ -38,14 +38,13 @@ class ExtendedSearchFeature implements FeatureInterface
             $search->addPostType($postType);
         }
 
-        $search  = ComplexSearch::instance();
-        $filters = apply_filters('hj-search-filters',[]);
+        $filters = apply_filters('hj/search/filters',[]);
 
         foreach ($filters as $filter ) {
             $search->addFilter($filter);
         }
 
-        $relations = apply_filters('hj-search-relations',[]);
+        $relations = apply_filters('hj/search/relations',[]);
 
         foreach( $relations as $field => $postType ) {
             $search->addRelation($field,$postType);

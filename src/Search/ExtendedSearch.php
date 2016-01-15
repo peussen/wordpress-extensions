@@ -62,7 +62,7 @@ class ExtendedSearch
         global $wpdb;
 
         $this->booleanmode = getenv('COMPLEXSEARCH_BOOLEAN_MODE');
-        $this->searchtable = $wpdb->prefix . '_index';
+        $this->searchtable = $wpdb->prefix . 'hj_es_index';
     }
 
     public function hook()
@@ -75,7 +75,7 @@ class ExtendedSearch
             add_filter('posts_orderby', [$this,'alterOrderQuery']);
 
             if ( defined('WP_CLI') && WP_CLI ) {
-                \WP_CLI::add_command('complexsearch', __NAMESPACE__ . '\\ExtendedSearchCommand');
+                \WP_CLI::add_command('extendedsearch', __NAMESPACE__ . '\\ExtendedSearchCommand');
             }
 
             $this->registered = true;
@@ -294,7 +294,7 @@ class ExtendedSearch
                 $fields = $filterCallable($fields,$post);
             }
 
-            $content = apply_filters($this->searchtable_post,$fields,$post);
+            $content = apply_filters('hj/search/post',$fields,$post);
 
             $wpdb->insert($this->searchtable,
                 [
