@@ -39,7 +39,7 @@ class AutoloadCustomFeature implements FeatureInterface
         }
 
         if ( empty($this->filesFolder)) {
-            $this->filesFolder = apply_filters('hj_autoload_files_folder',get_template_directory() . '/src/files');
+            $this->filesFolder = apply_filters('hj/autoload/filesfolder',get_template_directory() . '/src/files');
         }
 
 

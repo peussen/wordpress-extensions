@@ -68,7 +68,7 @@ class VarnishFeature implements FeatureInterface
      */
     public function setVarnishIp( $ip )
     {
-        $this->varnishServerIP = apply_filters('hj_varnish_server_ip',$ip);
+        $this->varnishServerIP = apply_filters('hj/varnish/server/ip',$ip);
     }
 
     /**
@@ -78,7 +78,7 @@ class VarnishFeature implements FeatureInterface
      */
     public function setVarnishPort( $port )
     {
-        $this->varnishPost = apply_filters('hj_varnish_server_port',$port);
+        $this->varnishPost = apply_filters('hj/varnish/server/port',$port);
     }
 
     /**
@@ -106,7 +106,7 @@ class VarnishFeature implements FeatureInterface
         $purgeRequest = [
             'method'    => 'PURGE',
             'headers'   => [
-                'host'              => apply_filters('hj_varnish_purge_domain',$this->flushHost),
+                'host'              => apply_filters('hj/varnish/purgedomain',$this->flushHost),
                 'X-Purge-Method'    => 'regex'
             ]
         ];

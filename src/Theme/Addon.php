@@ -109,7 +109,7 @@ class Addon
 	public function getUri($addonFile)
 	{
 		$fullpath = str_replace('//','/',$this->directory . '/' . $addonFile);
-		$relative = apply_filters('themeaddon-get-relative-uri',Theme::makeRelativePath($fullpath));
+		$relative = apply_filters('themeaddon/uri',Theme::makeRelativePath($fullpath));
 
 		return get_template_directory_uri() . $relative;
 	}
@@ -150,7 +150,7 @@ class Addon
 	protected function applyFilter($filter,$value,$optional = array())
 	{
 		array_unshift($optional,$value);
-		$action = 'themeaddon_' . $this->filterid . '_' . $filter;
+		$action = 'themeaddon/' . $this->filterid . '/' . $filter;
 
 		return apply_filters_ref_array($action,$optional);
 	}
