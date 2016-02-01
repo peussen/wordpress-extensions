@@ -40,6 +40,7 @@ class VarnishFeature implements FeatureInterface
         'switch_theme',
         'publish_post',
         'transition_post_status',
+        'enable-media-replace-upload-done'
     );
 
     public function register($options = [])
