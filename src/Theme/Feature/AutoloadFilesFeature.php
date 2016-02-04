@@ -23,7 +23,7 @@ namespace HarperJones\Wordpress\Theme\Feature;
  *
  * @package HarperJones\Wordpress\Theme\Feature
  */
-class AutoloadCustomFeature implements FeatureInterface
+class AutoloadFilesFeature implements FeatureInterface
 {
     protected $FilesFolder = '';
     protected $production   = false;
