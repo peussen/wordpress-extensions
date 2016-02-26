@@ -13,6 +13,7 @@ namespace HarperJones\Wordpress\Theme;
  * Skeleton for Theme Addon
  *
  * @package HarperJones\Wordpress\Theme
+ * @deprecated
  */
 class Addon
 {

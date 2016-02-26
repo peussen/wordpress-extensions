@@ -11,6 +11,11 @@ namespace HarperJones\Wordpress\Theme\Addon;
 
 use HarperJones\Wordpress\Theme\Addon;
 
+/**
+ * Class DirectoryLoader
+ * @package HarperJones\Wordpress\Theme\Addon
+ * @deprecated
+ */
 final class DirectoryLoader implements LoaderInterface
 {
 	private $addonsDir;

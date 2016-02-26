@@ -16,6 +16,7 @@ use HarperJones\Wordpress\Theme\Theme;
  * Management class for loading all Theme addons
  *
  * @package HarperJones\Wordpress\Theme\Addon
+ * @deprecated
  */
 class Manager
 {

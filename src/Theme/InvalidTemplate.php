@@ -11,7 +11,7 @@ namespace HarperJones\Wordpress\Theme;
 use Exception;
 use HarperJones\Wordpress\WordpressException;
 
-class InvalidTemplate extends WordPressException
+class InvalidTemplateException extends WordPressException
 {
 	public function __construct( $message = "", $code = 0, Exception $previous = null )
 	{

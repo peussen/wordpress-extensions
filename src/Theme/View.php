@@ -41,12 +41,13 @@ final class View
 		if ( !defined('ABSPATH')) {
 			throw new WordpressException("No Wordpress installation found");
 		}
+
 		$this->attributes = (array)$attributes;
 		$this->template   = 'templates/' . $template . '.php';
 		$this->filePath   = locate_template($this->template);
 
 		if (empty($this->filePath)) {
-			throw new InvalidTemplate($template);
+			throw new InvalidTemplateException($template);
 		}
 
 		$inherit = (self::$shouldInherit && $inherit === null) || ($inherit === true);
@@ -97,7 +98,7 @@ final class View
 
 		try {
 			$view = new self($template);
-		} catch (InvalidTemplate $e) {
+		} catch (InvalidTemplateException $e) {
 			$dir  = dirname($this->template);
 			$dir  = rtrim($dir,'/');
 
@@ -137,7 +138,7 @@ final class View
 			require($this->filePath);
 			self::$shouldInherit = false;
 		} else {
-			throw new InvalidTemplate($this->template);
+			throw new InvalidTemplateException($this->template);
 		}
 
 		if ( $output === false ) {

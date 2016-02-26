@@ -8,7 +8,11 @@
 
 namespace HarperJones\Wordpress\Theme\Addon;
 
-
+/**
+ * Interface LoaderInterface
+ * @package HarperJones\Wordpress\Theme\Addon
+ * @deprecated
+ */
 interface LoaderInterface
 {
 	/**

@@ -11,6 +11,7 @@ use HarperJones\Wordpress\Theme\ThemeAssetException;
  *
  * @package HarperJones\Wordpress\Theme\Addon
  * @author Peter Eussen <peter.eussen@harperjones.nl>
+ * @deprecated
  */
 class AssetBundler
 {
