@@ -7,11 +7,22 @@
 namespace HarperJones\Wordpress;
 
 
+/**
+ * A helper class that globalizes methods from a class to a more readable usable function
+ * With this package you can create an alias function for a class method in the global
+ * namespace, allowing easy calling to a static method from within templates.
+ *
+ * This class also has some options to create a cache file, which basically already has
+ * the alias function defined. Making it unnecessary to to reflection and document inspection.
+ *
+ * To generate the cachefile use wp-cli harperjones scanglobalize or clearglobalize to.
+ *
+ * @package HarperJones\Wordpress
+ */
 class Globalizer
 {
   /**
-   * CLears out all cache files for globalizer
-   *
+   * Clears out all cache files for globalizer
    */
   static public function clearCache()
   {
@@ -21,6 +32,10 @@ class Globalizer
     static::recursiveDelete($cacheDir);
   }
 
+  /**
+   * Recursively delete a directory (basically emptying it out)
+   * @param $dir
+   */
   static private function recursiveDelete($dir)
   {
     foreach(glob($dir . '/*') as $file) {
@@ -56,6 +71,7 @@ class Globalizer
   }
 
   /**
+   * Writes a cache file holding al alias functions for a class
    *
    * @param $class
    */
@@ -87,6 +103,7 @@ class Globalizer
   }
 
   /**
+   * Reads a cache file for a specific class
    *
    * @param $class
    * @return bool
@@ -109,6 +126,8 @@ class Globalizer
 
   /**
    * Generate stub code for a class
+   *
+   * @return string|false
    */
   static public function getClassStubs($class)
   {
