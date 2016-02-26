@@ -53,7 +53,7 @@ class HelloWorldShortcode extends \\HarperJones\\Wordpress\\Shortcode\\AbstractS
 }
 ```
 
-## Theme Plugins
+## Theme Plugins  (Deprecated)
 
 Theme plugins were created to make it easier to create small code snippets which
 you could recycle in multiple projects. We created it for two reasons:
@@ -89,6 +89,7 @@ a json string and defaults to this:
 }
 ```
 
+
 ### Theme support
 
 Starting with 0.3.0 the use of the wordpress function `add_theme_support()` is also 
@@ -96,12 +97,29 @@ supported in this extension. Currently there are a couple of supports you can ad
 
 * **Autoload Custom (harperjones-autoload-custom)**:
   Autoloads all PHP files in lib/custom (or other folder if specified)
+  This feature will become deprecated in favor of autoload files.
+* **Autoload Files (harperjones-autoload-files)**
+  Same as autoload custom, but loads them from src/files instead of lib/custom
+* **Disabled Comments (harperjones-disabled-comments)**
+  Disable comment support on all post types (except the ones given as parameters)
+* **Enable restricted page (harperjones-enable-restricted-page)**
+  Instead of giving a 404 when someone tries to load a page that is restricted,
+  redirect the user to a nice page, which shows some restricted message.
+* **Extended Search (harperjones-extended-search)**
+  A feature which will allow you to use the custom search solution which can also
+  search through ACF fields
 * **Google Analytics (harperjones-google-analytics)**:
   Adds a google analytics tracker to your pages (will be placed in the head).
+* **Hide post type (harperjones-hide-post-type)**
+  Hides post types from the outside
 * **HTML Mail (harperjones-html-mail)**:
   Adds HTML Mail support to wordpress
+* **Practical Settings (harperjones-practical-settings)**
+  A combination from some other fearures like disable comments and varnish) and disables
+  the wp-json API.
 * **Varnish (harperjones-varnish)**: 
   Adds support for varnish and automatic varnish flush.
+* **  
 
 Please see the feature documentation for usage information
 
@@ -129,7 +147,7 @@ included to "start" the plugin.
 The install option allows you to point to files which should be copied to the theme
 directories upon install/update.
 
-### Minimum Plugin
+### Minimum Plugin 
 
 A minimum plugin should have two files: `plugin.json` and your plugin code, say 
 `plugin.php`. In this case the plugin.json will look like this:
