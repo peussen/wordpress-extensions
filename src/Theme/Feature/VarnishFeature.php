@@ -89,7 +89,11 @@ class VarnishFeature implements FeatureInterface
      */
     public function setHost($host)
     {
-        $this->flushHost = $host;
+        $parts = explode('.',$host);
+        $root  = array_pop($parts);
+        $dom   = array_pop($parts);
+
+        $this->flushHost = $dom . '.' . $root;
     }
 
     /**
