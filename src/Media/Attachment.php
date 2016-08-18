@@ -41,7 +41,8 @@ class Attachment
         if ( $this->valid()) {
 
             if ( $this->isImage()) {
-                return $this->displayImg($this->default,[],true);
+                return $this->displayPicture($this->default,[],true);
+                //return $this->displayImg($this->default,[],true);
             } else {
                 return $this->displayMedia([],true);
             }
@@ -64,6 +65,81 @@ class Attachment
         return
           (is_array($this->attachmentId) && isset($this->attachmentId['ID'])) ||
           (is_numeric($this->attachmentId) && $this->attachmentId > 0);
+    }
+
+  /**
+   * Display a <picture> structured image set
+   *
+   * @param array $classes
+   * @param string $alt
+   * @param int|false $size
+   * @param bool $return
+   * @return bool|string
+   */
+    public function displayPicture($classes = [], $alt = '', $size = false, $return = false)
+    {
+      if ( $this->attachmentId === false || !$this->isImage()) {
+        $html = '';
+      } else {
+        $url    = $this->getUrl($size ?: $this->default);
+        $srcset = $this->getSrcSet($size ?: $this->default);
+        $parts  = explode(', ',$srcset['srcset']);
+
+        $sources= [];
+
+        foreach( $parts as $part ) {
+          $mqPart = trim(substr($part,strrpos($part,' ') + 1));
+          $urlPart= trim(substr($part,0,strrpos($part,' ') + 1));
+
+          $sources['(max-width: ' . (int)$mqPart . 'px)'] = $urlPart;
+        }
+
+        /*
+         * Default filter for all attachment sources
+         */
+        $sources = apply_filters('attachment/picture/sources',$sources);
+
+        /*
+         * Filter for all pictures with a specific size
+         */
+        $sources = apply_filters('attachment/picture/sources/' . ($size ?: $this->default ),$sources);
+
+        /*
+         * Filter for this specific attachment
+         */
+        $sources = apply_filters('attachment/picture/sources/' . $this->attachmentId,$sources);
+
+        /*
+         * Add classes to the set
+         */
+        $classes = apply_filters('attachment/picture/classes', $classes);
+
+        $html = "<picture>\n";
+
+        foreach( $sources as $mq => $source ) {
+          $html .= sprintf(
+            '<source srcset="%s" media="%s" type="%s">' . "\n",
+            $source,
+            $mq,
+            $this->deriveContentType($source)
+          );
+        }
+
+        $html .= sprintf(
+          '<img src="%s" class="%s" alt="%s"/>' . "\n",
+          $this->getUrl(),
+          implode(' ',$classes),
+          $alt
+        );
+
+        $html .= '</picture>';
+      }
+
+      if ( $return ) {
+        return $html;
+      }
+      echo $html;
+      return true;
     }
 
     /**
@@ -177,5 +253,27 @@ class Attachment
         }
         echo $html;
         return true;
+    }
+
+    private function deriveContentType($url)
+    {
+      $ext = strtolower(substr($url,strrpos($url,'.') + 1));
+
+      switch( $ext ) {
+        case 'jpg':
+        case 'jpeg':
+          return 'image/jpeg';
+        case 'svg':
+          return 'image/svg+xml';
+        case 'png':
+          return 'image/png';
+        case 'gif':
+          return 'image/gif';
+        case 'webp':
+          return  'image/webp';
+        default:
+          return 'application/octet-stream';
+      }
+
     }
 }
