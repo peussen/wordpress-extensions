@@ -12,9 +12,9 @@ abstract class AbstractRewriter
   protected $filter;
   protected $filterArg;
 
-  public function __construct($what)
+  public function __construct($what,$methodArgs = false)
   {
-    $this->setFilter($what);
+    $this->setFilter($what,$methodArgs);
 
     add_action('init',[$this,'init']);
   }
@@ -30,11 +30,11 @@ abstract class AbstractRewriter
     add_action('template_redirect',[$this,'rewriteTemplateRedirect'],90);
   }
 
-  public function setFilter($what)
+  public function setFilter($what,$methodArgs = false)
   {
     if ( is_callable($what) ) {
-      $this->filter = $what;
-      $this->filter = [];
+      $this->filter    = $what;
+      $this->filterArg = $methodArgs ? (array)$methodArgs : [];
     } else {
       $this->filter    = [ $this, 'genericPTFilter' ];
       $this->filterArg = [(array)$what];

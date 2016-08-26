@@ -15,13 +15,23 @@ class RewriterFactory
   const REWRITE_POST_ONLY = 'post';
   const REWRITE_ALL       = '*';
 
+  static private $rewriteNS = [ __NAMESPACE__ ];
 
-  static public function create($what = 'page', $strategy = 'Hash')
+  static public function addNS($ns)
   {
-    $class = __NAMESPACE__ . '\\' . $strategy . 'Rewrite';
+    self::$rewriteNS[] = $ns;
+  }
 
-    if ( class_exists($class) ) {
-      $strategy = new $class($what);
+  static public function create($what = 'page', $strategy = 'Hash', $methodArgs = false)
+  {
+    foreach( self::$rewriteNS as $ns ) {
+      $class = $ns . '\\' . $strategy . 'Rewrite';
+
+      if ( class_exists($class) ) {
+        $strategy = new $class($what,$methodArgs);
+        return $strategy;
+      }
     }
+    return null;
   }
 }
