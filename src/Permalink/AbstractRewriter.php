@@ -26,7 +26,7 @@ abstract class AbstractRewriter
   public function init()
   {
     add_filter('post_link',[$this,'rewritePermalink'],999,3);
-    add_filter('the_content', [$this,'rewriteContent'],100);
+    add_filter('the_content', [$this,'rewriteContentUrls'],100);
     add_action('template_redirect',[$this,'rewriteTemplateRedirect'],90);
   }
 
@@ -37,7 +37,7 @@ abstract class AbstractRewriter
       $this->filter = [];
     } else {
       $this->filter    = [ $this, 'genericPTFilter' ];
-      $this->filterArg = (array)$what;
+      $this->filterArg = [(array)$what];
     }
   }
 
@@ -56,16 +56,17 @@ abstract class AbstractRewriter
   {
     $postType = get_post_type($post);
 
+
     foreach( $matchSet as $possibleMatch ) {
 
       if ( is_callable($possibleMatch) ) {
-        if ( $possibleMatch($post) ) {
-          return $post;
-        } elseif ( $possibleMatch === RewriterFactory::REWRITE_ALL ) {
-          return $post;
-        } elseif ( $postType === $possibleMatch ) {
+        if ($possibleMatch($post)) {
           return $post;
         }
+      } elseif ( $possibleMatch === RewriterFactory::REWRITE_ALL ) {
+        return $post;
+      } elseif ( $postType === $possibleMatch ) {
+        return $post;
       }
     }
     return null;
@@ -74,16 +75,34 @@ abstract class AbstractRewriter
   protected function extractHrefUrls($content)
   {
     $home = rtrim(home_url('/'),'/');
+    $final= [];
 
     if ( preg_match_all('/href="([^"]+?)"/ism',$content,$matches)) {
 
       foreach( $matches[1] as $idx => $matchingUrl ) {
+
         // Extend URL to be a full permalink url if they were relative
         if ( substr($matchingUrl,0,1) === '/' ) {
           $matches[1][$idx] = $home . $matchingUrl;
         }
+
+        if ( substr($matches[1][$idx],0,strlen($home)) === $home) {
+          $postId       = url_to_postid($matches[1][$idx]);
+
+          if ( $postId ) {
+            $post = get_post($postId);
+
+            if ( $this->needsRewrite($postId) ) {
+              $final[] = [
+                'href' => $matches[1][$idx],
+                'match'=> $matches[0][$idx],
+                'post' => $post
+              ];
+            }
+          }
+        }
       }
-      return $matches;
+      return $final;
     }
     return false;
   }

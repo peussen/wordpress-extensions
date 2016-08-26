@@ -34,10 +34,13 @@ class HashRewrite extends AbstractRewriter
     $urls = $this->extractHrefUrls($content);
 
     if ( $urls ) {
-      for ( $i = 0, $m = count($urls[1]); $i < $m; $i++ ) {
-
+      foreach( $urls as $urlMatch ) {
+        $new     = $this->hashRewrite($urlMatch['post']->post_name);
+        $replaced= str_replace($urlMatch['href'],$new,$urlMatch['match']);
+        $content = str_replace($urlMatch['match'],$replaced,$content);
       }
     }
+    return $content;
   }
 
   protected function needsRewrite($post)
