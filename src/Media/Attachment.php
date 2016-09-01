@@ -127,7 +127,7 @@ class Attachment
 
         $html .= sprintf(
           '<img src="%s" class="%s" alt="%s"/>' . "\n",
-          $this->getUrl(),
+          $this->getUrl('full'),
           implode(' ',(array)$classes),
           $alt
         );
