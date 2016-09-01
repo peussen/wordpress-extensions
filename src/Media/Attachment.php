@@ -91,8 +91,12 @@ class Attachment
           $mqPart = trim(substr($part,strrpos($part,' ') + 1));
           $urlPart= trim(substr($part,0,strrpos($part,' ') + 1));
 
-          $sources['(max-width: ' . (int)$mqPart . 'px)'] = $urlPart;
+          if ( $urlPart !== $url ) {
+            $sources[(int)$mqPart] = $urlPart;
+          }
         }
+
+        ksort($sources);
 
         /*
          * Default filter for all attachment sources
@@ -118,7 +122,7 @@ class Attachment
 
         foreach( $sources as $mq => $source ) {
           $html .= sprintf(
-            '<source srcset="%s" media="%s" type="%s">' . "\n",
+            '<source srcset="%s" media="(max-width: %spx)" type="%s">' . "\n",
             $source,
             $mq,
             $this->deriveContentType($source)
