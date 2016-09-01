@@ -111,4 +111,17 @@ final class Arr
 		}
 		return $new;
 	}
+
+  /**
+   * Flatten an array
+   *
+   * @param array $array
+   * @return array
+   */
+  static public function flatten(array $array)
+  {
+    $return = array();
+    array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
+    return $return;
+  }
 }

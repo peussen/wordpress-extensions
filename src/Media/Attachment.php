@@ -79,7 +79,7 @@ class Attachment
     public function displayPicture($classes = [], $alt = '', $size = false, $return = false)
     {
       if ( $this->attachmentId === false || !$this->isImage()) {
-        $html = '';
+        $html = WP_DEBUG ? '<!-- Invalid Attachment -->' : '';
       } else {
         $url    = $this->getUrl($size ?: $this->default);
         $srcset = $this->getSrcSet($size ?: $this->default);
@@ -135,6 +135,8 @@ class Attachment
         $html .= '</picture>';
       }
 
+      $html = apply_filters('attachment/picture',$html);
+
       if ( $return ) {
         return $html;
       }
@@ -164,6 +166,8 @@ class Attachment
               '" sizes="' . $srcset['sizes'] . '">';
 
         }
+
+        $html = apply_filters('attachment/image',$html);
 
         if ( $return ) {
             return $html;
