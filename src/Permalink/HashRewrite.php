@@ -6,10 +6,14 @@
 
 namespace HarperJones\Wordpress\Permalink;
 
-
+/**
+ * Rewrite slugs to use hashes as is usual for onepagers
+ *
+ * @package HarperJones\Wordpress\Permalink
+ */
 class HashRewrite extends AbstractRewriter
 {
-  function rewritePermalink($permalink, $post, $leavename)
+  public function rewritePermalink($permalink, $post, $leavename)
   {
     $relativeLink = ltrim(wp_make_link_relative($permalink),'/');
 
@@ -19,7 +23,7 @@ class HashRewrite extends AbstractRewriter
     return $permalink;
   }
 
-  function rewriteTemplateRedirect()
+  public function rewriteTemplateRedirect()
   {
     $post = get_post();
 
@@ -29,7 +33,7 @@ class HashRewrite extends AbstractRewriter
     }
   }
 
-  function rewriteContentUrls($content)
+  public function rewriteContentUrls($content)
   {
     $urls = $this->extractHrefUrls($content);
 
@@ -42,6 +46,18 @@ class HashRewrite extends AbstractRewriter
     }
     return $content;
   }
+
+  public function rewriteMenuItems($items,$args)
+  {
+    foreach($items as $item) {
+      if ( $this->needsRewrite($item)) {
+        $path = trim(parse_url($item->url,PHP_URL_PATH),'/');
+        $item->url = $this->hashRewrite($path);
+      }
+    }
+    return $items;
+  }
+
 
   protected function needsRewrite($post)
   {

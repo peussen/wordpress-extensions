@@ -43,6 +43,10 @@ class Setup
 		} else {
 			add_action('after_setup_theme', __CLASS__ . '::postThemeSetup',9999);
 		}
+
+		if ( !defined('SKIP_SHORTCUTS') || !SKIP_SHORTCUTS ) {
+      require_once(dirname(__DIR__) . '/files/shortcuts.php');
+    }
 	}
 
 	/**

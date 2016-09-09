@@ -7,6 +7,11 @@ namespace HarperJones\Wordpress\Permalink;
  * @package: lakes
  */
 
+/**
+ * Factory class to create rewrite rules for permalinks
+ *
+ * @package HarperJones\Wordpress\Permalink
+ */
 class RewriterFactory
 {
   const HASH_STRATEGY = 'Hash';
@@ -22,6 +27,19 @@ class RewriterFactory
     self::$rewriteNS[] = $ns;
   }
 
+  /**
+   * Create a permalink rewrite instance
+   *
+   * usage:
+   *    `RewriterFactory::create();`
+   *    `RewriterFactory::create('post');`
+   *    `RewriterFactory::create('Filters::menuPagesOnly','hash','primary-navigation');`
+   *
+   * @param string $what
+   * @param string $strategy
+   * @param bool $methodArgs
+   * @return null|string
+   */
   static public function create($what = 'page', $strategy = 'Hash', $methodArgs = false)
   {
     foreach( self::$rewriteNS as $ns ) {

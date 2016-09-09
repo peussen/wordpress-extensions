@@ -13,17 +13,47 @@ abstract class Filters
 {
   static private $menuPages    = [];
   static private $menuSubPages = [];
+  static private $frontSubPages= null;
 
+  /**
+   * Rewrite only pages that are placed as child pages of the front-page
+   * Watch out: this will cause hashes like #home/aboutus instead of #aboutus
+   * @param \WP_Post|int $post
+   * @return bool
+   */
+  static public function subPagesOfFrontpageOnly($post)
+  {
+    if ( self::$frontSubPages === null ) {
+      $frontpage = get_option('page_on_front');
+      self::$frontSubPages = static::getSubPagesOf($frontpage);
+    }
+
+    if ( $post instanceof \WP_Post ) {
+      $postId = $post->ID;
+    } else {
+      $postId = $post;
+    }
+
+    return in_array($postId,self::$frontSubPages);
+  }
+
+  /**
+   * Rewrite only pages that are in a menu (does not have to be a visible menu)
+   *
+   * @param \WP_Post|int $post
+   * @param string $menu
+   * @return bool
+   */
   static public function menuPagesOnly($post,$menu)
   {
     if ( is_array($menu) ) {
       $ids = [];
 
       foreach( $menu as $menuId ) {
-        $ids = array_merge($ids,self::buildPageList($menuId));
+        $ids = array_merge($ids,self::buildMenuPageList($menuId));
       }
     } else {
-      $ids = self::buildPageList($menu);
+      $ids = self::buildMenuPageList($menu);
     }
 
     if ( $ids ) {
@@ -40,13 +70,20 @@ abstract class Filters
     return false;
   }
 
-  static public function subPagesOnly($post,$menu)
+  /**
+   * Only rewrite pages that are a subpage of the main menu items
+   *
+   * @param \WP_Post|int $post
+   * @param string $menu
+   * @return bool
+   */
+  static public function subMenuPagesOnly($post,$menu)
   {
     if ( is_array($menu) ) {
       $ids = [];
 
       foreach( $menu as $menuId ) {
-        $pages = self::buildSubPageList($menuId);
+        $pages = self::buildSubMenuPageList($menuId);
 
         foreach( $pages as $parent => $subpages ) {
           if ( isset($ids[$parent]) ) {
@@ -57,7 +94,7 @@ abstract class Filters
         }
       }
     } else {
-      $ids = self::buildSubPageList($menu);
+      $ids = self::buildSubPMenuageList($menu);
     }
 
     $subpages = Arr::flatten($ids);
@@ -71,14 +108,14 @@ abstract class Filters
     return in_array($postId,$subpages);
   }
 
-  static protected function buildSubPageList($menu)
+  static protected function buildSubMenuPageList($menu)
   {
-    self::buildPageList($menu);
+    self::buildMenuPageList($menu);
 
     return self::$menuSubPages;
   }
 
-  static protected function buildPageList($menu)
+  static protected function buildMenuPageList($menu)
   {
     if ( isset(self::$menuPages[$menu]) ) {
       return self::$menuPages[$menu];
@@ -116,6 +153,19 @@ abstract class Filters
       return $menu->term_id;
     }
     return false;
+  }
+
+  static private function getSubPagesOf($pageId)
+  {
+    var_dump($pageId);
+    $pages = get_pages([
+      'parent'    => $pageId,
+    ]);
+
+    array_walk($pages,function(&$element,$key) {
+      $element = $element->ID;
+    });
+    return $pages;
   }
 
 }

@@ -19,14 +19,15 @@ abstract class AbstractRewriter
     add_action('init',[$this,'init']);
   }
 
-  abstract function rewritePermalink($permalink,$post,$leavename);
-  abstract function rewriteContentUrls($content);
-  abstract function rewriteTemplateRedirect();
+  abstract public function rewritePermalink($permalink,$post,$leavename);
+  abstract public function rewriteContentUrls($content);
+  abstract public function rewriteTemplateRedirect();
 
   public function init()
   {
     add_filter('post_link',[$this,'rewritePermalink'],999,3);
     add_filter('the_content', [$this,'rewriteContentUrls'],100);
+    add_filter('wp_nav_menu_objects',[$this,'rewriteMenuItems'],10,2);
     add_action('template_redirect',[$this,'rewriteTemplateRedirect'],90);
   }
 
@@ -43,6 +44,10 @@ abstract class AbstractRewriter
 
   protected function needsRewrite($post)
   {
+    if ( $post === null || is_admin()) {
+      return false;
+    }
+
     $args = $this->filterArg;
 
     array_unshift($args,$post);
