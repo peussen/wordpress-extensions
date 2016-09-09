@@ -17,6 +17,7 @@ abstract class AbstractTemplateIterator implements TemplateIteratorInterface
       if ( is_array($callable) && count($callable) == 2) {
         $callable = get_class($callable[0]) . '::' . $callable[1];
       }
+
       throw new \RuntimeException('No function or method named ' . $callable);
     }
 
