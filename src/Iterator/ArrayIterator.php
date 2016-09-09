@@ -6,7 +6,12 @@
 
 namespace HarperJones\Wordpress\Iterator;
 
-
+/**
+ * Template Iterator for arrays or arrays of posts
+ * 
+ * @see loop()
+ * @package HarperJones\Wordpress\Iterator
+ */
 class ArrayIterator extends AbstractTemplateIterator
 {
   protected $data;

@@ -6,7 +6,12 @@
 
 namespace HarperJones\Wordpress\Iterator;
 
-
+/**
+ * Template Iterator for WP_Query instances.
+ *
+ * @see loop()
+ * @package HarperJones\Wordpress\Iterator
+ */
 class WPQueryIterator extends AbstractTemplateIterator
 {
   protected $wp_query;
