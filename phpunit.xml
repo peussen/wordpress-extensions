@@ -9,5 +9,8 @@
         <testsuite name="Views">
             <file>tests/ViewTest.php</file>
         </testsuite>
+        <testsuite name="Iterators">
+            <file>tests/ArrayIteratorTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>

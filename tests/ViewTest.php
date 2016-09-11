@@ -46,7 +46,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     public function testCreationNonExistingTemplate()
     {
         define('ABSPATH', __DIR__);
-        $this->setExpectedException('HarperJones\\Wordpress\\Theme\\InvalidTemplate');
+        $this->setExpectedException('HarperJones\\Wordpress\\Theme\\InvalidTemplateException');
         self::$functions->shouldReceive('locate_template')->with('templates/doesnotexist.php')->once()->andReturn('');
         new View('doesnotexist');
 

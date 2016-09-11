@@ -89,3 +89,26 @@ function str_trunc($string,$limit = 50,$more = '...')
 {
   return \HarperJones\Wordpress\String::trunc($string,$limit,$more);
 }
+
+
+/**
+ * Set one or more capabilities for a certain role.
+ *
+ * @param   string $roleName
+ * @param   string|array $capabilities
+ * @return  bool
+ */
+function set_role_capability($roleName,$capabilities)
+{
+  $role = get_role( $roleName );
+
+  if ( $role === null ) {
+    return false;
+  }
+
+  foreach ((array)$capabilities as $capability ) {
+    $role->add_cap( $capability );
+  }
+
+  return true;
+}
