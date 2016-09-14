@@ -38,7 +38,7 @@ class Attachment
 
     public function getPath()
     {
-      if ( $this->isValid()) {
+      if ( $this->valid()) {
         return get_attached_file($this->attachmentId);
       }
       return false;
