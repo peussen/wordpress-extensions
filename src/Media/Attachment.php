@@ -36,6 +36,14 @@ class Attachment
         $this->default      = $size;
     }
 
+    public function getPath()
+    {
+      if ( $this->isValid()) {
+        return get_attached_file($this->attachmentId);
+      }
+      return false;
+    }
+
     public function __toString()
     {
         if ( $this->valid()) {
