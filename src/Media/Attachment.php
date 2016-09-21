@@ -44,6 +44,11 @@ class Attachment
       return false;
     }
 
+    public function getMimeType()
+    {
+      return get_post_mime_type($this->attachmentId);
+    }
+
     public function __toString()
     {
         if ( $this->valid()) {
