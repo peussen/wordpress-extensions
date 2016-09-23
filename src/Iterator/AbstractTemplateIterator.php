@@ -29,7 +29,7 @@ abstract class AbstractTemplateIterator implements TemplateIteratorInterface
     $this->needsReset = false;
   }
 
-  protected function prepareEntry($data)
+  protected function prepareEntry($data, $key)
   {
     global $post;
 
@@ -45,6 +45,7 @@ abstract class AbstractTemplateIterator implements TemplateIteratorInterface
       }
     }
     set_query_var('loop_entry',$data);
+    set_query_var('loop_position',$key);
   }
 
   protected function endLoop()

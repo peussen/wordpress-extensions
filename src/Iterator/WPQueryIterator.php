@@ -28,7 +28,7 @@ class WPQueryIterator extends AbstractTemplateIterator
     $this->prepareLoop();
 
     while ($this->wp_query->have_posts()) {
-      $this->prepareEntry($post);
+      $this->prepareEntry($post,$this->wp_query->current_post);
 
       $this->eachApply('get_template_part',[$template,$variation]);
     }
@@ -43,9 +43,12 @@ class WPQueryIterator extends AbstractTemplateIterator
     $this->prepareLoop();
 
     while ($this->wp_query->have_posts()) {
-      $this->prepareEntry($post);
+      $this->prepareEntry($post,$this->wp_query->current_post);
 
-      $this->eachApply('get_template_part',[$template,$variation]);
+      $loopArg = $args;
+      array_unshift($loopArg,$post);
+
+      $this->eachApply($callable,$loopArg);
     }
 
     $this->endLoop();

@@ -24,8 +24,8 @@ class IteratorIterator extends AbstractTemplateIterator
   {
     $this->prepareLoop();
 
-    foreach( $this->iterator as $item ) {
-      $this->prepareEntry($item);
+    foreach( $this->iterator as $key => $item ) {
+      $this->prepareEntry($item,$key);
 
       $this->eachApply('get_template_part',[$template,$variation]);
     }
@@ -37,8 +37,8 @@ class IteratorIterator extends AbstractTemplateIterator
   {
     $this->prepareLoop();
 
-    foreach( $this->iterator as $item ) {
-      $this->prepareEntry($item);
+    foreach( $this->iterator as $key => $item ) {
+      $this->prepareEntry($item, $key);
 
       $loopArg = $args;
       array_unshift($loopArg,$item);

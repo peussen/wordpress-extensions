@@ -30,8 +30,8 @@ class ArrayIterator extends AbstractTemplateIterator
 
     $this->prepareLoop();
 
-    foreach( $this->data as $postEntry ) {
-      $this->prepareEntry($postEntry);
+    foreach( $this->data as $key => $postEntry ) {
+      $this->prepareEntry($postEntry,$key);
 
       $this->eachApply('get_template_part',[$template,$variation]);
     }
@@ -47,8 +47,8 @@ class ArrayIterator extends AbstractTemplateIterator
 
     $this->prepareLoop();
 
-    foreach( $this->data as $postEntry ) {
-      $this->prepareEntry($postEntry);
+    foreach( $this->data as $key => $postEntry ) {
+      $this->prepareEntry($postEntry,$key);
 
       $loopArgs = $args;
       array_unshift($loopArgs,$postEntry);
