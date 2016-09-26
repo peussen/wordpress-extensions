@@ -54,7 +54,7 @@ class Attachment
         if ( $this->valid()) {
 
             if ( $this->isImage()) {
-                return $this->displayPicture($this->default,[],true);
+                return $this->displayPicture([],'',$this->default,true);
                 //return $this->displayImg($this->default,[],true);
             } else {
                 return $this->displayMedia([],true);
