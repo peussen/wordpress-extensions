@@ -10,6 +10,7 @@ namespace HarperJones\Wordpress\Iterator;
 abstract class AbstractTemplateIterator implements TemplateIteratorInterface
 {
   protected $needsReset = false;
+  protected $restoreLoop= [];
 
   protected function eachApply($callable,$args)
   {
@@ -27,6 +28,10 @@ abstract class AbstractTemplateIterator implements TemplateIteratorInterface
   protected function prepareLoop()
   {
     $this->needsReset = false;
+    $this->restoreLoop= [
+      'position' => get_query_var('loop_position'),
+      'entry'    => get_query_var('loop_entry')
+    ];
   }
 
   protected function prepareEntry($data, $key)
@@ -53,5 +58,8 @@ abstract class AbstractTemplateIterator implements TemplateIteratorInterface
     if ( $this->needsReset ) {
       wp_reset_postdata();
     }
+
+    set_query_var('loop_position',$this->restoreLoop['position']);
+    set_query_var('loop_entry',   $this->restoreLoop['entry']);
   }
 }
