@@ -41,6 +41,7 @@ class IteratorIterator extends AbstractTemplateIterator
       $this->prepareEntry($item, $key);
 
       $loopArg = $args;
+      array_unshift($loopArg,$key);
       array_unshift($loopArg,$item);
 
       $this->eachApply($callable,$loopArg);

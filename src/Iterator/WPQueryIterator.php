@@ -46,6 +46,7 @@ class WPQueryIterator extends AbstractTemplateIterator
       $this->prepareEntry($post,$this->wp_query->current_post);
 
       $loopArg = $args;
+      array_unshift($loopArg,$this->wp_query->current_post);
       array_unshift($loopArg,$post);
 
       $this->eachApply($callable,$loopArg);
@@ -54,13 +55,14 @@ class WPQueryIterator extends AbstractTemplateIterator
     $this->endLoop();
   }
 
-  protected function prepareEntry($data)
+  protected function prepareEntry($data,$key)
   {
     global $post;
 
     $this->wp_query->the_post();
     $this->needsReset = true;
     set_query_var('loop_entry',$post);
+    set_query_var('loop_position',$key);
   }
 
 

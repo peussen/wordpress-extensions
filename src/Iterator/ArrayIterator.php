@@ -51,6 +51,7 @@ class ArrayIterator extends AbstractTemplateIterator
       $this->prepareEntry($postEntry,$key);
 
       $loopArgs = $args;
+      array_unshift($loopArgs,$key);
       array_unshift($loopArgs,$postEntry);
       $this->eachApply($callable,$loopArgs);
     }
