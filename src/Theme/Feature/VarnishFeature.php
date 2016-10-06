@@ -118,7 +118,10 @@ class VarnishFeature implements FeatureInterface
 
         $response = wp_remote_request($url,$purgeRequest);
 
-        if ( isset($response['response']['code']) && $response['response']['code'] !== 200) {
+        if ( is_wp_error($response)) {
+          add_option('hj-varnish-error',['code' => 500, 'message' => $response->get_error_message()]);
+        }
+        else if ( isset($response['response']['code']) && $response['response']['code'] !== 200) {
             add_option('hj-varnish-error',$response['response']);
         } else {
             add_option('hj-varnish-error',['code' => 200, 'message' => $this->flushHost]);
