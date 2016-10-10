@@ -65,15 +65,17 @@ function array_unshift_assoc(array $array, $key, $value)
 }
 
 
-/**
- * Return the first non-null entry
- *
- * @see \HarperJones\Wordpress\Helper::strictCoalesce()
- * @param array ...$options
- */
-function coalesce(...$options)
-{
-  return call_user_func_array('\\HarperJones\\Wordpress\\Helper::strictCoalesce',$options);
+if ( version_compare(PHP_VERSION,'7.0.0')) {
+  /**
+   * Return the first non-null entry
+   *
+   * @see \HarperJones\Wordpress\Helper::strictCoalesce()
+   * @param array ...$options
+   */
+  function coalesce(...$options)
+  {
+    return call_user_func_array('\\HarperJones\\Wordpress\\Helper::strictCoalesce',$options);
+  }
 }
 
 /**
