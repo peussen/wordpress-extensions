@@ -111,8 +111,7 @@ class VarnishFeature implements FeatureInterface
         $purgeRequest = [
             'method'    => 'PURGE',
             'headers'   => [
-                'host'              => apply_filters('hj/varnish/purgedomain',$this->flushHost),
-                'X-Purge-Method'    => 'regex'
+                'X-Purge-Regex'     => apply_filters('hj/varnish/purgedomain',$this->flushHost),
             ]
         ];
 
