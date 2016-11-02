@@ -21,8 +21,13 @@ class AJAXLogin implements LoginIterface
    */
   static public function displayLoginForm()
   {
-    $instance = Setup::get(__CLASS__);
-    $instance->form();
+    $formHandler = apply_filters('harperjones/login/form',[Setup::get(__CLASS__),'form']);
+
+    if ( is_callable($formHandler)) {
+      call_user_func($formHandler);
+    } else {
+      get_template_part($formHandler);
+    }
   }
 
   public function init()
@@ -39,7 +44,7 @@ class AJAXLogin implements LoginIterface
     if ( !is_user_logged_in()) {
       ?>
       <form class="hj-form hj-loginform" data-loginform action="login" method="post">
-        <h1 class="form__title">Site Login</h1>
+        <h1 class="form__title"><?php _e('Site Login'); ?></h1>
         <div data-formstatus class="form__status"></div>
         <label for="username" class="field__label"><?php _e('Username'); ?></label>
         <input type="text" name="username" class="field--text">
@@ -58,7 +63,7 @@ class AJAXLogin implements LoginIterface
     } else {
       ?>
       <div class="hj-form hj-loginform">
-        <div class="form_status">You are already logged in.</div>
+        <div class="form_status"><?php _e('You are already logged in.'); ?></div>
         <a class="form__anchor" href="<?php echo wp_logout_url( apply_filters('harperjones/login/redirecturl',home_url()) ); ?>"><?php _e('Logout'); ?></a>
       </div>
       <?php
