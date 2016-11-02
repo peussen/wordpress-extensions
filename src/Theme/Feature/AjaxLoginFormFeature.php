@@ -9,6 +9,19 @@ namespace HarperJones\Wordpress\Theme\Feature;
 
 use HarperJones\Wordpress\Login\AJAXLogin;
 
+/**
+ * Out of the box support for wordpress user login on the website using an AJAX login form
+ *
+ * This feature allows you to quickly add a login form to your website. The form will
+ * use an AJAX request to validate your login and give you feedback about whether it
+ * worked or not.
+ *
+ * <code>
+ * add_theme_support('harperjones-ajax-loginform');
+ * </code>
+ *
+ * @package HarperJones\Wordpress\Theme\Feature
+ */
 class AjaxLoginFormFeature implements FeatureInterface
 {
   public function register($options = [])
@@ -45,7 +58,7 @@ class AjaxLoginFormFeature implements FeatureInterface
 
     if ( isset($options['loading'])) {
       add_filter(
-        'harperjones/login/submitmessage',
+        'harperjones/login/submitm`essage',
         function ($val) use ($options) {
           return $options['loading'];
         }

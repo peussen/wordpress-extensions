@@ -6,16 +6,20 @@
 
 namespace HarperJones\Wordpress\Login;
 
-
-use Hamcrest\Core\Set;
 use HarperJones\Wordpress\Arr;
 use HarperJones\Wordpress\Setup;
 
+/**
+ * AJAX version of a Wordpress login
+ * 
+ * @package HarperJones\Wordpress\Login
+ */
 class AJAXLogin implements LoginIterface
 {
   protected $loginscript = false;
 
   /**
+   * Method that can be called from templates to obtain the loginform
    *
    * @globalize hj_ajax_loginform
    */
@@ -30,15 +34,25 @@ class AJAXLogin implements LoginIterface
     }
   }
 
+  /**
+   * (inherited doc)
+   * @see LoginIterface::init()
+   */
   public function init()
   {
     Setup::globalizeStaticMethods(__CLASS__);
     Setup::set(__CLASS__,$this);
 
     $this->setupJavascript();
+
+    // Postpone all setup until the init action is triggered
     add_action('init',[$this,'initAjaxLogin']);
   }
 
+  /**
+   * (inherited doc)
+   * @see LoginIterface::form()
+   */
   public function form()
   {
     if ( !is_user_logged_in()) {
@@ -70,6 +84,10 @@ class AJAXLogin implements LoginIterface
     }
   }
 
+  /**
+   * AJAX request handler. Checks for validity and returns a JSON string giving the status of the
+   * request.
+   */
   public function loginHandler()
   {
     // First check the nonce, if it fails the function will break
@@ -102,6 +120,11 @@ class AJAXLogin implements LoginIterface
     exit();
   }
 
+  /**
+   * Initializes all things for this module
+   *
+   * @action init
+   */
   public function initAjaxLogin()
   {
     $loginScript = apply_filters('harperjones/login/ajaxscript',$this->loginscript);
@@ -121,6 +144,11 @@ class AJAXLogin implements LoginIterface
     add_action( 'wp_ajax_nopriv_hj_ajaxlogin', [$this,'loginHandler'] );
   }
 
+  /**
+   * Ensure the login javascript code is available on a public queryable path
+   *
+   * @return bool
+   */
   protected function setupJavascript()
   {
     $upload = wp_upload_dir();
@@ -135,6 +163,12 @@ class AJAXLogin implements LoginIterface
     return false;
   }
 
+  /**
+   * Creates the public javascript code that will make this module work
+   *
+   * @param $directory
+   * @return int
+   */
   protected function generateLoginScript($directory)
   {
     $content = <<< __EOF
