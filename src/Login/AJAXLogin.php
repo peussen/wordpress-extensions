@@ -11,7 +11,7 @@ use HarperJones\Wordpress\Setup;
 
 /**
  * AJAX version of a Wordpress login
- * 
+ *
  * @package HarperJones\Wordpress\Login
  */
 class AJAXLogin implements LoginIterface
@@ -25,6 +25,11 @@ class AJAXLogin implements LoginIterface
    */
   static public function displayLoginForm()
   {
+    /**
+     * Filter which allows you to change where the login form comes from
+     *
+     * @filter harperjones/login/form
+     */
     $formHandler = apply_filters('harperjones/login/form',[Setup::get(__CLASS__),'form']);
 
     if ( is_callable($formHandler)) {
@@ -127,6 +132,10 @@ class AJAXLogin implements LoginIterface
    */
   public function initAjaxLogin()
   {
+    /**
+     *
+     * @filter harperjones/login/ajaxscript
+     */
     $loginScript = apply_filters('harperjones/login/ajaxscript',$this->loginscript);
 
     wp_register_script('hj-ajax-login-script', $loginScript, array('jquery'), false, true );

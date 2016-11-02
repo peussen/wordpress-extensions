@@ -6,11 +6,33 @@
 
 namespace HarperJones\Wordpress\Media;
 
+/**
+ * A wrapper to use an external attachment provided by another Wordpress API site
+ *
+ * @package HarperJones\Wordpress\Media
+ */
 class ApiAttachment extends Attachment
 {
+  /**
+   * List of variants of the image as specified by the API
+   * @var array
+   */
   protected $alternates = [];
+
+  /**
+   * The GUID of the external image
+   * @var string
+   */
   protected $guid;
 
+  /**
+   * Reads the information from the external object and initializes the attachment
+   * You can construct the image either by using the API endpoint as "attachmentId"
+   * or a json decoded version of the API response.
+   *
+   * @param array|int $attachmentId
+   * @param string $size
+   */
   public function __construct($attachmentId, $size = 'full')
   {
     $this->default = $size;
@@ -68,6 +90,10 @@ class ApiAttachment extends Attachment
   }
 
 
+  /**
+   * Initializes the attachment based on the specified object
+   * @param $object
+   */
   private function setupApiObject($object)
   {
     $this->guid         = isset($object->guid->rendered) ? $object->guid->rendered : false;
@@ -80,11 +106,14 @@ class ApiAttachment extends Attachment
       $baseUrl = $info['scheme'] . '://' . $info['host'] . (isset($info['port']) ? ':' . $info['port'] : '');
 
       $this->alternates = get_object_vars($alternates);
+
+      // Make sure references to the image are all absolute.
       foreach( $this->alternates as $name => $alternate ) {
-        $this->alternates[$name]->source_url = $baseUrl . $this->alternates[$name]->source_url;
+        if ( !preg_match("|^http(s)?:|",$alternate->source_url)) {
+          $this->alternates[$name]->source_url = $baseUrl . $this->alternates[$name]->source_url;
+        }
       }
     }
 
-//    var_dump($this);
   }
 }
