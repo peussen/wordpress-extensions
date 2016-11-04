@@ -34,6 +34,11 @@ use HarperJones\Wordpress\Setup;
  * harperjones/reset/*              : All filters related to the reset password request form
  * harperjones/changepassword/*     : All filters related to the change password form
  *
+ * Shortcodes:
+ * [hj_loginform]
+ * [hj_resetpasswordform]
+ * [hj_changepasswordform]
+ *
  * @package HarperJones\Wordpress\Login
  */
 class AJAXLogin implements LoginIterface
@@ -75,7 +80,7 @@ class AJAXLogin implements LoginIterface
      *
      * @filter harperjones/resetpassword/form
      */
-    $formHandler = apply_filters('harperjones/resetpassword/form',[Setup::get(__CLASS__),'changePasswordForm']);
+    $formHandler = apply_filters('harperjones/resetpassword/form',[Setup::get(__CLASS__),'resetPasswordForm']);
 
     if ( is_callable($formHandler)) {
       call_user_func($formHandler);
@@ -95,7 +100,7 @@ class AJAXLogin implements LoginIterface
      *
      * @filter harperjones/changepassword/form
      */
-    $formHandler = apply_filters('harperjones/changepassword/form',[Setup::get(__CLASS__),'resetPasswordForm']);
+    $formHandler = apply_filters('harperjones/changepassword/form',[Setup::get(__CLASS__),'changePasswordForm']);
 
     if ( is_callable($formHandler)) {
       call_user_func($formHandler);
@@ -258,6 +263,10 @@ class AJAXLogin implements LoginIterface
     exit();
   }
 
+  /**
+   * Handles the Request Password reset form
+   *
+   */
   public function resetHandler()
   {
     check_ajax_referer('ajax-reset-nonce', 'security');
@@ -342,7 +351,7 @@ class AJAXLogin implements LoginIterface
   }
 
   /**
-   *
+   * handles the actual change of the password
    */
   public function changeHandler()
   {
@@ -437,6 +446,10 @@ class AJAXLogin implements LoginIterface
 
     add_action( 'wp_ajax_nopriv_hj_changepassword', [$this,'changeHandler']);
     add_action( 'wp_ajax_priv_hj_changepassword', [$this,'changeHandler']);
+
+    add_shortcode('hj_loginform', __CLASS__ . '::displayLoginForm' );
+    add_shortcode('hj_resetpasswordform', __CLASS__ . '::displayPasswordResetForm' );
+    add_shortcode('hj_changepasswordform', __CLASS__ . '::displayChangePasswordForm' );
   }
 
   /**
