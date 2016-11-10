@@ -6,7 +6,11 @@
 
 namespace HarperJones\Wordpress\Iterator;
 
-
+/**
+ * Interface all iterators that could be used as a template iterator should comply with
+ *
+ * @package HarperJones\Wordpress\Iterator
+ */
 interface TemplateIteratorInterface
 {
   /**

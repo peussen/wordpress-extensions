@@ -6,6 +6,11 @@ namespace HarperJones\Wordpress\Media;
  * @package: Inspire
  */
 
+/**
+ * Wrapper for handling featured images of a post
+ *
+ * @package HarperJones\Wordpress\Media
+ */
 class FeaturedImage extends Attachment
 {
   public function __construct($postId, $size = 'medium')
