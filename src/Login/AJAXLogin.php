@@ -24,8 +24,11 @@ use HarperJones\Wordpress\Setup;
  * harperjones/reset/form           : Changes the template/method that will render the reset password request form
  * harperjones/changepassword/form  : Changes the template/method that will render the change password form
  *
- * harperjones/login/redirecturl    : Url to redirect the user to after login (defaults to home)
+ * harperjones/login/redirecturl    : Url to redirect the user to after login (defaults to home), second param
+ *                                    holds the logged in user if available, otherwise it will be NULL, which
+ *                                    should be interpreted as the default login page if none was found.
  * harperjones/login/logouturl      : Url to redirect the user to after logout (defaults to home)
+ * lostpassword_url                 : The page that will show the reset password request form.
  *
  * harperjones/reset/mailbody       : Changes the mail body of the reset password request mail
  * harperjones/reset/mailsubject    : Changes the mail subject of the reset password request mail
@@ -43,10 +46,19 @@ use HarperJones\Wordpress\Setup;
  */
 class AJAXLogin implements LoginIterface
 {
+  const JS_FILENAME = 'ajax-login.js';
+
   /**
    * @var bool|string
    */
   protected $loginscript = false;
+
+  /**
+   * Generic settings
+   *
+   * @var array
+   */
+  protected $config = [];
 
   /**
    * Method that can be called from templates to obtain the loginform
@@ -146,15 +158,15 @@ class AJAXLogin implements LoginIterface
     if ( $user ):
       ?>
     <form class="hj-form hj-changepasswordform" data-changepasswordform action="changepassword" method="post">
-      <h1 class="form__title"><?php echo apply_filters('harperjones/changepassword/title',__('Change Password')); ?></h1>
+      <h1 class="form__title"><?php echo apply_filters('harperjones/changepassword/title',$this->config['labels']['changepassword']['title']); ?></h1>
       <div class="form__information"></div>
-      <div data-formstatus class="form__status"><?php echo sprintf(apply_filters('harperjones/changepassword/changefor','Changing password for %s'),$this->getSafeEmail($user)); ?></div>
+      <div data-formstatus class="form__status"><?php echo sprintf(apply_filters('harperjones/changepassword/changefor',$this->config['labels']['changepassword']['info']),$this->getSafeEmail($user)); ?></div>
       <div data-formfields>
-        <label for="password1" class="field__label"><?php echo apply_filters('harperjones/changepassword/password',__('Password')); ?></label>
+        <label for="password1" class="field__label"><?php echo apply_filters('harperjones/changepassword/password',$this->config['labels']['changepassword']['password']); ?></label>
         <input type="password" name="password1" class="field--text">
-        <label for="password2" class="field__label"><?php echo apply_filters('harperjones/changepassword/retypepassword',__('Retype Password')); ?></label>
+        <label for="password2" class="field__label"><?php echo apply_filters('harperjones/changepassword/retypepassword',$this->config['labels']['changepassword']['retypepassword']); ?></label>
         <input type="password" name="password2" class="field--text">
-        <button type="submit" data-changebutton><?php echo apply_filters('harperjones/reset/submit',__('Save new password')); ?></button>
+        <button type="submit" data-changebutton><?php echo apply_filters('harperjones/reset/submit',$this->config['labels']['changepassword']['button']); ?></button>
         <input type="hidden" name="token" value="<?php echo $this->getResetToken($user) ?>" />
         <?php wp_nonce_field( 'ajax-change-nonce', 'security' ); ?>
       </div>
@@ -163,7 +175,7 @@ class AJAXLogin implements LoginIterface
     else:
     ?>
     <div class="hj-form hj-changepasswordform" data-changepasswordform>
-      <div data-formstatus class="form__status"><?php echo apply_filters('harperjones/changepassword/invalidtoken',__('The token supplied is invalid')); ?></div>
+      <div data-formstatus class="form__status"><?php echo apply_filters('harperjones/changepassword/invalidtoken',$this->config['labels']['changepassword']['invalidtoken']); ?></div>
     </div>
     <?php
     endif;
@@ -179,12 +191,12 @@ class AJAXLogin implements LoginIterface
   {
     ?>
     <form class="hj-form hj-resetform" data-resetform action="reset" method="post">
-      <h1 class="form__title"><?php echo apply_filters('harperjones/login/title',__('Forgot Password')); ?></h1>
+      <h1 class="form__title"><?php echo apply_filters('harperjones/login/title',$this->config['labels']['resetpassword']['title']); ?></h1>
       <div data-formstatus class="form__status"></div>
       <div data-formfields>
-        <label for="username" class="field__label"><?php echo apply_filters('harperjones/reset/username',__('Username')); ?></label>
+        <label for="username" class="field__label"><?php echo apply_filters('harperjones/reset/username',$this->config['labels']['resetpassword']['username']); ?></label>
         <input type="text" name="username" class="field--text">
-        <button type="submit" data-resetbutton><?php echo apply_filters('harperjones/reset/submit',__('Request password reset')); ?></button>
+        <button type="submit" data-resetbutton><?php echo apply_filters('harperjones/reset/submit',$this->config['labels']['resetpassword']['button']); ?></button>
         <?php wp_nonce_field( 'ajax-reset-nonce', 'security' ); ?>
       </div>
     </form>
@@ -201,27 +213,30 @@ class AJAXLogin implements LoginIterface
     if ( !is_user_logged_in()) {
       ?>
       <form class="hj-form hj-loginform" data-loginform action="login" method="post">
-        <h1 class="form__title"><?php echo apply_filters('harperjones/login/title',__('Site Login')); ?></h1>
+        <h1 class="form__title"><?php echo apply_filters('harperjones/login/title',$this->config['labels']['login']['title']); ?></h1>
         <div data-formstatus class="form__status"></div>
-        <label for="username" class="field__label"><?php echo apply_filters('harperjones/login/username',__('Username')); ?></label>
+        <label for="username" class="field__label"><?php echo apply_filters('harperjones/login/username',$this->config['labels']['login']['username']); ?></label>
         <input type="text" name="username" class="field--text">
-        <label for="password" class="field__label"><?php echo apply_filters('harperjones/login/password',__('Password')); ?></label>
+        <label for="password" class="field__label"><?php echo apply_filters('harperjones/login/password',$this->config['labels']['login']['password']); ?></label>
         <input type="password" name="password" class="field__password">
 
         <label for="remember" class="field__label--checkbox">
           <input type="checkbox" name="remember">
-          <?php _e('Remember login'); ?>
+          <?php  echo $this->config['labels']['login']['remember']; ?>
         </label>
-        <a class="form__anchor" href="<?php echo wp_lostpassword_url(); ?>"><?php echo apply_filters('harperjones/login/forgot',__('Lost your password?')); ?></a>
-        <button type="submit" data-loginbutton><?php echo apply_filters('harperjones/login/submit',__('Login')); ?></button>
+        <a class="form__anchor" href="<?php echo wp_lostpassword_url(); ?>"><?php echo apply_filters('harperjones/login/forgot',$this->config['labels']['login']['forgotpassword']); ?></a>
+        <button type="submit" data-loginbutton><?php echo apply_filters('harperjones/login/submit',$this->config['labels']['login']['button']); ?></button>
         <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+        <input type="hidden" name="ref" value="<?php echo Arr::value($_GET,'ref'); ?>" />
       </form>
       <?php
     } else {
       ?>
       <div class="hj-form hj-loginform">
-        <div class="form_status"><?php _e('You are already logged in.'); ?></div>
-        <a class="form__anchor" href="<?php echo wp_logout_url( apply_filters('harperjones/login/logouturl',home_url()) ); ?>"><?php echo apply_filters('harperjones/login/logout',__('Logout')); ?></a>
+        <div class="form_status"><?php echo $this->config['labels']['login']['alreadyloggedin'] ?></div>
+        <a class="form__anchor" href="<?php echo wp_logout_url( apply_filters('harperjones/login/logouturl',$this->config['labels']['urls']['logout']) ); ?>">
+          <?php echo apply_filters('harperjones/login/logout',$this->config['labels']['login']['logout']); ?>
+        </a>
       </div>
       <?php
     }
@@ -245,18 +260,25 @@ class AJAXLogin implements LoginIterface
 
     $signedOnUser = wp_signon( $info, false );
 
+    $redirect = Arr::value(
+      $_POST,
+      'ref',
+      apply_filters('harperjones/login/redirecturl',$this->config['urls']['redirect'],$signedOnUser)
+    );
+
     if ( is_wp_error($signedOnUser) ){
       echo json_encode(
         [
           'loggedin'=> false,
-          'message' => apply_filters('harperjones/login/invalidmessage',__('Wrong username or password.'))
+          'message' => apply_filters('harperjones/login/invalidmessage',$this->config['labels']['login']['wronglogin'])
         ]
       );
     } else {
       echo json_encode(
         [
           'loggedin' => true,
-          'message'  => apply_filters('harperjones/login/succesmessage',__('Login successful, redirecting...'))
+          'message'  => apply_filters('harperjones/login/succesmessage',$this->config['labels']['login']['wronglogin']),
+          'redirect' => $redirect,
         ]
       );
     }
@@ -417,6 +439,8 @@ class AJAXLogin implements LoginIterface
    */
   public function initAjaxLogin()
   {
+    $this->setupDefaults();
+
     /**
      * Allows you to override the default login javascript with your own version.
      *
@@ -432,9 +456,9 @@ class AJAXLogin implements LoginIterface
       wp_localize_script( 'hj-ajax-login-script', 'ajax_login_object',
         [
           'ajaxurl'         => admin_url( 'admin-ajax.php' ),
-          'redirecturl'     => apply_filters('harperjones/login/redirecturl',home_url()),
-          'loadingmessage'  => apply_filters('harperjones/login/submitmessage',__('Sending user info, please wait...')),
-          'passwordmismatch'=> apply_filters('harperjones/changepassword/mismatch',__('Specified passwords do not match, try again')),
+          'redirecturl'     => apply_filters('harperjones/login/redirecturl',$this->config['urls']['redirect'],null),
+          'loadingmessage'  => apply_filters('harperjones/login/submitmessage',$this->config['labels']['login']['checkinglogin']),
+          'passwordmismatch'=> apply_filters('harperjones/changepassword/mismatch',$this->config['labels']['changepassword']['passwordsmismatch']),
         ]
       );
     }
@@ -462,9 +486,29 @@ class AJAXLogin implements LoginIterface
     $upload = wp_upload_dir();
     $debug  = defined("WP_DEBUG") && WP_DEBUG;
 
+    $paths  = [
+      get_template_directory() . '/dist/scripts' => get_template_directory_uri() . '/dist/scripts',
+      get_template_directory() . '/js' => get_template_directory_uri() . '/js',
+      get_theme_root() => get_theme_root_uri(),
+      dirname(ABSPATH) => get_home_url(),
+      $upload['basedir'] => $upload['baseurl']
+    ];
+
+    foreach( $paths as $optionalPath => $optionalUrl ) {
+      if ( is_writeable($optionalPath) ) {
+        if ( filemtime(__FILE__) > @filemtime($optionalPath) || $debug ) {
+          $this->generateLoginScript($optionalPath);
+        }
+
+        $this->loginscript = $optionalUrl . '/' . static::JS_FILENAME;
+        return true;
+      }
+    }
+    return false;
+
     if ( isset($upload['basedir']) && isset($upload['baseurl'])) {
-      if ( (!$debug && file_exists($upload['basedir'] . '/ajax-login-script.js')) || $this->generateLoginScript($upload['basedir'])) {
-        $this->loginscript = $upload['baseurl'] . '/ajax-login-script.js';
+      if ( (!$debug && file_exists($upload['basedir'] . '/' . static::JS_FILENAME)) || $this->generateLoginScript($upload['basedir'])) {
+        $this->loginscript = $upload['baseurl'] . '/' . static::JS_FILENAME;
         return true;
       }
     }
@@ -498,12 +542,13 @@ jQuery(document).ready(function ($) {
         'action': 'hj_ajaxlogin', //calls wp_ajax_nopriv_ajaxlogin
         'username': form$.find('[name="username"]').val(),
         'password': form$.find('[name="password"]').val(),
-        'security': form$.find('[name="security"]').val()
+        'security': form$.find('[name="security"]').val(),
+        'ref': form$.find('[name="ref"]').val()
       },
       success: function (data) {
         form$.find('[data-formstatus]').text(data.message);
         if (data.loggedin == true) {
-          document.location.href = ajax_login_object.redirecturl;
+          document.location.href = data.redirect ? data.redirect : ajax_login_object.redirecturl;
         }
       }
     });
@@ -574,7 +619,7 @@ jQuery(document).ready(function ($) {
 });
 __EOF;
 
-    return file_put_contents($directory . '/ajax-login-script.js',$content);
+    return file_put_contents($directory . '/' . static::JS_FILENAME,$content);
   }
 
   /**
@@ -629,5 +674,46 @@ __EOF;
       $email = str_replace($matches[1],str_repeat('*',strlen($matches[1])),$email);
     }
     return $email;
+  }
+
+  protected function setupDefaults()
+  {
+    $this->config = [
+      'urls' => [
+        'redirect' => home_url(),
+        'logout'   => home_url(),
+      ],
+      'labels' => [
+        'login' => [
+          'title'           => __('Site Login'),
+          'username'        => __('Username'),
+          'password'        => __('Password'),
+          'button'          => __('Login'),
+          'forgotpassword'  => __('Lost your password?'),
+          'alreadyloggedin' => __('You are already logged in.'),
+          'logout'          => __('Logout'),
+          'remember'        => __('Remember login'),
+          'wronglogin'      => __('Wrong username or password.'),
+          'loginok'         => __('Login successful, redirecting...'),
+          'checkinglogin'   => __('Sending user info, please wait...'),
+        ],
+        'resetpassword' => [
+          'title'     => __('Forgot Password'),
+          'username'  => __('Username'),
+          'button'    => __('Request password reset'),
+        ],
+        'changepassword' => [
+          'title'             => __('Change Password'),
+          'info'              => __('Changing password for %s'),
+          'password'          => __('Password'),
+          'retypepassword'    => __('Retype Password'),
+          'button'            => __('Save new password'),
+          'invalidtoken'      => __('The token supplied is invalid'),
+          'passwordsmismatch' => __('Specified passwords do not match, try again'),
+        ]
+      ]
+    ];
+
+    $this->config = apply_filters('harperjones/ajaxlogin/config',$this->config);
   }
 }
