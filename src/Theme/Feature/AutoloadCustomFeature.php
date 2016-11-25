@@ -25,6 +25,7 @@ use HarperJones\Wordpress\Command\CustomCommand;
  * Including is done RECURSIVELY
  *
  * @package HarperJones\Wordpress\Theme\Feature
+ * @deprecated Use AutoloadFiles instead
  */
 class AutoloadCustomFeature implements FeatureInterface
 {

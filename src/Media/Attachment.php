@@ -7,6 +7,7 @@ use HarperJones\Wordpress\Arr;
  * Wordpress Media Attachment wrapper
  *
  * @package HarperJones\Wordpress\Media
+ * @todo: force maximum size of sourceset images
  */
 class Attachment
 {
