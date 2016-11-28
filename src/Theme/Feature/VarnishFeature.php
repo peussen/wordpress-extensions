@@ -107,27 +107,41 @@ class VarnishFeature implements FeatureInterface
             return;
         }
 
-        $url          = 'http://' . $this->varnishServerIP . ($this->varnishPort ? ':' . $this->varnishPort : '');
-        $purgeRequest = [
+        $url  = 'http://' . $this->varnishServerIP . ($this->varnishPort ? ':' . $this->varnishPort : '');
+        $opts = [
+          'http'=>[
             'method'    => 'PURGE',
             'headers'   => [
-                'Host'              => $this->flushHost,
-                'X-Purge-Strategy'  => apply_filters('hj/varnish/purgestrategy','host'),
-                'X-Purge-Regex'     => apply_filters('hj/varnish/purgedomain',$this->flushHost),
+              'Host'              => $this->flushHost,
+              'X-Purge-Strategy'  => apply_filters('hj/varnish/purgestrategy','host'),
+              'X-Purge-Regex'     => apply_filters('hj/varnish/purgedomain',$this->flushHost),
             ]
+          ]
         ];
 
-        $response = wp_remote_request($url,$purgeRequest);
+        // Why not use wp_request you ask? well, because it does things I did not ask
+        // it to do, which causes a weird response from varnish instead of the expected
+        // PURGE
+        $context  = stream_context_create($opts);
+        $response = @file_get_contents($url,false,$context);
 
-        if ( is_wp_error($response)) {
-          add_option('hj-varnish-error',['code' => 500, 'message' => $response->get_error_message()]);
-        }
-        else if ( isset($response['response']['code']) && $response['response']['code'] !== 200) {
-            add_option('hj-varnish-error',$response['response']);
+        if ( !$response ) {
+          add_option('hj-varnish-error',['code' => 500, 'message' => 'Varnish failed to respond']);
         } else {
-            add_option('hj-varnish-error',['code' => 200, 'message' => $this->flushHost]);
-        }
+          if ( preg_match('|<h1>(.*?)([0-9]+)(.*)</h1>|ims',$response,$matches)) {
+            $status = (int)$matches[2];
+            $message= trim($matches[3]);
+          } else {
+            $status  = 500;
+            $message = 'Unknown response from varnish';
+          }
 
+          if ( $status == 200 ) {
+            add_option('hj-varnish-error',['code' => $status, 'message' => $this->flushHost]);
+          } else {
+            add_option('hj-varnish-error',$message);
+          }
+        }
     }
 
     /**
