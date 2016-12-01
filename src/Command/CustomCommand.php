@@ -7,6 +7,7 @@
 namespace HarperJones\Wordpress\Command;
 
 use HarperJones\Wordpress\Globalizer;
+use WP_CLI\Process;
 
 
 /**
@@ -16,6 +17,33 @@ use HarperJones\Wordpress\Globalizer;
  */
 class CustomCommand extends \WP_CLI_Command
 {
+
+  public function cron($args)
+  {
+    set_time_limit(0);
+
+    if ( !$args ) {
+      $url  = home_url();
+      $args = [ parse_url($url,PHP_URL_HOST) ];
+    }
+    foreach( $args as $host ) {
+      $env     = [
+        'REMOTE_ADDR'   => '127.0.0.1',
+        'HTTP_HOST'     => $host,
+        'DOCUMENT_ROOT' => dirname(ABSPATH),
+      ];
+
+      $process = Process::create('php ' . ABSPATH . '/wp-cron.php', dirname(ABSPATH), $env);
+
+      try {
+        $result = $process->run_check();
+
+        echo $result->stdout;
+      } catch (\Exception $e) {
+        echo "Error: " . $e->getMessage() . "\n";
+      }
+    }
+  }
 
   /**
    * Flush custom theme loader caches
