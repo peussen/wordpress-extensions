@@ -5,6 +5,11 @@
  */
 
 namespace HarperJones\Wordpress\Theme\Feature;
+use HarperJones\Wordpress\Theme\AccessDeniedException;
+use HarperJones\Wordpress\Theme\Admin\Notification;
+use HarperJones\Wordpress\Theme\Admin\Toolbar;
+use Mockery\Matcher\Not;
+
 
 /**
  * Adds support for varnish caching
@@ -30,7 +35,6 @@ class VarnishFeature implements FeatureInterface
     protected $varnishServerIP = false;
     protected $varnishPort     = false;
     protected $flushHost       = false;
-    protected $noticeResponse  = false;
     protected $actions         = array(
         'save_post',
         'deleted_post',
@@ -110,8 +114,10 @@ class VarnishFeature implements FeatureInterface
         $url  = 'http://' . $this->varnishServerIP . ($this->varnishPort ? ':' . $this->varnishPort : '');
         $opts = [
           'http'=>[
-            'method'    => 'PURGE',
-            'headers'   => [
+            'method'        => 'PURGE',
+            'timeout'       => 20,
+            'mex_redirects' => 1,
+            'headers'       => [
               'Host'              => $this->flushHost,
               'X-Purge-Strategy'  => apply_filters('hj/varnish/purgestrategy','host'),
               'X-Purge-Regex'     => apply_filters('hj/varnish/purgedomain',$this->flushHost),
@@ -126,7 +132,7 @@ class VarnishFeature implements FeatureInterface
         $response = @file_get_contents($url,false,$context);
 
         if ( !$response ) {
-          add_option('hj-varnish-error',['code' => 500, 'message' => 'Varnish failed to respond']);
+          Notification::error('Varnish failed to respond');
         } else {
           if ( preg_match('|<h1>(.*?)([0-9]+)(.*)</h1>|ims',$response,$matches)) {
             $status = (int)$matches[2];
@@ -137,24 +143,10 @@ class VarnishFeature implements FeatureInterface
           }
 
           if ( $status == 200 ) {
-            add_option('hj-varnish-error',['code' => $status, 'message' => $this->flushHost]);
+            Notification::notice('Varnish cache has been flushed');
           } else {
-            add_option('hj-varnish-error',$message);
+            Notification::error($message);
           }
-        }
-    }
-
-    /**
-     * Display admin notice so we can notify the admin's in case flush failed
-     *
-     * @since 0.3.4: also show succesful messages
-     */
-    public function displayNotice()
-    {
-        if ( isset($this->noticeResponse['code']) && $this->noticeResponse['code'] === 200 ) {
-            echo '<div class="updated notice"><p>Flushed varnish cache for: ' . $this->noticeResponse['message'] . '</p></div>';
-        } else {
-            echo '<div class="error notice"><p>Varnish flush failed: ' . $this->noticeResponse['message'] . '</p></div>';
         }
     }
 
@@ -167,19 +159,11 @@ class VarnishFeature implements FeatureInterface
             add_action($action,[$this,'executeFlush']);
         }
 
-        $this->noticeResponse = get_option('hj-varnish-error');
-
-        if ( $this->noticeResponse ) {
-            add_action('admin_notices',[$this,'displayNotice']);
-            delete_option('hj-varnish-error');
-        }
-
         /**
          * Add admin bar flush action
          * @since 0.3.4
          */
-        add_action('wp_before_admin_bar_render',[$this,'addAdminBarItem']);
-        add_action('wp_ajax_flush_varnish',[$this,'adminFlush']);
+        Toolbar::addItem('varnishflush','Flush Cache',[$this,'adminFlush']);
     }
 
     /**
@@ -192,31 +176,9 @@ class VarnishFeature implements FeatureInterface
     {
         if ( is_user_logged_in() && current_user_can('edit_pages') ) {
             $this->executeFlush();
+        } else {
+          throw new AccessDeniedException(__('You do not have sufficient rights to execute a flush'));
         }
-
-        $url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : admin_url();
-        wp_safe_redirect($url);
-        exit();
-    }
-
-    /**
-     * Add flush option to the admin bar so admins can flush manually
-     *
-     * @action wp_before_admin_bar_render
-     * @since 0.3.4
-     */
-    public function addAdminBarItem()
-    {
-        global $wp_admin_bar;
-
-        // We abuse the ajax handler to get back to this feature
-        $wp_admin_bar->add_node([
-            'id'    => 'varnishflush',
-            'title' => 'Flush Cache',
-            'href'  => admin_url('admin-ajax.php') . '?action=flush_varnish',
-            'parent'=> false,
-            //'meta'  => array( 'class' => 'my-toolbar-page' )
-        ]);
     }
 
     /**

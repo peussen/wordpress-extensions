@@ -18,9 +18,10 @@ class Toolbar
 
   protected function __construct()
   {
+    Notification::wakeup();
+
     add_action('wp_before_admin_bar_render', [$this,'renderMenu']);
     add_action('wp_ajax_hj_wpex',[$this,'executeCommand']);
-    add_action('admin_notices',[$this,'displayNotice']);
   }
 
   static public function addItem($id,$title,$callback)
@@ -46,22 +47,6 @@ class Toolbar
       'title'     => $title,
       'callback'  => $callback
     ];
-  }
-
-  public function displayNotice()
-  {
-    $messages = get_option('hj_wpex_messages');
-
-    if ( $messages ) {
-      foreach( $messages as $code => $submessages ) {
-        foreach ($submessages as $message) {
-          echo '<div class="updated ' . $code . ' is-dismissible"><p>'. $message . '</p></div>';
-        }
-      }
-
-      delete_option('hj_wpex_messages');
-    }
-
   }
 
   public function renderMenu()
@@ -91,9 +76,9 @@ class Toolbar
 
       if ( $sub && isset($this->items[$sub]) && isset($this->items[$sub]['callback'])) {
         try {
-          $this->items[$sub]['callback']($this);
+          $this->items[$sub]['callback']();
         } catch (\Exception $e) {
-          $this->addMessage($e->getMessage() . ' (' . Setup::deNamespace($e) . ')');
+          Notification::error($e->getMessage() . ' (' . Setup::deNamespace($e) . ')');
         }
       }
     }
@@ -103,12 +88,4 @@ class Toolbar
     exit();
   }
 
-  public function addMessage($message,$code = 'error')
-  {
-    $messages = get_option('hj_wpex_messages');
-
-    $messages[$code][] = $message;
-
-    update_option('hj_wpex_messages',$messages);
-  }
 }
