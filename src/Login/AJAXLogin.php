@@ -294,7 +294,7 @@ class AJAXLogin implements LoginIterface
       echo json_encode(
         [
           'loggedin' => true,
-          'message'  => apply_filters('harperjones/login/succesmessage',$this->config['labels']['login']['wronglogin']),
+          'message'  => apply_filters('harperjones/login/succesmessage',$this->config['labels']['login']['loginok']),
           'redirect' => $redirect,
         ]
       );
