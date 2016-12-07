@@ -13,20 +13,6 @@
     "autoload": {
       "psr-4": { "HarperJones\\Wordpress\\": "src"}
     },
-    "repositories": [
-      {
-        "type": "package",
-        "package": {
-          "name": "advanced-custom-fields\/advanced-custom-fields-pro",
-          "version": "5.4.5",
-          "type": "wordpress-plugin",
-          "dist": {
-            "type": "zip",
-            "url": "http:\/\/connect.advancedcustomfields.com\/index.php?p=pro&a=download&k=b3JkZXJfaWQ9NjUxOTR8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE1LTA5LTI4IDA5OjAwOjAx&v=5.4.5"
-          }
-        }
-      }
-    ],
     "require": {
       "php": ">=5.4",
       "symfony/http-foundation": "~2.6",
@@ -37,8 +23,7 @@
       "mockery/mockery": "^0.9.4",
       "php-mock/php-mock-phpunit": "*",
       "php-mock/php-mock-mockery": "*",
-      "wp-cli/wp-cli": "^0.21",
-      "advanced-custom-fields/advanced-custom-fields-pro": "^5.3"
+      "wp-cli/wp-cli": "^0.21"
     },
     "minimum-stability": "dev"
 }
