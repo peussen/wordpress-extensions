@@ -6,7 +6,20 @@
 
 namespace HarperJones\Wordpress\AccessControl;
 
-
+/**
+ * Master Administration: allow the hiding of objects for normal administrators to avoid messups
+ * Sometimes you have a website/theme that requires a couple of pages to always exist and you
+ * want to prevent the end administrator from messing it up. This class will give you all the
+ * tooling needed to avoid that.
+ * It will create a "Super Admin" role, which basically copies the Administrator role, and creates
+ * a category with the option to indicate that the current object is a "system" object. If it is:
+ * only the super admin will have access to the object.
+ *
+ * Difference between this and RoleAccess is that this limits access to the ADMIN part of the object
+ * whereas the RoleAccess limits access to viewing of the object
+ *
+ * @package HarperJones\Wordpress\AccessControl
+ */
 class MasterAdmin
 {
   const SUPERADMIN_ID       = 'masteradmin';
@@ -23,20 +36,38 @@ class MasterAdmin
    */
   protected $_systemSupport= ['page'];
 
+  /**
+   * The actual instance
+   *
+   * @var MasterAdmin
+   */
   private static $instance;
 
+  /**
+   * Protected to make sure you can not call it directly. user MasterAdmin::bootstrap()
+   *
+   * @see MasterAdmin::bootstrap()
+   */
   protected function __construct()
   {
     // Ensure the master role is there
     Role::create(self::SUPERADMIN_ID,self::SUPERADMIN_NAME,'administrator');
 
     add_action('init',[$this,'createSuperAdminCategory']);
-    add_action('current_screen',[$this,'checkScreenAccess']);
     add_action('registered_taxonomy',[$this,'ensureSystemTerm'],10,1);
     add_action('pre_get_posts',[$this,'hideSystemObjects']);
-    add_action('admin_bar_menu',[$this,'modifyToolbar'],900);
+
+    if ( is_admin() ) {
+      add_action('current_screen',[$this,'checkScreenAccess']);
+      add_action('admin_bar_menu',[$this,'modifyToolbar'],900);
+    }
   }
 
+  /**
+   * Initializer
+   *
+   * @return MasterAdmin|static
+   */
   static public function bootstrap()
   {
     if ( self::$instance === null ) {
@@ -58,7 +89,8 @@ class MasterAdmin
   /**
    * Add one or more post types as post types that support Access limitation
    *
-   * @param $postType
+   * @param   array|string $postType
+   * @return  void
    */
   public function addSystemPostType($postType)
   {
@@ -77,8 +109,6 @@ class MasterAdmin
    */
   public function createSuperAdminCategory()
   {
-
-//    $userInfo = get_userdata(get_current_user_id());
     $showInUI = current_user_can('be_' . self::SUPERADMIN_ID);
 
     $labels = array(
@@ -113,6 +143,7 @@ class MasterAdmin
    * Makes sure the term for system posts exists in the taxonomy
    *
    * @param string  $taxonomy
+   * @return bool
    */
   public function ensureSystemTerm($taxonomy)
   {
@@ -132,7 +163,8 @@ class MasterAdmin
   /**
    * Remove the edit option if the page is a system page and the current user does not have access
    *
-   * @param $wp_admin
+   * @param  \WP_Admin_Bar $wp_admin
+   * @return \WP_Admin_Bar
    */
   public function modifyToolbar($wp_admin)
   {
@@ -195,7 +227,8 @@ class MasterAdmin
   /**
    * Remove system objects from list views in the admin
    *
-   * @param $query
+   * @param   \WP_Query $query
+   * @return  void
    */
   public function hideSystemObjects($query)
   {
@@ -215,8 +248,22 @@ class MasterAdmin
     }
   }
 
+  /**
+   * Get a list of supported post types
+   *
+   * @filter harperjones/acl/systemobjects
+   * @return array
+   */
   protected function getSupportedPostTypes()
   {
+    /**
+     * Filter the post types that should be filtered using the super admin
+     *
+     * @since 0.6.5
+     *
+     * @param   array $supportedPostTypes
+     * @return  array
+     */
     return apply_filters('harperjones/accesscontrol/systemobjects',$this->_systemSupport);
   }
 
