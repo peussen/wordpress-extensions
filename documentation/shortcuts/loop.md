@@ -1,5 +1,5 @@
 # loop
-(since 0.6.5)
+(since 0.5.2)
 Loop over an iteratable object like an array, wp_query or Iterator object
 
 ## Description
@@ -39,5 +39,13 @@ $items = [ 'one', 'two', 'three' ];
 loop($items)->apply('templates/content','loop');
 ```
 
+**Example 3: Loop over a WP_Query instance**
+```php
+<?php
+$query = new \Wp_Query($args);
+
+loop($query)->apply('templates/content','row');
+
+```
 ## See also
  * [TemplateIteratorInterface](../Iterator/TemplateIteratorInterface.md)
