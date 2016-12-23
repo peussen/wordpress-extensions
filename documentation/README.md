@@ -2,6 +2,7 @@ Table Of Contents
 =================
 
 **WP-CLI Commands**
+
  - [varnish::flush](commands/varnish.md5)
 
 **Features**
@@ -23,6 +24,7 @@ Table Of Contents
 - [varnish](feature/varnish.md)
 
 **Functions**
+
  - [loop](shortcuts/loop.md)
  - [array_value](shortcuts/array_value.md)
  - [array_unshift_assoc](shortcuts/array_unshift_assoc.md)
@@ -31,6 +33,7 @@ Table Of Contents
  - [set_role_capability](shortcuts/set_role_capability.md)
  
 **Components**
+
  - Access Control
    - [MasterAdmin](AccessControl/MasterAdmin.md)
    - [Role](AccessControl/Role.md)
