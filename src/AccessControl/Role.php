@@ -29,6 +29,31 @@ class Role
   }
 
   /**
+   * Checks if a user has a role
+   *
+   * @param null $userId
+   * @return bool
+   */
+  public function assignedTo($userId = null)
+  {
+    if ( $userId === null ) {
+      $user = wp_get_current_user();
+    } elseif ( is_numeric($userId)) {
+      $user = get_user_by('id',$userId);
+    } elseif ( is_string($userId)) {
+      $user = get_user_by('slug',$userId);
+    } else {
+      $user = $userId;
+    }
+
+    if ( $user instanceof \WP_User && $this->role ) {
+      return in_array($this->role->name,(array) $user->roles);
+    }
+    return false;
+  }
+
+
+  /**
    * Checks if the role has a certain capability
    */
   public function can($capability)
