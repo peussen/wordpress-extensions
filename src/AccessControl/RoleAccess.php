@@ -94,7 +94,7 @@ class RoleAccess
 
       if ( $roles && !is_user_logged_in()) {
         $allow = false;
-      } elseif ( is_user_logged_in() ) {
+      } elseif ( $roles && is_user_logged_in() ) {
         /**
          * Filter the roles that should be considered "Super roles"
          *
