@@ -117,10 +117,10 @@ class VarnishFeature implements FeatureInterface
             'method'        => 'PURGE',
             'timeout'       => 20,
             'mex_redirects' => 1,
-            'headers'       => [
-              'Host'              => $this->flushHost,
-              'X-Purge-Strategy'  => apply_filters('hj/varnish/purgestrategy','host'),
-              'X-Purge-Regex'     => apply_filters('hj/varnish/purgedomain',$this->flushHost),
+            'header'        => [
+              'Host: ' . $this->flushHost,
+              'X-Purge-Strategy: ' . apply_filters('hj/varnish/purgestrategy','host'),
+              'X-Purge-Regex:' . apply_filters('hj/varnish/purgedomain',$this->flushHost),
             ]
           ]
         ];
