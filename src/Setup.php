@@ -106,7 +106,7 @@ class Setup
 	{
 
 		if ( !is_callable($callable) && class_exists($callable)) {
-			$callable = function() {
+			$callable = function() use ($callable) {
 				Setup::set(Setup::deNamespace($callable),$callable);
 			};
 		}
@@ -247,9 +247,9 @@ class Setup
 	}
 
 
-	static public function dashedToClass($featureorfilter)
+	static public function dashedToClass($featureOrFilter)
 	{
-		$entries = explode('-',$featureorfilter);
+		$entries = explode('-',$featureOrFilter);
 		foreach( $entries as $i => $val ) {
 			$entries[$i] = ucfirst($val);
 		}

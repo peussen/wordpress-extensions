@@ -81,7 +81,7 @@ if ( version_compare(PHP_VERSION,'7.0.0')) {
 /**
  * Truncate a string to a specified number of words.
  *
- * @see \Woppe\Wordpress\String::trunc()
+ * @see \Woppe\Wordpress\Str::trunc()
  * @param string $string
  * @param int    $limit
  * @param string $more
@@ -89,7 +89,7 @@ if ( version_compare(PHP_VERSION,'7.0.0')) {
  */
 function str_trunc($string,$limit = 50,$more = '...')
 {
-  return \Woppe\Wordpress\String::trunc($string,$limit,$more);
+  return \Woppe\Wordpress\Str::trunc($string,$limit,$more);
 }
 
 
