@@ -1,12 +1,12 @@
 <?php
-namespace HarperJones\Wordpress\Theme;
+namespace Woppe\Wordpress\Theme;
 
-use HarperJones\Wordpress\WordpressException;
+use Woppe\Wordpress\WordpressException;
 
 /**
  * Wrapper for the wordpress template files
  *
- * @package HarperJones\Wordpress\Theme
+ * @package Woppe\Wordpress\Theme
  */
 final class View
 {

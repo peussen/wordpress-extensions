@@ -8,7 +8,7 @@ This feature does something
 Usage
 ---
 
-`add_theme_support('harperjones-)`
+`add_theme_support('woppe-)`
 
 **Parameters**
 

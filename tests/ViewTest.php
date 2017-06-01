@@ -4,11 +4,11 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme;
+namespace Woppe\Wordpress\Theme;
 
 
-use HarperJones\Wordpress\Theme\View;
-use HarperJones\Wordpress\WordpressException;
+use Woppe\Wordpress\Theme\View;
+use Woppe\Wordpress\WordpressException;
 use Mockery as m;
 
 function locate_template($template)
@@ -22,7 +22,7 @@ function locate_template($template)
 
 /**
  * Class ViewTest
- * @package HarperJones\Wordpress\Theme
+ * @package Woppe\Wordpress\Theme
  * @runTestsInSeparateProcesses
  */
 class ViewTest extends \PHPUnit_Framework_TestCase
@@ -39,14 +39,14 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 
     public function testCreation()
     {
-        $this->setExpectedException('HarperJones\\Wordpress\\WordpressException');
+        $this->setExpectedException('Woppe\\Wordpress\\WordpressException');
         new View('sometemplate');
     }
 
     public function testCreationNonExistingTemplate()
     {
         define('ABSPATH', __DIR__);
-        $this->setExpectedException('HarperJones\\Wordpress\\Theme\\InvalidTemplateException');
+        $this->setExpectedException('Woppe\\Wordpress\\Theme\\InvalidTemplateException');
         self::$functions->shouldReceive('locate_template')->with('templates/doesnotexist.php')->once()->andReturn('');
         new View('doesnotexist');
 
@@ -61,7 +61,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
             once()->
             andReturn(ABSPATH . '/templates/exists.php');
         $view = new View('exists');
-        $this->assertEquals('HarperJones\\Wordpress\\Theme\\View',get_class($view));
+        $this->assertEquals('Woppe\\Wordpress\\Theme\\View',get_class($view));
     }
 
     public function testAttributeSetAndGet()

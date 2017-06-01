@@ -1,6 +1,6 @@
 <?php
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 interface FeatureInterface
 {

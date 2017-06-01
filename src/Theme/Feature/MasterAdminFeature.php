@@ -4,15 +4,15 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
-use HarperJones\Wordpress\AccessControl\MasterAdmin;
+use Woppe\Wordpress\AccessControl\MasterAdmin;
 
 /**
  * Implement a Master Admin role which has access to all, and allow limitation of posts access based on a System Category
  *
- * @package HarperJones\Wordpress\Theme\Feature
+ * @package Woppe\Wordpress\Theme\Feature
  */
 class MasterAdminFeature implements FeatureInterface
 {
@@ -32,7 +32,7 @@ class MasterAdminFeature implements FeatureInterface
     }
 
     $role = $admin->getRole();
-    $role->assign(apply_filters('harperjones/accesscontrol/masteruser','support'));
+    $role->assign(apply_filters('woppe/accesscontrol/masteruser','support'));
   }
 
 }

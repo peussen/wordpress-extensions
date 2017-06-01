@@ -1,10 +1,10 @@
 <?php
-namespace HarperJones\Wordpress\Theme;
+namespace Woppe\Wordpress\Theme;
 
 /**
  * A lightweight controller to handle all separate entry points in a uniform way
  *
- * @package HarperJones\Wordpress\Theme
+ * @package Woppe\Wordpress\Theme
  */
 class ViewController
 {

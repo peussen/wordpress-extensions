@@ -4,12 +4,12 @@
  * @package: gfhg2015
  */
 
-namespace HarperJones\Wordpress\Search;
+namespace Woppe\Wordpress\Search;
 
 /**
  * Advanced search that takes custom fields and relations into account
  *
- * @package HarperJones\Wordpress\Search
+ * @package Woppe\Wordpress\Search
  */
 class ExtendedSearchCommand extends \WP_CLI_Command
 {

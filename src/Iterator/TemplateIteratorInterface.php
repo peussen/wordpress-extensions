@@ -4,12 +4,12 @@
  * @package: darionwm
  */
 
-namespace HarperJones\Wordpress\Iterator;
+namespace Woppe\Wordpress\Iterator;
 
 /**
  * Interface all iterators that could be used as a template iterator should comply with
  *
- * @package HarperJones\Wordpress\Iterator
+ * @package Woppe\Wordpress\Iterator
  */
 interface TemplateIteratorInterface
 {

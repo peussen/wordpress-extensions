@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\AccessControl;
+namespace Woppe\Wordpress\AccessControl;
 
 /**
  * Master Administration: allow the hiding of objects for normal administrators to avoid messups
@@ -18,7 +18,7 @@ namespace HarperJones\Wordpress\AccessControl;
  * Difference between this and RoleAccess is that this limits access to the ADMIN part of the object
  * whereas the RoleAccess limits access to viewing of the object
  *
- * @package HarperJones\Wordpress\AccessControl
+ * @package Woppe\Wordpress\AccessControl
  */
 class MasterAdmin
 {
@@ -251,7 +251,7 @@ class MasterAdmin
   /**
    * Get a list of supported post types
    *
-   * @filter harperjones/acl/systemobjects
+   * @filter woppe/acl/systemobjects
    * @return array
    */
   protected function getSupportedPostTypes()
@@ -264,7 +264,7 @@ class MasterAdmin
      * @param   array $supportedPostTypes
      * @return  array
      */
-    return apply_filters('harperjones/accesscontrol/systemobjects',$this->_systemSupport);
+    return apply_filters('woppe/accesscontrol/systemobjects',$this->_systemSupport);
   }
 
 }

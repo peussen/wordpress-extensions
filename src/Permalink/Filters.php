@@ -4,10 +4,10 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Permalink;
+namespace Woppe\Wordpress\Permalink;
 
 
-use HarperJones\Wordpress\Arr;
+use Woppe\Wordpress\Arr;
 
 abstract class Filters
 {

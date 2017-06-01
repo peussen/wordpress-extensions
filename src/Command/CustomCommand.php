@@ -4,16 +4,16 @@
  * @package: gfhg2015
  */
 
-namespace HarperJones\Wordpress\Command;
+namespace Woppe\Wordpress\Command;
 
-use HarperJones\Wordpress\Globalizer;
+use Woppe\Wordpress\Globalizer;
 use WP_CLI\Process;
 
 
 /**
  * Handle custom theme functionality
  *
- * @package HarperJones\Wordpress\Command
+ * @package Woppe\Wordpress\Command
  */
 class CustomCommand extends \WP_CLI_Command
 {
@@ -51,7 +51,7 @@ class CustomCommand extends \WP_CLI_Command
    */
   public function flushautoload()
   {
-    delete_site_option('hj_autoload-cache-' . wp_get_theme());
+    delete_site_option('woppe_autoload-cache-' . wp_get_theme());
     \WP_CLI::success("Ok");
   }
 

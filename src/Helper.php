@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress;
+namespace Woppe\Wordpress;
 
 
 class Helper

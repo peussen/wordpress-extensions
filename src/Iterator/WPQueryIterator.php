@@ -4,13 +4,13 @@
  * @package: darionwm
  */
 
-namespace HarperJones\Wordpress\Iterator;
+namespace Woppe\Wordpress\Iterator;
 
 /**
  * Template Iterator for WP_Query instances.
  *
  * @see loop()
- * @package HarperJones\Wordpress\Iterator
+ * @package Woppe\Wordpress\Iterator
  */
 class WPQueryIterator extends AbstractTemplateIterator
 {

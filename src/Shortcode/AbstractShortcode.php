@@ -6,13 +6,13 @@
  * Time: 14:20
  */
 
-namespace HarperJones\Wordpress\Shortcode;
+namespace Woppe\Wordpress\Shortcode;
 
 
-use HarperJones\Wordpress\Http\WordpressRequest;
-use HarperJones\Wordpress\Theme\InvalidTemplate;
-use HarperJones\Wordpress\Theme\View;
-use HarperJones\Wordpress\WordpressException;
+use Woppe\Wordpress\Http\WordpressRequest;
+use Woppe\Wordpress\Theme\InvalidTemplate;
+use Woppe\Wordpress\Theme\View;
+use Woppe\Wordpress\WordpressException;
 use League\Url\Url;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
  * following order: post_index, get_index, action_index
  * You can break the sequence by returning output (a View) in one of the methods.
  *
- * @package HarperJones\Wordpress\Shortcode
+ * @package Woppe\Wordpress\Shortcode
  */
 abstract class AbstractShortcode
 {

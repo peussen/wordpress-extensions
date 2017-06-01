@@ -11,9 +11,9 @@ namespace {
   }
 }
 
-namespace HarperJones\Wordpress\Tests {
+namespace Woppe\Wordpress\Tests {
 
-  use HarperJones\Wordpress\Iterator;
+  use Woppe\Wordpress\Iterator;
   use phpmock\phpunit\PHPMock;
 
   class ArrayIteratorTest extends \PHPUnit_Framework_TestCase
@@ -43,13 +43,13 @@ namespace HarperJones\Wordpress\Tests {
     {
       $iterator = new Iterator\ArrayIterator([1]);
 
-      $gpMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'get_post');
+      $gpMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'get_post');
       $gpMock->expects($this->once())->with(1);
 
-      $sqvMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'set_query_var');
+      $sqvMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'set_query_var');
       $sqvMock->expects($this->once())->with('loop_entry');
 
-      $rpdMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator','wp_reset_postdata');
+      $rpdMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator','wp_reset_postdata');
       $rpdMock->expects($this->once());
 
       ob_start();
@@ -64,16 +64,16 @@ namespace HarperJones\Wordpress\Tests {
     {
       $iterator = new Iterator\ArrayIterator([1]);
 
-      $gpMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'get_post');
+      $gpMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'get_post');
       $gpMock->expects($this->once())->with(1)->willReturn(1);
 
-      $spdMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'setup_postdata');
+      $spdMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'setup_postdata');
       $spdMock->expects($this->once());
 
-      $sqvMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'set_query_var');
+      $sqvMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'set_query_var');
       $sqvMock->expects($this->once())->with('loop_entry');
 
-      $rpdMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator','wp_reset_postdata');
+      $rpdMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator','wp_reset_postdata');
       $rpdMock->expects($this->once());
 
       ob_start();
@@ -90,16 +90,16 @@ namespace HarperJones\Wordpress\Tests {
     {
       $iterator = new Iterator\ArrayIterator([1,2,3,4,5,6,7,8,9,10]);
 
-      $gpMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'get_post');
+      $gpMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'get_post');
       $gpMock->expects($this->exactly(10))->willReturn(1);
 
-      $spdMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'setup_postdata');
+      $spdMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'setup_postdata');
       $spdMock->expects($this->exactly(10));
 
-      $sqvMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'set_query_var');
+      $sqvMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'set_query_var');
       $sqvMock->expects($this->exactly(10))->with('loop_entry');
 
-      $rpdMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator','wp_reset_postdata');
+      $rpdMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator','wp_reset_postdata');
       $rpdMock->expects($this->once());
 
       ob_start();
@@ -116,16 +116,16 @@ namespace HarperJones\Wordpress\Tests {
     {
       $iterator = new Iterator\ArrayIterator([1,2,3,4,5,6,7,8,9,10]);
 
-      $gpMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'get_post');
+      $gpMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'get_post');
       $gpMock->expects($this->exactly(10))->willReturn(1);
 
-      $spdMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'setup_postdata');
+      $spdMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'setup_postdata');
       $spdMock->expects($this->exactly(10));
 
-      $sqvMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator', 'set_query_var');
+      $sqvMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator', 'set_query_var');
       $sqvMock->expects($this->exactly(10))->with('loop_entry');
 
-      $rpdMock = $this->getFunctionMock('\\HarperJones\\Wordpress\\Iterator','wp_reset_postdata');
+      $rpdMock = $this->getFunctionMock('\\Woppe\\Wordpress\\Iterator','wp_reset_postdata');
       $rpdMock->expects($this->once());
 
       ob_start();

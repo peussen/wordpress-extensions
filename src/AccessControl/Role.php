@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\AccessControl;
+namespace Woppe\Wordpress\AccessControl;
 
 
 class Role

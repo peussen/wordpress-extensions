@@ -4,12 +4,12 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Admin;
+namespace Woppe\Wordpress\Theme\Admin;
 
 
 class Notification
 {
-  const NOTIFICATION_OPTION_NAME = 'hj_notifications';
+  const NOTIFICATION_OPTION_NAME = 'woppe_notifications';
   const ALL_ADMIN_USERS = 'all';
 
   static private $instance = null;

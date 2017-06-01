@@ -4,10 +4,10 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
-use HarperJones\Wordpress\Setup;
-use HarperJones\Wordpress\Command\CustomCommand;
+use Woppe\Wordpress\Setup;
+use Woppe\Wordpress\Command\CustomCommand;
 
 /**
  * Adds support for autoloading of custom files
@@ -17,14 +17,14 @@ use HarperJones\Wordpress\Command\CustomCommand;
  * in your code you should add:
  *
  * <code>
- * add_theme_support('harperjones-autoload-custom');
+ * add_theme_support('woppe-autoload-custom');
  * </code>
  *
  * Optionally you can specify a second argument which should be a path to the custom directory
  *
  * Including is done RECURSIVELY
  *
- * @package HarperJones\Wordpress\Theme\Feature
+ * @package Woppe\Wordpress\Theme\Feature
  * @deprecated Use AutoloadFiles instead
  */
 class AutoloadCustomFeature implements FeatureInterface
@@ -121,7 +121,7 @@ class AutoloadCustomFeature implements FeatureInterface
             return false;
         }
 
-        $list = get_site_option('hj_autoload-cache-' . wp_get_theme());
+        $list = get_site_option('woppe_autoload-cache-' . wp_get_theme());
 
         if ( is_array($list) && isset($list[0]) && substr($list[0],0,strlen($this->customFolder)) != $this->customFolder) {
             return false;
@@ -141,6 +141,6 @@ class AutoloadCustomFeature implements FeatureInterface
             return;
         }
 
-        update_site_option('hj-autoload-cache-' . wp_get_theme(), $fileList);
+        update_site_option('woppe-autoload-cache-' . wp_get_theme(), $fileList);
     }
 }

@@ -4,12 +4,12 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Iterator;
+namespace Woppe\Wordpress\Iterator;
 
 /**
  * Template iterator for Iterator implementations
  *
- * @package HarperJones\Wordpress\Iterator
+ * @package Woppe\Wordpress\Iterator
  */
 class IteratorIterator extends AbstractTemplateIterator
 {

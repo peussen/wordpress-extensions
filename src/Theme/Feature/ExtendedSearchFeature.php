@@ -1,15 +1,15 @@
 <?php
 /*
  * @author: petereussen
- * @package: hj2016
+ * @package: woppe2016
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
-use HarperJones\Wordpress\Search\ExtendedSearch;
-use HarperJones\Wordpress\Search\ExtendedSearchHelpers;
-use HarperJones\Wordpress\Setup;
+use Woppe\Wordpress\Search\ExtendedSearch;
+use Woppe\Wordpress\Search\ExtendedSearchHelpers;
+use Woppe\Wordpress\Setup;
 
 class ExtendedSearchFeature implements FeatureInterface
 {
@@ -38,13 +38,13 @@ class ExtendedSearchFeature implements FeatureInterface
             $search->addPostType($postType);
         }
 
-        $filters = apply_filters('hj/search/filters',[]);
+        $filters = apply_filters('woppe/search/filters',[]);
 
         foreach ($filters as $filter ) {
             $search->addFilter($filter);
         }
 
-        $relations = apply_filters('hj/search/relations',[]);
+        $relations = apply_filters('woppe/search/relations',[]);
 
         foreach( $relations as $field => $postType ) {
             $search->addRelation($field,$postType);

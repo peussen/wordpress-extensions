@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
 class HideAdminNotifications

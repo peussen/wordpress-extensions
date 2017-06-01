@@ -6,10 +6,10 @@
  * Time: 15:09
  */
 
-namespace HarperJones\Wordpress\Theme;
+namespace Woppe\Wordpress\Theme;
 
 
-use HarperJones\Wordpress\WordpressException;
+use Woppe\Wordpress\WordpressException;
 
 class ThemeAssetException extends WordpressException
 {

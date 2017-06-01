@@ -1,17 +1,17 @@
 {
-    "name": "harperjones/wordpress-extensions",
+    "name": "woppe/wordpress-extensions",
     "description": "Various extensions and support classes you can use when building Wordpress sites",
     "type": "library",
-    "keywords": ["Wordpress","Themeplugin","Shortcode"],
+    "keywords": ["Wordpress","tools","tricks"],
     "license": "proprietary",
     "authors": [
         {
             "name": "peter.eussen",
-            "email": "peter.eussen@harperjones.nl"
+            "email": "peter.eussen@gmail.com"
         }
     ],
     "autoload": {
-      "psr-4": { "HarperJones\\Wordpress\\": "src"}
+      "psr-4": { "Woppe\\Wordpress\\": "src"}
     },
     "require": {
       "php": ">=5.4",

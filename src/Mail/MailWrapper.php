@@ -5,9 +5,9 @@
  * Date: 12/03/15
  * Time: 11:06
  */
-namespace HarperJones\Wordpress\Mail;
+namespace Woppe\Wordpress\Mail;
 
-use \HarperJones\Wordpress\Theme\View;
+use Woppe\Wordpress\Theme\View;
 
 class MailWrapper
 {

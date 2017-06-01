@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 /**
  * Adds support for autoloading of custom files
@@ -14,14 +14,14 @@ namespace HarperJones\Wordpress\Theme\Feature;
  * in your code you should add:
  *
  * <code>
- * add_theme_support('harperjones-autoload-files');
+ * add_theme_support('woppe-autoload-files');
  * </code>
  *
  * Optionally you can specify a second argument which should be a path to the custom directory
  *
  * Including is done RECURSIVELY
  *
- * @package HarperJones\Wordpress\Theme\Feature
+ * @package Woppe\Wordpress\Theme\Feature
  */
 class AutoloadFilesFeature implements FeatureInterface
 {
@@ -39,7 +39,7 @@ class AutoloadFilesFeature implements FeatureInterface
         }
 
         if ( empty($this->filesFolder)) {
-            $this->filesFolder = apply_filters('hj/autoload/filesfolder',get_template_directory() . '/src/files');
+            $this->filesFolder = apply_filters('woppe/autoload/filesfolder',get_template_directory() . '/src/files');
         }
 
 
@@ -115,7 +115,7 @@ class AutoloadFilesFeature implements FeatureInterface
             return false;
         }
 
-        $list = get_site_option('hj_autoload-cache-' . wp_get_theme());
+        $list = get_site_option('woppe_autoload-cache-' . wp_get_theme());
 
         if ( is_array($list) && isset($list[0]) && substr($list[0],0,strlen($this->filesFolder)) != $this->filesFolder) {
             return false;
@@ -135,6 +135,6 @@ class AutoloadFilesFeature implements FeatureInterface
             return;
         }
 
-        update_site_option('hj-autoload-cache-' . wp_get_theme(), $fileList);
+        update_site_option('woppe_autoload_cache-' . wp_get_theme(), $fileList);
     }
 }

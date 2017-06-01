@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme;
+namespace Woppe\Wordpress\Theme;
 
 
 class ACFSupport

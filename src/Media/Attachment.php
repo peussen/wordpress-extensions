@@ -1,12 +1,12 @@
 <?php
-namespace HarperJones\Wordpress\Media;
+namespace Woppe\Wordpress\Media;
 
-use HarperJones\Wordpress\Arr;
+use Woppe\Wordpress\Arr;
 
 /**
  * Wordpress Media Attachment wrapper
  *
- * @package HarperJones\Wordpress\Media
+ * @package Woppe\Wordpress\Media
  * @todo: force maximum size of sourceset images
  */
 class Attachment

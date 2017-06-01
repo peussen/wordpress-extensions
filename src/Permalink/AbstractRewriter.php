@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Permalink;
+namespace Woppe\Wordpress\Permalink;
 
 
 abstract class AbstractRewriter

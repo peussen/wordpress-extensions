@@ -1,13 +1,13 @@
 <?php
 /*
- * @author: petereussen <peter.eussen@harperjones.nl>
+ * @author: petereussen <peter.eussen@woppe.nl>
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
-use HarperJones\Wordpress\Theme\AccessDeniedException;
-use HarperJones\Wordpress\Theme\Admin\Notification;
-use HarperJones\Wordpress\Theme\Admin\Toolbar;
+namespace Woppe\Wordpress\Theme\Feature;
+use Woppe\Wordpress\Theme\AccessDeniedException;
+use Woppe\Wordpress\Theme\Admin\Notification;
+use Woppe\Wordpress\Theme\Admin\Toolbar;
 use Mockery\Matcher\Not;
 
 
@@ -20,7 +20,7 @@ use Mockery\Matcher\Not;
  * To enable this, add the following line to your theme init:
  *
  * <code>
- * add_theme_support('harperjones-varnish');
+ * add_theme_support('woppe-varnish');
  * </code>
  *
  * Additionally you can add extra configuration options:
@@ -28,7 +28,7 @@ use Mockery\Matcher\Not;
  * - port: the port to use to initiate a purge request
  * - host: the domain to use as purge filter
  *
- * @package HarperJones\Wordpress\Theme\Feature
+ * @package Woppe\Wordpress\Theme\Feature
  */
 class VarnishFeature implements FeatureInterface
 {
@@ -73,7 +73,7 @@ class VarnishFeature implements FeatureInterface
      */
     public function setVarnishIp( $ip )
     {
-        $this->varnishServerIP = apply_filters('hj/varnish/server/ip',$ip);
+        $this->varnishServerIP = apply_filters('woppe/varnish/server/ip',$ip);
     }
 
     /**
@@ -83,7 +83,7 @@ class VarnishFeature implements FeatureInterface
      */
     public function setVarnishPort( $port )
     {
-        $this->varnishPost = apply_filters('hj/varnish/server/port',$port);
+        $this->varnishPost = apply_filters('woppe/varnish/server/port',$port);
     }
 
     /**
@@ -119,8 +119,8 @@ class VarnishFeature implements FeatureInterface
             'mex_redirects' => 1,
             'header'        => [
               'Host: ' . $this->flushHost,
-              'X-Purge-Strategy: ' . apply_filters('hj/varnish/purgestrategy','host'),
-              'X-Purge-Regex:' . apply_filters('hj/varnish/purgedomain',$this->flushHost),
+              'X-Purge-Strategy: ' . apply_filters('woppe/varnish/purgestrategy','host'),
+              'X-Purge-Regex:' . apply_filters('woppe/varnish/purgedomain',$this->flushHost),
             ]
           ]
         ];

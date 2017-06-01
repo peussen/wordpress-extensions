@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Iterator;
+namespace Woppe\Wordpress\Iterator;
 
 
 class DummyIterator implements TemplateIteratorInterface

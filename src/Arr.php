@@ -6,7 +6,7 @@
  * Time: 09:38
  */
 
-namespace HarperJones\Wordpress;
+namespace Woppe\Wordpress;
 
 
 final class Arr

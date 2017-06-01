@@ -4,10 +4,10 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Login;
+namespace Woppe\Wordpress\Login;
 
-use HarperJones\Wordpress\Arr;
-use HarperJones\Wordpress\Setup;
+use Woppe\Wordpress\Arr;
+use Woppe\Wordpress\Setup;
 
 /**
  * AJAX version of a Wordpress login
@@ -15,34 +15,34 @@ use HarperJones\Wordpress\Setup;
  * There are tons of filters you can use to modify the output, but here are some basics:
  *
  * API:
- * hj_ajax_loginform         : function you can use in your template to show the login form
- * hj_ajax_resetpasswordform : function you can use to show the reset password request form
- * hj_ajax_changepasswordform: function you can use to show the change password form after a request has been sent
+ * woppe_ajax_loginform         : function you can use in your template to show the login form
+ * woppe_ajax_resetpasswordform : function you can use to show the reset password request form
+ * woppe_ajax_changepasswordform: function you can use to show the change password form after a request has been sent
  *
  * Filters:
- * harperjones/login/form           : Changes the template/method that will render the login form
- * harperjones/reset/form           : Changes the template/method that will render the reset password request form
- * harperjones/changepassword/form  : Changes the template/method that will render the change password form
+ * woppe/login/form           : Changes the template/method that will render the login form
+ * woppe/reset/form           : Changes the template/method that will render the reset password request form
+ * woppe/changepassword/form  : Changes the template/method that will render the change password form
  *
- * harperjones/login/redirecturl    : Url to redirect the user to after login (defaults to home), second param
+ * woppe/login/redirecturl    : Url to redirect the user to after login (defaults to home), second param
  *                                    holds the logged in user if available, otherwise it will be NULL, which
  *                                    should be interpreted as the default login page if none was found.
- * harperjones/login/logouturl      : Url to redirect the user to after logout (defaults to home)
+ * woppe/login/logouturl      : Url to redirect the user to after logout (defaults to home)
  * lostpassword_url                 : The page that will show the reset password request form.
  *
- * harperjones/reset/mailbody       : Changes the mail body of the reset password request mail
- * harperjones/reset/mailsubject    : Changes the mail subject of the reset password request mail
+ * woppe/reset/mailbody       : Changes the mail body of the reset password request mail
+ * woppe/reset/mailsubject    : Changes the mail subject of the reset password request mail
  *
- * harperjones/login/*              : All filters related to the login form and messages
- * harperjones/reset/*              : All filters related to the reset password request form
- * harperjones/changepassword/*     : All filters related to the change password form
+ * woppe/login/*              : All filters related to the login form and messages
+ * woppe/reset/*              : All filters related to the reset password request form
+ * woppe/changepassword/*     : All filters related to the change password form
  *
  * Shortcodes:
- * [hj_loginform]
- * [hj_resetpasswordform]
- * [hj_changepasswordform]
+ * [woppe_loginform]
+ * [woppe_resetpasswordform]
+ * [woppe_changepasswordform]
  *
- * @package HarperJones\Wordpress\Login
+ * @package Woppe\Wordpress\Login
  */
 class AJAXLogin implements LoginIterface
 {
@@ -63,16 +63,16 @@ class AJAXLogin implements LoginIterface
   /**
    * Method that can be called from templates to obtain the loginform
    *
-   * @globalize hj_ajax_loginform
+   * @globalize woppe_ajax_loginform
    */
   static public function displayLoginForm()
   {
     /**
      * Filter which allows you to change where the login form comes from
      *
-     * @filter harperjones/login/form
+     * @filter woppe/login/form
      */
-    $formHandler = apply_filters('harperjones/login/form',[Setup::get(__CLASS__),'form']);
+    $formHandler = apply_filters('woppe/login/form',[Setup::get(__CLASS__),'form']);
 
     if ( is_callable($formHandler)) {
       call_user_func($formHandler);
@@ -83,16 +83,16 @@ class AJAXLogin implements LoginIterface
 
   /**
    *
-   * @globalize hj_ajax_resetpasswordform
+   * @globalize woppe_ajax_resetpasswordform
    */
   static public function displayPasswordResetForm()
   {
     /**
      * Filter which allows you to change where the login form comes from
      *
-     * @filter harperjones/resetpassword/form
+     * @filter woppe/resetpassword/form
      */
-    $formHandler = apply_filters('harperjones/resetpassword/form',[Setup::get(__CLASS__),'resetPasswordForm']);
+    $formHandler = apply_filters('woppe/resetpassword/form',[Setup::get(__CLASS__),'resetPasswordForm']);
 
     if ( is_callable($formHandler)) {
       call_user_func($formHandler);
@@ -103,16 +103,16 @@ class AJAXLogin implements LoginIterface
 
   /**
    *
-   * @globalize hj_ajax_changepasswordform
+   * @globalize woppe_ajax_changepasswordform
    */
   static public function displayChangePasswordForm()
   {
     /**
      * Filter which allows you to change where the login form comes from
      *
-     * @filter harperjones/changepassword/form
+     * @filter woppe/changepassword/form
      */
-    $formHandler = apply_filters('harperjones/changepassword/form',[Setup::get(__CLASS__),'changePasswordForm']);
+    $formHandler = apply_filters('woppe/changepassword/form',[Setup::get(__CLASS__),'changePasswordForm']);
 
     if ( is_callable($formHandler)) {
       call_user_func($formHandler);
@@ -157,16 +157,16 @@ class AJAXLogin implements LoginIterface
 
     if ( $user ):
       ?>
-    <div class="hj-form__wrap">
-      <form class="hj-form hj-form--changepw" data-changepasswordform action="changepassword" method="post">
-        <h1 class="hj-form__title"><?php echo apply_filters('harperjones/changepassword/title',__('Change Password')); ?></h1>
-        <div data-formstatus class="hj-form__message hj-form__message--status"><?php echo sprintf(apply_filters('harperjones/changepassword/changefor','Changing password for %s'),$this->getSafeEmail($user)); ?></div>
+    <div class="woppe-form__wrap">
+      <form class="woppe-form woppe-form--changepw" data-changepasswordform action="changepassword" method="post">
+        <h1 class="woppe-form__title"><?php echo apply_filters('woppe/changepassword/title',__('Change Password')); ?></h1>
+        <div data-formstatus class="woppe-form__message woppe-form__message--status"><?php echo sprintf(apply_filters('woppe/changepassword/changefor','Changing password for %s'),$this->getSafeEmail($user)); ?></div>
         <div data-formfields>
-          <label for="password1" class="hj-field__label"><?php echo apply_filters('harperjones/changepassword/password',__('Password')); ?></label>
-          <input type="password" name="password1" class="hj-field hj-field--password">
-          <label for="password2" class="hj-field__label"><?php echo apply_filters('harperjones/changepassword/retypepassword',__('Retype Password')); ?></label>
-          <input type="password" name="password2" class="hj-field hj-field--password">
-          <button class="hj-form__button" type="submit" data-changebutton><?php echo apply_filters('harperjones/reset/submit',__('Save new password')); ?></button>
+          <label for="password1" class="woppe-field__label"><?php echo apply_filters('woppe/changepassword/password',__('Password')); ?></label>
+          <input type="password" name="password1" class="woppe-field woppe-field--password">
+          <label for="password2" class="woppe-field__label"><?php echo apply_filters('woppe/changepassword/retypepassword',__('Retype Password')); ?></label>
+          <input type="password" name="password2" class="woppe-field woppe-field--password">
+          <button class="woppe-form__button" type="submit" data-changebutton><?php echo apply_filters('woppe/reset/submit',__('Save new password')); ?></button>
           <input type="hidden" name="token" value="<?php echo $this->getResetToken($user) ?>" />
           <?php wp_nonce_field( 'ajax-change-nonce', 'security' ); ?>
         </div>
@@ -176,9 +176,9 @@ class AJAXLogin implements LoginIterface
     <?php
     else:
     ?>
-    <div class="hj-form__wrap">
-      <div class="hj-form hj-changepasswordform" data-changepasswordform>
-        <div data-formstatus class="hj-form__message hj-form__message--status""><?php echo apply_filters('harperjones/changepassword/invalidtoken',__('The token supplied is invalid')); ?></div>
+    <div class="woppe-form__wrap">
+      <div class="woppe-form woppe-changepasswordform" data-changepasswordform>
+        <div data-formstatus class="woppe-form__message woppe-form__message--status""><?php echo apply_filters('woppe/changepassword/invalidtoken',__('The token supplied is invalid')); ?></div>
       </div>
     </div>
     <?php
@@ -193,14 +193,14 @@ class AJAXLogin implements LoginIterface
   public function resetPasswordForm()
   {
     ?>
-    <div class="hj-form__wrap">
-      <form class="hj-form hj-form--resetpw" data-resetform action="reset" method="post">
-        <h1 class="hj-form__title"><?php echo apply_filters('harperjones/login/title',__('Forgot Password')); ?></h1>
-        <div data-formstatus class="hj-form__message hj-form__message--status"></div>
-        <div class="hj-form__group" data-formfields>
-          <label for="username" class="hj-field__label"><?php echo apply_filters('harperjones/reset/username',__('Username')); ?></label>
-          <input type="text" name="username" class="hj-field hj-field--text">
-          <button class="hj-form__button" type="submit" data-resetbutton><?php echo apply_filters('harperjones/reset/submit',__('Request password reset')); ?></button>
+    <div class="woppe-form__wrap">
+      <form class="woppe-form woppe-form--resetpw" data-resetform action="reset" method="post">
+        <h1 class="woppe-form__title"><?php echo apply_filters('woppe/login/title',__('Forgot Password')); ?></h1>
+        <div data-formstatus class="woppe-form__message woppe-form__message--status"></div>
+        <div class="woppe-form__group" data-formfields>
+          <label for="username" class="woppe-field__label"><?php echo apply_filters('woppe/reset/username',__('Username')); ?></label>
+          <input type="text" name="username" class="woppe-field woppe-field--text">
+          <button class="woppe-form__button" type="submit" data-resetbutton><?php echo apply_filters('woppe/reset/submit',__('Request password reset')); ?></button>
           <?php wp_nonce_field( 'ajax-reset-nonce', 'security' ); ?>
         </div>
       </form>
@@ -217,32 +217,32 @@ class AJAXLogin implements LoginIterface
   {
     if ( !is_user_logged_in()) {
       ?>
-      <div class="hj-form__wrap">
+      <div class="woppe-form__wrap">
         
-        <form class="hj-form hj-form--login" data-loginform action="login" method="post">
-          <div class="hj-form__header">
-            <h1 class="hj-form__title"><?php echo apply_filters('harperjones/login/title',__('Site Login')); ?></h1>
-            <div data-formstatus class="hj-form__message hj-form__message--status"></div>
+        <form class="woppe-form woppe-form--login" data-loginform action="login" method="post">
+          <div class="woppe-form__header">
+            <h1 class="woppe-form__title"><?php echo apply_filters('woppe/login/title',__('Site Login')); ?></h1>
+            <div data-formstatus class="woppe-form__message woppe-form__message--status"></div>
           </div>
-          <div class="hj-form__main">
-            <div class="hj-form__group">
-              <label for="username" class="hj-field__label"><?php echo apply_filters('harperjones/login/username',__('Username')); ?></label>
-              <input type="text" name="username" class="hj-field hj-field--text">
+          <div class="woppe-form__main">
+            <div class="woppe-form__group">
+              <label for="username" class="woppe-field__label"><?php echo apply_filters('woppe/login/username',__('Username')); ?></label>
+              <input type="text" name="username" class="woppe-field woppe-field--text">
             </div>
-            <div class="hj-form__group">
-              <label for="password" class="hj-field__label"><?php echo apply_filters('harperjones/login/password',__('Password')); ?></label>
-              <input type="password" name="password" class="hj-field hj-field--password">      
+            <div class="woppe-form__group">
+              <label for="password" class="woppe-field__label"><?php echo apply_filters('woppe/login/password',__('Password')); ?></label>
+              <input type="password" name="password" class="woppe-field woppe-field--password">
             </div>
-            <div class="hj-form__group">
-              <label for="remember" class="hj-field__label--checkbox">
-                <input type="checkbox" name="remember" class="hj-field hj-field--checkbox">
+            <div class="woppe-form__group">
+              <label for="remember" class="woppe-field__label--checkbox">
+                <input type="checkbox" name="remember" class="woppe-field woppe-field--checkbox">
                 <?php _e('Remember login'); ?>
               </label>
             </div>
           </div>
-          <div class="hj-form__footer">
-            <button class="hj-form__button" type="submit" data-loginbutton><?php echo apply_filters('harperjones/login/submit',__('Login')); ?></button>
-            <a class="hj-form__link" href="<?php echo wp_lostpassword_url(); ?>"><?php echo apply_filters('harperjones/login/forgot',__('Lost your password?')); ?></a>
+          <div class="woppe-form__footer">
+            <button class="woppe-form__button" type="submit" data-loginbutton><?php echo apply_filters('woppe/login/submit',__('Login')); ?></button>
+            <a class="woppe-form__link" href="<?php echo wp_lostpassword_url(); ?>"><?php echo apply_filters('woppe/login/forgot',__('Lost your password?')); ?></a>
             <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
           </div>
         </form>
@@ -251,9 +251,9 @@ class AJAXLogin implements LoginIterface
       <?php
     } else {
       ?>
-      <div class="hj-form__wrap">
-        <div class="hj-form__message"><?php _e('You are already logged in.'); ?></div>
-        <a class="hj-form__link" href="<?php echo wp_logout_url( apply_filters('harperjones/login/logouturl',home_url()) ); ?>"><?php echo apply_filters('harperjones/login/logout',__('Logout')); ?></a>
+      <div class="woppe-form__wrap">
+        <div class="woppe-form__message"><?php _e('You are already logged in.'); ?></div>
+        <a class="woppe-form__link" href="<?php echo wp_logout_url( apply_filters('woppe/login/logouturl',home_url()) ); ?>"><?php echo apply_filters('woppe/login/logout',__('Logout')); ?></a>
       </div>
       <?php
     }
@@ -280,21 +280,21 @@ class AJAXLogin implements LoginIterface
     $redirect = Arr::value(
       $_POST,
       'ref',
-      apply_filters('harperjones/login/redirecturl',$this->config['urls']['redirect'],$signedOnUser)
+      apply_filters('woppe/login/redirecturl',$this->config['urls']['redirect'],$signedOnUser)
     );
 
     if ( is_wp_error($signedOnUser) ){
       echo json_encode(
         [
           'loggedin'=> false,
-          'message' => apply_filters('harperjones/login/invalidmessage',$this->config['labels']['login']['wronglogin'])
+          'message' => apply_filters('woppe/login/invalidmessage',$this->config['labels']['login']['wronglogin'])
         ]
       );
     } else {
       echo json_encode(
         [
           'loggedin' => true,
-          'message'  => apply_filters('harperjones/login/succesmessage',$this->config['labels']['login']['loginok']),
+          'message'  => apply_filters('woppe/login/succesmessage',$this->config['labels']['login']['loginok']),
           'redirect' => $redirect,
         ]
       );
@@ -315,11 +315,11 @@ class AJAXLogin implements LoginIterface
     $error   = false;
 
     if ( empty($account) ) {
-      $error = apply_filters('harperjones/reset/error/nousername',__('Enter a username or emailaddress'));
+      $error = apply_filters('woppe/reset/error/nousername',__('Enter a username or emailaddress'));
     } else {
       if ( is_email($account)) {
         if ( !email_exists($account)) {
-          $error = apply_filters('harperjones/reset/error/invalidusername',__('No user found for your login'));
+          $error = apply_filters('woppe/reset/error/invalidusername',__('No user found for your login'));
         } else {
           $getby = 'email';
         }
@@ -327,10 +327,10 @@ class AJAXLogin implements LoginIterface
         if ( username_exists($account)) {
           $getby = 'login';
         } else {
-          $error = apply_filters('harperjones/reset/error/invalidusername',__('No user found for your login'));
+          $error = apply_filters('woppe/reset/error/invalidusername',__('No user found for your login'));
         }
       } else {
-        $error = apply_filters('harperjones/reset/error/invalidaccount', 'No account found with that name');
+        $error = apply_filters('woppe/reset/error/invalidaccount', 'No account found with that name');
       }
     }
 
@@ -339,10 +339,10 @@ class AJAXLogin implements LoginIterface
       $user  = get_user_by($getby,$account);
       $token = sha1(wp_salt('auth') . $user->user_email . microtime(true));
 
-      if ( $user && update_user_meta($user->ID,'hj_resettoken', $token )) {
-        $from    = apply_filters('harperjones/reset/from',get_bloginfo('admin_email'));
+      if ( $user && update_user_meta($user->ID,'woppe_resettoken', $token )) {
+        $from    = apply_filters('woppe/reset/from',get_bloginfo('admin_email'));
         $to      = $user->user_email;
-        $subject = apply_filters('harperjones/reset/mailsubject',__('Your new password'));
+        $subject = apply_filters('woppe/reset/mailsubject',__('Your new password'));
 
 
         $headers[] = "Content-Type: text/html; charset=UTF-8\r\n";
@@ -350,31 +350,31 @@ class AJAXLogin implements LoginIterface
         $headers[] = 'From:' . get_bloginfo('name') . '<' . $from . '>';
 
         $mail      = apply_filters(
-          'harperjones/reset/mailbody',
+          'woppe/reset/mailbody',
           "Hi [displayname],\n\nYou, or someone else requested a new password for your account on our site.\nPlease use the following link to create a new password\n[link]\n"
         );
 
         $mail = str_replace("[displayname]",$user->display_name,$mail);
-        $mail = str_replace("[link]", apply_filters('harperjones/reset/changepasswordurl',home_url()) . '?reset=' . $token,$mail);
+        $mail = str_replace("[link]", apply_filters('woppe/reset/changepasswordurl',home_url()) . '?reset=' . $token,$mail);
 
         if ( wp_mail($to,$subject,$mail,$headers)) {
           $reply = [
             'status' => true,
             'message'=> sprintf(
-              apply_filters('harperjones/reset/mailsent',__('An e-mail has been sent to %s with instructions on how you can change your password')),
+              apply_filters('woppe/reset/mailsent',__('An e-mail has been sent to %s with instructions on how you can change your password')),
               $this->getSafeEmail($user)
             ),
           ];
         } else {
           $reply = [
             'status'  => false,
-            'message' => apply_filters('harperjones/reset/error/updatefailed',__('Your account could not be reset. Contact support')),
+            'message' => apply_filters('woppe/reset/error/updatefailed',__('Your account could not be reset. Contact support')),
           ];
         }
       } else {
         $reply = [
           'status'  => false,
-          'message' => apply_filters('harperjones/reset/error/updatefailed',__('Your account could not be reset. Contact support')),
+          'message' => apply_filters('woppe/reset/error/updatefailed',__('Your account could not be reset. Contact support')),
         ];
 
       }
@@ -405,27 +405,27 @@ class AJAXLogin implements LoginIterface
      * Checks if a password is secure enough
      *
      */
-    $secure    = apply_filters('harperjones/changepassword/strength',true,$password1);
+    $secure    = apply_filters('woppe/changepassword/strength',true,$password1);
 
     if ( $password1 != $password2 ) {
       $reply = [
         'status' => false,
-        'message'=> apply_filters('harperjones/changepassword/mismatch',__('Specified passwords do not match, try again'))
+        'message'=> apply_filters('woppe/changepassword/mismatch',__('Specified passwords do not match, try again'))
       ];
     } elseif ( empty($password1) ) {
       $reply = [
         'status' => false,
-        'message'=> apply_filters('harperjones/changepassword/empty',__('Password may not be empty.'))
+        'message'=> apply_filters('woppe/changepassword/empty',__('Password may not be empty.'))
       ];
     } elseif ( !$secure ) {
       $reply = [
         'status' => false,
-        'message'=> apply_filters('harperjones/changepassword/insecure',__('Your password is not secure enough. Please try adding capitals, numbers and special characters'))
+        'message'=> apply_filters('woppe/changepassword/insecure',__('Your password is not secure enough. Please try adding capitals, numbers and special characters'))
       ];
     } elseif ( !$user ) {
       $reply = [
         'status'  => false,
-        'message' => apply_filters('harperjones/changepassword/invalidtoken',__('The token supplied is invalid')),
+        'message' => apply_filters('woppe/changepassword/invalidtoken',__('The token supplied is invalid')),
         'token'   => $token
       ];
     } else {
@@ -434,13 +434,13 @@ class AJAXLogin implements LoginIterface
       if ( is_wp_error($result) ) {
         $reply = [
           'status'  => false,
-          'message' => apply_filters('harperjones/changepassword/failed',__('Unable to alter your password. Try again later')),
+          'message' => apply_filters('woppe/changepassword/failed',__('Unable to alter your password. Try again later')),
         ];
       } else {
-        delete_user_meta($user->ID,'hj_resettoken');
+        delete_user_meta($user->ID,'woppe_resettoken');
         $reply = [
           'status' => true,
-          'message'=> apply_filters('harperjones/changepassword/succes',__('Your new password has been saved.')),
+          'message'=> apply_filters('woppe/changepassword/succes',__('Your new password has been saved.')),
         ];
       }
     }
@@ -461,36 +461,36 @@ class AJAXLogin implements LoginIterface
     /**
      * Allows you to override the default login javascript with your own version.
      *
-     * @filter harperjones/login/ajaxscript
+     * @filter woppe/login/ajaxscript
      * @param string  $loginScript  Url of the login handling script
      */
-    $loginScript = apply_filters('harperjones/login/ajaxscript',$this->loginscript);
+    $loginScript = apply_filters('woppe/login/ajaxscript',$this->loginscript);
 
     if ( $loginScript ) {
-      wp_register_script('hj-ajax-login-script', $loginScript, array('jquery'), false, true );
-      wp_enqueue_script('hj-ajax-login-script');
+      wp_register_script('woppe-ajax-login-script', $loginScript, array('jquery'), false, true );
+      wp_enqueue_script('woppe-ajax-login-script');
 
-      wp_localize_script( 'hj-ajax-login-script', 'ajax_login_object',
+      wp_localize_script( 'woppe-ajax-login-script', 'ajax_login_object',
         [
           'ajaxurl'         => admin_url( 'admin-ajax.php' ),
-          'redirecturl'     => apply_filters('harperjones/login/redirecturl',$this->config['urls']['redirect'],null),
-          'loadingmessage'  => apply_filters('harperjones/login/submitmessage',$this->config['labels']['login']['checkinglogin']),
-          'passwordmismatch'=> apply_filters('harperjones/changepassword/mismatch',$this->config['labels']['changepassword']['passwordsmismatch']),
+          'redirecturl'     => apply_filters('woppe/login/redirecturl',$this->config['urls']['redirect'],null),
+          'loadingmessage'  => apply_filters('woppe/login/submitmessage',$this->config['labels']['login']['checkinglogin']),
+          'passwordmismatch'=> apply_filters('woppe/changepassword/mismatch',$this->config['labels']['changepassword']['passwordsmismatch']),
         ]
       );
     }
 
     // Enable the user with no privileges to run ajax_login() in AJAX
-    add_action( 'wp_ajax_nopriv_hj_ajaxlogin', [$this,'loginHandler'] );
+    add_action( 'wp_ajax_nopriv_woppe_ajaxlogin', [$this,'loginHandler'] );
 
-    add_action( 'wp_ajax_nopriv_hj_resetpassword', [$this,'resetHandler']);
+    add_action( 'wp_ajax_nopriv_woppe_resetpassword', [$this,'resetHandler']);
 
-    add_action( 'wp_ajax_nopriv_hj_changepassword', [$this,'changeHandler']);
-    add_action( 'wp_ajax_priv_hj_changepassword', [$this,'changeHandler']);
+    add_action( 'wp_ajax_nopriv_woppe_changepassword', [$this,'changeHandler']);
+    add_action( 'wp_ajax_priv_woppe_changepassword', [$this,'changeHandler']);
 
-    add_shortcode('hj_loginform', __CLASS__ . '::displayLoginForm' );
-    add_shortcode('hj_resetpasswordform', __CLASS__ . '::displayPasswordResetForm' );
-    add_shortcode('hj_changepasswordform', __CLASS__ . '::displayChangePasswordForm' );
+    add_shortcode('woppe_loginform', __CLASS__ . '::displayLoginForm' );
+    add_shortcode('woppe_resetpasswordform', __CLASS__ . '::displayPasswordResetForm' );
+    add_shortcode('woppe_changepasswordform', __CLASS__ . '::displayChangePasswordForm' );
   }
 
   /**
@@ -556,7 +556,7 @@ jQuery(document).ready(function ($) {
       dataType: 'json',
       url: ajax_login_object.ajaxurl,
       data: {
-        'action': 'hj_ajaxlogin', //calls wp_ajax_nopriv_ajaxlogin
+        'action': 'woppe_ajaxlogin', //calls wp_ajax_nopriv_ajaxlogin
         'username': form$.find('[name="username"]').val(),
         'password': form$.find('[name="password"]').val(),
         'security': form$.find('[name="security"]').val(),
@@ -582,7 +582,7 @@ jQuery(document).ready(function ($) {
       dataType: 'json',
       url: ajax_login_object.ajaxurl,
       data: {
-        'action'  : 'hj_resetpassword',
+        'action'  : 'woppe_resetpassword',
         'security': form$.find('[name="security"]').val(),
         'username': form$.find('[name="username"]').val()
       },
@@ -615,7 +615,7 @@ jQuery(document).ready(function ($) {
         dataType: 'json',
         url: ajax_login_object.ajaxurl,
         data: {
-          'action'   : 'hj_changepassword',
+          'action'   : 'woppe_changepassword',
           'password1': password1,
           'password2': password2,
           'token'    : form$.find('[name="token"]').val(),
@@ -651,7 +651,7 @@ __EOF;
 
     if ( $token ) {
       $sql =         sprintf(
-        "SELECT user_id FROM " . $wpdb->usermeta . " WHERE meta_key = 'hj_resettoken' AND meta_value = '%s'",
+        "SELECT user_id FROM " . $wpdb->usermeta . " WHERE meta_key = 'woppe_resettoken' AND meta_value = '%s'",
         $wpdb->esc_like($token)
       );
 
@@ -674,7 +674,7 @@ __EOF;
    */
   protected function getResetToken($user)
   {
-    return get_user_meta($user->ID,'hj_resettoken',true);
+    return get_user_meta($user->ID,'woppe_resettoken',true);
   }
 
   /**
@@ -731,6 +731,6 @@ __EOF;
       ]
     ];
 
-    $this->config = apply_filters('harperjones/ajaxlogin/config',$this->config);
+    $this->config = apply_filters('woppe/ajaxlogin/config',$this->config);
   }
 }

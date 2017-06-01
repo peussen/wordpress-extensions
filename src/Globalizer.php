@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress;
+namespace Woppe\Wordpress;
 
 
 /**
@@ -15,9 +15,9 @@ namespace HarperJones\Wordpress;
  * This class also has some options to create a cache file, which basically already has
  * the alias function defined. Making it unnecessary to to reflection and document inspection.
  *
- * To generate the cachefile use wp-cli harperjones scanglobalize or clearglobalize to.
+ * To generate the cachefile use wp-cli woppe scanglobalize or clearglobalize to.
  *
- * @package HarperJones\Wordpress
+ * @package Woppe\Wordpress
  */
 class Globalizer
 {

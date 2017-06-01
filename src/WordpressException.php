@@ -6,7 +6,7 @@
  * Time: 16:24
  */
 
-namespace HarperJones\Wordpress;
+namespace Woppe\Wordpress;
 
 
 class WordpressException extends \RuntimeException {

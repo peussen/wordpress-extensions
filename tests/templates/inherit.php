@@ -3,5 +3,5 @@
  * @author: petereussen
  * @package: wordpress-extensions
  */
-$v = new \HarperJones\Wordpress\Theme\View('exists');
+$v = new \Woppe\Wordpress\Theme\View('exists');
 echo $v->render();

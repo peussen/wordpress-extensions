@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
 /**
@@ -13,10 +13,10 @@ namespace HarperJones\Wordpress\Theme\Feature;
  * in your code you should add:
  *
  * <code>
- * add_theme_support('harperjones-disabled-comments');
+ * add_theme_support('woppe-disabled-comments');
  * </code>
  *
- * @package HarperJones\Wordpress\Theme\Feature
+ * @package Woppe\Wordpress\Theme\Feature
  */
 class DisabledCommentsFeature implements FeatureInterface
 {

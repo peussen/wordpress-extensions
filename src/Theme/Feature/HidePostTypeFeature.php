@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
 class HidePostTypeFeature implements FeatureInterface
@@ -21,7 +21,7 @@ class HidePostTypeFeature implements FeatureInterface
     public function filterPostTypes()
     {
         if ( in_array(get_query_var('post_type'),$this->postTypesToHide) ) {
-            wp_redirect( apply_filters('hj/hideposttype/redirect', home_url()), 302);
+            wp_redirect( apply_filters('woppe/hideposttype/redirect', home_url()), 302);
             exit();
         }
     }

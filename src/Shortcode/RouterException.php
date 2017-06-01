@@ -4,16 +4,16 @@
  * @package: pressmarket
  */
 
-namespace HarperJones\Wordpress\Shortcode;
+namespace Woppe\Wordpress\Shortcode;
 
 
 use Exception;
-use HarperJones\Wordpress\Theme\View;
+use Woppe\Wordpress\Theme\View;
 
 /**
  * Exception which will be handled by the router to display user friendly errors
  *
- * @package HarperJones\Wordpress\Shortcode
+ * @package Woppe\Wordpress\Shortcode
  */
 class RouterException extends \RuntimeException
 {

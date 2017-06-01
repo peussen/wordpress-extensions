@@ -4,10 +4,10 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
-use HarperJones\Wordpress\Setup;
+use Woppe\Wordpress\Setup;
 
 class AcfSupportFeature implements FeatureInterface
 {

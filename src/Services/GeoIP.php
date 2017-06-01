@@ -4,7 +4,7 @@
  * @package: darionwm
  */
 
-namespace HarperJones\Wordpress\Services;
+namespace Woppe\Wordpress\Services;
 
 
 /**

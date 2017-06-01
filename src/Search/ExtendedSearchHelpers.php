@@ -1,10 +1,10 @@
 <?php
 /*
  * @author: petereussen
- * @package: hj2016
+ * @package: woppe2016
  */
 
-namespace HarperJones\Wordpress\Search;
+namespace Woppe\Wordpress\Search;
 
 
 class ExtendedSearchHelpers
@@ -13,7 +13,7 @@ class ExtendedSearchHelpers
      * Searches in a specific posttype
      * @param $postType
      * @return \WP_Query
-     * @globalize hj_search_posttype
+     * @globalize woppe_search_posttype
      */
     static public function searchInPostType($postType)
     {
@@ -26,7 +26,7 @@ class ExtendedSearchHelpers
      * @param string $search
      * @param string|array $postType
      * @return \WP_Query
-     * @globalize hj_search
+     * @globalize woppe_search
      */
     static public function search($search, $postType)
     {

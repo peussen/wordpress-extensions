@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\AccessControl;
+namespace Woppe\Wordpress\AccessControl;
 
 /**
  * Allow access restriction on a per instance and role way
@@ -15,7 +15,7 @@ namespace HarperJones\Wordpress\AccessControl;
  * Difference between this and MasterAdmin is that this will limit viewing of an object, but not the
  * maintenance of an object, whereas MasterAdmin will limit administration/maintenance of an object.
  *
- * @package   HarperJones\Wordpress\AccessControl
+ * @package   Woppe\Wordpress\AccessControl
  * @requires  advancedcustomfields
  */
 class RoleAccess
@@ -51,7 +51,7 @@ class RoleAccess
 
       if (is_admin()) {
         add_action('admin_init',[$this,'addACFFieldBox'],20);
-        add_action('acf/load_field/name=hj_access_roles',[$this,'addAvailableRoles']);
+        add_action('acf/load_field/name=woppe_access_roles',[$this,'addAvailableRoles']);
       }
       self::$initialized = true;
       self::$posttypes   = $posttypes;
@@ -82,14 +82,14 @@ class RoleAccess
    *    - The user needs to be logged in
    *    - The user should have the specific role, or a "Super" role
    *
-   * @filter harperjones/roleaccess/fallbackurl   The URL to redirect if access not allowed
-   * @filter harperjones/roleaccess/redirectcode  The Redirect status code (default 302)
-   * @filter harperjones/roleaccess/superroles    Roles that can always view the object
+   * @filter woppe/roleaccess/fallbackurl   The URL to redirect if access not allowed
+   * @filter woppe/roleaccess/redirectcode  The Redirect status code (default 302)
+   * @filter woppe/roleaccess/superroles    Roles that can always view the object
    */
   public function checkAccess()
   {
     if ( in_array(get_post_type(),static::$posttypes) && function_exists('get_field')) {
-      $roles = get_field('hj_access_roles',get_the_ID());
+      $roles = get_field('woppe_access_roles',get_the_ID());
       $allow = true;
 
       if ( $roles && !is_user_logged_in()) {
@@ -103,7 +103,7 @@ class RoleAccess
          * @param   array $allowedRoles   array of roles that should be super. Defaults to ['administrator']
          * @return  array
          */
-        $allowedRoles = apply_filters('harperjones/roleaccess/superroles',['administrator']);
+        $allowedRoles = apply_filters('woppe/roleaccess/superroles',['administrator']);
         $user         = wp_get_current_user();
         $allow        = (count($roles) == 0) || array_intersect($allowedRoles,$user->roles);
 
@@ -126,7 +126,7 @@ class RoleAccess
            * @param   string  $url    Defaults to home_url()
            * @return  string
            */
-          apply_filters('harperjones/roleaccess/fallbackurl',home_url()),
+          apply_filters('woppe/roleaccess/fallbackurl',home_url()),
 
           /**
            * Filter the redirect status
@@ -136,7 +136,7 @@ class RoleAccess
            * @param   int $httpStatus   Defaults to 302
            * @return  int
            */
-          apply_filters('harperjones/roleaccess/redirectcode',302)
+          apply_filters('woppe/roleaccess/redirectcode',302)
         );
         exit();
       }
@@ -167,8 +167,8 @@ class RoleAccess
    * Creates the ACF box that in the admin area
    *
    * @requires advancedcustomfields
-   * @filter   harperjones/roleaccess/boxlabels   The labels used in the box
-   * @filter   harperjones/roleaccess/boxlocation The ACF Rules that determine where the box should be displayed
+   * @filter   woppe/roleaccess/boxlabels   The labels used in the box
+   * @filter   woppe/roleaccess/boxlocation The ACF Rules that determine where the box should be displayed
    */
   public function addACFFieldBox()
   {
@@ -183,7 +183,7 @@ class RoleAccess
        * @param array $labels
        * @return array
        */
-      $labels    = apply_filters('harperjones/roleaccess/boxlabels',
+      $labels    = apply_filters('woppe/roleaccess/boxlabels',
         [
           'title' => __('Access'),
           'field' => __('Roles'),
@@ -208,7 +208,7 @@ class RoleAccess
        * @param array $locations
        * @return array
        */
-      $locations = apply_filters('harperjones/roleaccess/boxlocation',$locations);
+      $locations = apply_filters('woppe/roleaccess/boxlocation',$locations);
 
       $setup     = [
         'key' => 'group_585bc087e240c',
@@ -224,7 +224,7 @@ class RoleAccess
             'return_format' => 'value',
             'key' => 'field_585bc0a6b8119',
             'label' => $labels['field'],
-            'name' => 'hj_access_roles',
+            'name' => 'woppe_access_roles',
             'type' => 'checkbox',
             'instructions' => '',
             'required' => 0,
@@ -255,7 +255,7 @@ class RoleAccess
        * @param   array $setup
        * @return  array
        */
-      $setup = apply_filters('harperjones/roleaccess/acfsetup',$setup);
+      $setup = apply_filters('woppe/roleaccess/acfsetup',$setup);
       acf_add_local_field_group($setup);
     }
   }

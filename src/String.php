@@ -4,7 +4,7 @@
  * @package: pressmarket
  */
 
-namespace HarperJones\Wordpress;
+namespace Woppe\Wordpress;
 
 if ( version_compare(PHP_VERSION,'7.0.0','<') ) {
   class String

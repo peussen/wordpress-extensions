@@ -1,8 +1,8 @@
 <?php
 
-namespace HarperJones\Wordpress;
+namespace Woppe\Wordpress;
 
-use HarperJones\Wordpress\Setup;
+use Woppe\Wordpress\Setup;
 Use Mockery as m;
 
 function add_action($a,$b)
@@ -53,8 +53,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase
 
     public function testNamespace()
     {
-        $this->assertEquals('HarperJones\\Wordpress\\',Setup::getNamespace(__NAMESPACE__ . '\\sampleClass'));
-        $this->assertEquals('HarperJones\\Wordpress\\',Setup::getNamespace(new sampleClass()));
+        $this->assertEquals('Woppe\\Wordpress\\',Setup::getNamespace(__NAMESPACE__ . '\\sampleClass'));
+        $this->assertEquals('Woppe\\Wordpress\\',Setup::getNamespace(new sampleClass()));
     }
 
     public function setupHelper()

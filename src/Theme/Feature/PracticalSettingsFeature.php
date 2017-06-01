@@ -4,10 +4,10 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
-use HarperJones\Wordpress\Setup;
+use Woppe\Wordpress\Setup;
 
 class PracticalSettingsFeature implements FeatureInterface
 {
@@ -23,12 +23,12 @@ class PracticalSettingsFeature implements FeatureInterface
     remove_action( 'template_redirect', 'rest_output_link_header', 11, 0 );
 
     // Disable comments
-    Setup::addFeature('harperjones-disabled-comments');
+    Setup::addFeature('woppe-disabled-comments');
 
     // Enable varnish
-    Setup::addFeature('harperjones-varnish');
+    Setup::addFeature('woppe-varnish');
 
     // Enable file autoload
-    Setup::addFeature('harperjones-autoload-files');
+    Setup::addFeature('woppe-autoload-files');
   }
 }

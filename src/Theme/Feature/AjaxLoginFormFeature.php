@@ -4,10 +4,10 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
-use HarperJones\Wordpress\Login\AJAXLogin;
+use Woppe\Wordpress\Login\AJAXLogin;
 
 /**
  * Out of the box support for wordpress user login on the website using an AJAX login form
@@ -17,10 +17,10 @@ use HarperJones\Wordpress\Login\AJAXLogin;
  * worked or not.
  *
  * <code>
- * add_theme_support('harperjones-ajax-loginform');
+ * add_theme_support('woppe-ajax-loginform');
  * </code>
  *
- * @package HarperJones\Wordpress\Theme\Feature
+ * @package Woppe\Wordpress\Theme\Feature
  */
 class AjaxLoginFormFeature implements FeatureInterface
 {
@@ -31,7 +31,7 @@ class AjaxLoginFormFeature implements FeatureInterface
 
     if ( isset($options['redirecturl'])) {
       add_filter(
-        'harperjones/login/redirecturl',
+        'woppe/login/redirecturl',
         function ($val) use ($options) {
           return $options['redirecturl'];
         }
@@ -40,7 +40,7 @@ class AjaxLoginFormFeature implements FeatureInterface
 
     if ( isset($options['succes'])) {
       add_filter(
-        'harperjones/login/succesmessage',
+        'woppe/login/succesmessage',
         function ($val) use ($options) {
           return $options['succes'];
         }
@@ -49,7 +49,7 @@ class AjaxLoginFormFeature implements FeatureInterface
 
     if ( isset($options['invalid'])) {
       add_filter(
-        'harperjones/login/invalidmessage',
+        'woppe/login/invalidmessage',
         function ($val) use ($options) {
           return $options['invalid'];
         }
@@ -58,7 +58,7 @@ class AjaxLoginFormFeature implements FeatureInterface
 
     if ( isset($options['loading'])) {
       add_filter(
-        'harperjones/login/submitm`essage',
+        'woppe/login/submitm`essage',
         function ($val) use ($options) {
           return $options['loading'];
         }

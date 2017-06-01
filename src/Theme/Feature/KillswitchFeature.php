@@ -4,12 +4,12 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
-use HarperJones\Wordpress\Arr;
-use HarperJones\Wordpress\Theme\Admin\Notification;
-use HarperJones\Wordpress\Theme\Admin\Toolbar;
+use Woppe\Wordpress\Arr;
+use Woppe\Wordpress\Theme\Admin\Notification;
+use Woppe\Wordpress\Theme\Admin\Toolbar;
 
 /**
  * Closes a site for external visitors (Admin will remain open)
@@ -19,7 +19,7 @@ use HarperJones\Wordpress\Theme\Admin\Toolbar;
  * otherwise, it will try to locate a locked.html file. If it can't find both, it will just fail with a
  * simple message.
  *
- * @package HarperJones\Wordpress\Theme\Feature
+ * @package Woppe\Wordpress\Theme\Feature
  */
 class KillswitchFeature implements FeatureInterface
 {
@@ -35,7 +35,7 @@ class KillswitchFeature implements FeatureInterface
     $title        = (( $this->status === self::LOCK_LABEL ? 'Unl' : 'L') . 'ock Site') . $this->getLockIcon($this->status);
     $userdata     = get_userdata(get_current_user_id());
 
-    if ( is_admin() && is_user_logged_in() && array_intersect($userdata->roles,apply_filters("harperjones/killswitch/allowed_roles",['administrator']))) {
+    if ( is_admin() && is_user_logged_in() && array_intersect($userdata->roles,apply_filters("woppe/killswitch/allowed_roles",['administrator']))) {
       Toolbar::addItem('killswitch',$title,[$this,'enableKillSwitch']);
     } else {
       add_action("init",[$this,'checkForLock']);

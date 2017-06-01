@@ -4,19 +4,19 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
 
-use HarperJones\Wordpress\Mail\MailWrapper;
+use Woppe\Wordpress\Mail\MailWrapper;
 
 /**
  * Add HTML Mail support
  *
  * <code>
- * add_theme_support('harperjones-html-mail','templates/custom/mailtemplate');
+ * add_theme_support('woppe-html-mail','templates/custom/mailtemplate');
  * </code>
  * 
- * @package HarperJones\Wordpress\Theme\Feature
+ * @package Woppe\Wordpress\Theme\Feature
  */
 class HtmlMailFeature implements FeatureInterface
 {

@@ -7,14 +7,14 @@ Loop over an iteratable object like an array, wp_query or Iterator object
 loop($queryOrArray): \Iterator
 ```
 **loop** will return the iterator object used to loop over the data. This iterator will comply with the 
-`HarperJones\Wordpress\Iterator\TemplateIteratorInterface`.
+`Woppe\Wordpress\Iterator\TemplateIteratorInterface`.
 
 ## Parameters
 **$queryOrArray**: Either an array, an instance of \WP_Query or an Object that implements the `Iterator` interface.
    
 ## Return Values
 Depending on the type of object that was passed in it will return a different instance of a 
-`HarperJones\Wordpress\Iterator\TemplateIteratorInterface` compliant class.
+`Woppe\Wordpress\Iterator\TemplateIteratorInterface` compliant class.
     
 ## Examples        
 **Example 1: loop over an array**

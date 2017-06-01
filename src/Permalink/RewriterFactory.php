@@ -1,6 +1,6 @@
 <?php
 
-namespace HarperJones\Wordpress\Permalink;
+namespace Woppe\Wordpress\Permalink;
 
 /*
  * @author: petereussen
@@ -10,7 +10,7 @@ namespace HarperJones\Wordpress\Permalink;
 /**
  * Factory class to create rewrite rules for permalinks
  *
- * @package HarperJones\Wordpress\Permalink
+ * @package Woppe\Wordpress\Permalink
  */
 class RewriterFactory
 {

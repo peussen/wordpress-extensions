@@ -14,7 +14,7 @@ and reset password forms.
 The premise of this feature is that you basically want to have a login form on every page and do not
 want to use the standard wp-login.php for handling the login. 
 
-In your base template(s) you will then call the function `hj_ajax_loginform()`. This will generate a
+In your base template(s) you will then call the function `woppe_ajax_loginform()`. This will generate a
 HTML login form which should probably be enough to get you going. You can however change how this looks
 by creating a completely custom HTML. Be aware though that some things will have to remain the same
 in order for javascript to work!
@@ -34,7 +34,7 @@ in order for javascript to work!
 Usage
 ---
 
-`add_theme_support('harperjones-ajax-login-form');`
+`add_theme_support('woppe-ajax-login-form');`
 
 **Parameters**
 

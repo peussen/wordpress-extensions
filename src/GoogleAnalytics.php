@@ -4,14 +4,14 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress;
+namespace Woppe\Wordpress;
 
 /**
  * Adds a Google Analytics counter at the end of the page when one is defined
  * You can set the ID by either passing it as a parameter to the construtcor,
  * or by setting a define called GOOGLE_ANALYTICS_ID (old sage way)
  *
- * @package HarperJones\Wordpress
+ * @package Woppe\Wordpress
  */
 class GoogleAnalytics
 {

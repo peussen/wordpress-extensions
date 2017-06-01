@@ -6,10 +6,10 @@
  * Time: 15:21
  */
 
-namespace HarperJones\Wordpress\Theme;
+namespace Woppe\Wordpress\Theme;
 
 use Exception;
-use HarperJones\Wordpress\WordpressException;
+use Woppe\Wordpress\WordpressException;
 
 class InvalidTemplateException extends WordPressException
 {

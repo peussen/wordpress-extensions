@@ -4,7 +4,7 @@
  * @package: pressmarket
  */
 
-namespace HarperJones\Wordpress\Http;
+namespace Woppe\Wordpress\Http;
 
 
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Request which also handles wordpress url type requests (page/7) etc
  *
- * @package HarperJones\Wordpress\Http
+ * @package Woppe\Wordpress\Http
  * @since 0.1.2
  */
 class WordpressRequest extends Request

@@ -4,11 +4,11 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Admin;
+namespace Woppe\Wordpress\Theme\Admin;
 
 
-use HarperJones\Wordpress\Arr;
-use HarperJones\Wordpress\Setup;
+use Woppe\Wordpress\Arr;
+use Woppe\Wordpress\Setup;
 
 class Toolbar
 {
@@ -21,7 +21,7 @@ class Toolbar
     Notification::wakeup();
 
     add_action('wp_before_admin_bar_render', [$this,'renderMenu']);
-    add_action('wp_ajax_hj_wpex',[$this,'executeCommand']);
+    add_action('wp_ajax_woppe_wpex',[$this,'executeCommand']);
   }
 
   static public function addItem($id,$title,$callback)
@@ -54,7 +54,7 @@ class Toolbar
     global $wp_admin_bar;
 
     $wp_admin_bar->add_menu([
-      'id'    => 'hj_wpex',
+      'id'    => 'woppe_wpex',
       'title' => __('Advanced Controls'),
     ]);
 
@@ -62,8 +62,8 @@ class Toolbar
       $wp_admin_bar->add_node([
         'id'    => $item['id'],
         'title' => $item['title'],
-        'href'  => admin_url('admin-ajax.php') . '?action=hj_wpex&sub=' . $item['id'],
-        'parent'=> 'hj_wpex',
+        'href'  => admin_url('admin-ajax.php') . '?action=woppe_wpex&sub=' . $item['id'],
+        'parent'=> 'woppe_wpex',
       ]);
 
     }

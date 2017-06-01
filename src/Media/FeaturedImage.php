@@ -1,5 +1,5 @@
 <?php
-namespace HarperJones\Wordpress\Media;
+namespace Woppe\Wordpress\Media;
 
 /*
  * @author: petereussen
@@ -9,7 +9,7 @@ namespace HarperJones\Wordpress\Media;
 /**
  * Wrapper for handling featured images of a post
  *
- * @package HarperJones\Wordpress\Media
+ * @package Woppe\Wordpress\Media
  */
 class FeaturedImage extends Attachment
 {

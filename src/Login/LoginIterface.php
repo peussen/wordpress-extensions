@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Login;
+namespace Woppe\Wordpress\Login;
 
 
 interface LoginIterface

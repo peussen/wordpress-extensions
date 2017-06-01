@@ -6,14 +6,14 @@
  * Time: 13:50
  */
 
-namespace HarperJones\Wordpress;
+namespace Woppe\Wordpress;
 
-use HarperJones\Wordpress\Theme\ACFSupport;
-use HarperJones\Wordpress\Theme\Feature\FeatureInterface;
+use Woppe\Wordpress\Theme\ACFSupport;
+use Woppe\Wordpress\Theme\Feature\FeatureInterface;
 
 class Setup
 {
-	const FEATURE_PREFIX = 'harperjones-';
+	const FEATURE_PREFIX = 'woppe-';
 
 	/**
 	 * DI container
@@ -63,22 +63,22 @@ class Setup
 			return;
 		}
 
-		$harperjonesFeatures = array_filter(array_keys($_wp_theme_features),function($key) {
+		$woppeFeatures = array_filter(array_keys($_wp_theme_features),function($key) {
 			return substr($key,0,strlen(static::FEATURE_PREFIX)) == static::FEATURE_PREFIX;
 		});
 
-		foreach( $harperjonesFeatures as $feature ) {
+		foreach( $woppeFeatures as $feature ) {
 			static::addFeature($feature,$_wp_theme_features[$feature]);
 		}
 
 		if ( defined("WP_CLI") && WP_CLI) {
-			\WP_CLI::add_command('harperjones','\\HarperJones\\Wordpress\\Command\\CustomCommand');
+			\WP_CLI::add_command('woppe','\\Woppe\\Wordpress\\Command\\CustomCommand');
 		}
 	}
 
 	/**
 	 * @param $feature
-	 * @return HarperJones\Wordpress\Theme\Feature\FeatureInterface
+	 * @return Woppe\Wordpress\Theme\Feature\FeatureInterface
 	 */
 	static public function addFeature($feature, $options = [])
 	{

@@ -6,7 +6,7 @@
  * Time: 14:09
  */
 
-namespace HarperJones\Wordpress\Theme;
+namespace Woppe\Wordpress\Theme;
 
 
 class Theme

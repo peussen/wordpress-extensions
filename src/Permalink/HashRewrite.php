@@ -4,12 +4,12 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Permalink;
+namespace Woppe\Wordpress\Permalink;
 
 /**
  * Rewrite slugs to use hashes as is usual for onepagers
  *
- * @package HarperJones\Wordpress\Permalink
+ * @package Woppe\Wordpress\Permalink
  */
 class HashRewrite extends AbstractRewriter
 {

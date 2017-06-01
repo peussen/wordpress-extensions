@@ -6,7 +6,7 @@
  * Time: 17:02
  */
 
-namespace HarperJones\Wordpress;
+namespace Woppe\Wordpress;
 
 if ( version_compare(PHP_VERSION,'7.0.0','<') ) {
 

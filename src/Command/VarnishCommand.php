@@ -1,14 +1,14 @@
 <?php
 
-namespace HarperJones\Wordpress\Command;
+namespace Woppe\Wordpress\Command;
 
 
-use HarperJones\Wordpress\Setup;
+use Woppe\Wordpress\Setup;
 
 /**
  * Manage Varnish Proxy Server(s)
  *
- * @package HarperJones\Wordpress\Command
+ * @package Woppe\Wordpress\Command
  */
 class VarnishCommand extends \WP_CLI_Command
 {
@@ -22,8 +22,8 @@ class VarnishCommand extends \WP_CLI_Command
 
     if (isset($varnishInfo['client'])) {
       if (!$varnishInfo['client']->executeFlush()) {
-        $error = get_option('hj-varnish-error');
-        delete_option('hj-varnish-error');
+        $error = get_option('woppe-varnish-error');
+        delete_option('woppe-varnish-error');
 
         \WP_CLI::error("Failed to flush: {$error['message']} ({$error['code']})", true);
       }

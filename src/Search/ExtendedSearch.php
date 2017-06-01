@@ -4,7 +4,7 @@
  * @package: gfhg2015
  */
 
-namespace HarperJones\Wordpress\Search;
+namespace Woppe\Wordpress\Search;
 
 /**
  * A Search implementation that uses MySQL Full text indexes to search more than just the body and title
@@ -17,7 +17,7 @@ namespace HarperJones\Wordpress\Search;
  * Usage:
  *
  * <code>
- * $search = new HarperJones\Wordpress\Search\ExtendedSearch();
+ * $search = new Woppe\Wordpress\Search\ExtendedSearch();
  * </code>
  *
  * How to modify the behaviour
@@ -28,10 +28,10 @@ namespace HarperJones\Wordpress\Search;
  * - addRelation : Creates a relation between two post types based on a custom Field
  *
  * FILTERS
- * - hj/search/post (fields, post): Allows you to filter the fields that should be indexed
- * - hj/search/posttypes          : Allows to set which post types should be indexed
+ * - woppe/search/post (fields, post): Allows you to filter the fields that should be indexed
+ * - woppe/search/posttypes          : Allows to set which post types should be indexed
  *
- * @package HarperJones\Wordpress\Search
+ * @package Woppe\Wordpress\Search
  */
 class ExtendedSearch
 {
@@ -88,8 +88,8 @@ class ExtendedSearch
     global $wpdb;
 
     $this->booleanmode = getenv('COMPLEXSEARCH_BOOLEAN_MODE');
-    $this->searchtable = $wpdb->prefix . 'hj_es_index';
-    $this->indexedPostTypes = apply_filters('hj/search/posttypes', []);
+    $this->searchtable = $wpdb->prefix . 'woppe_es_index';
+    $this->indexedPostTypes = apply_filters('woppe/search/posttypes', []);
   }
 
   static public function register()
@@ -364,7 +364,7 @@ class ExtendedSearch
         $fields = $filterCallable($fields, $post);
       }
 
-      $content = apply_filters('hj/search/post', $fields, $post);
+      $content = apply_filters('woppe/search/post', $fields, $post);
 
       $wpdb->insert($this->searchtable,
         [

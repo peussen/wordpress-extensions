@@ -18,18 +18,18 @@
  *        `<?php loop(get_posts([...]))->each('my_magic_function',['optional','arguments']); ?>
  *
  * @param \Iterator|\WP_Query|array $queryOrArray
- * @return \HarperJones\Wordpress\Iterator\TemplateIteratorInterface
+ * @return \Woppe\Wordpress\Iterator\TemplateIteratorInterface
  */
 function loop($queryOrArray)
 {
   if ( is_array($queryOrArray)) {
-    $iterator = new \HarperJones\Wordpress\Iterator\ArrayIterator($queryOrArray);
+    $iterator = new \Woppe\Wordpress\Iterator\ArrayIterator($queryOrArray);
   } elseif ( $queryOrArray instanceof \WP_Query ) {
-    $iterator = new \HarperJones\Wordpress\Iterator\WPQueryIterator($queryOrArray);
+    $iterator = new \Woppe\Wordpress\Iterator\WPQueryIterator($queryOrArray);
   } elseif (is_object($queryOrArray) && $queryOrArray instanceof \Iterator ) {
-    $iterator = new \HarperJones\Wordpress\Iterator\IteratorIterator($queryOrArray);
+    $iterator = new \Woppe\Wordpress\Iterator\IteratorIterator($queryOrArray);
   } else {
-    $iterator = new \HarperJones\Wordpress\Iterator\DummyIterator($queryOrArray);
+    $iterator = new \Woppe\Wordpress\Iterator\DummyIterator($queryOrArray);
   }
 
   return $iterator;
@@ -38,7 +38,7 @@ function loop($queryOrArray)
 /**
  * Safely return a value from an array
  *
- * @see \HarperJones\Wordpress\Arr::value()
+ * @see \Woppe\Wordpress\Arr::value()
  * @param array       $array
  * @param string|int  $key
  * @param mixed       $default (default null)
@@ -46,14 +46,14 @@ function loop($queryOrArray)
  */
 function array_value($array,$key,$default = null)
 {
-  return \HarperJones\Wordpress\Arr::value($array,$key,$default);
+  return \Woppe\Wordpress\Arr::value($array,$key,$default);
 }
 
 
 /**
  * Adds an element as first element in an associative array
  *
- * @see \HarperJones\Wordpress\Arr::prependAssoc()
+ * @see \Woppe\Wordpress\Arr::prependAssoc()
  * @param array   $array
  * @param string  $key
  * @param mixed   $value
@@ -61,7 +61,7 @@ function array_value($array,$key,$default = null)
  */
 function array_unshift_assoc(array $array, $key, $value)
 {
-  return \HarperJones\Wordpress\Arr::prependAssoc($array,$key,$value);
+  return \Woppe\Wordpress\Arr::prependAssoc($array,$key,$value);
 }
 
 
@@ -69,19 +69,19 @@ if ( version_compare(PHP_VERSION,'7.0.0')) {
   /**
    * Return the first non-null entry
    *
-   * @see \HarperJones\Wordpress\Helper::strictCoalesce()
+   * @see \Woppe\Wordpress\Helper::strictCoalesce()
    * @param array ...$options
    */
   function coalesce(...$options)
   {
-    return call_user_func_array('\\HarperJones\\Wordpress\\Helper::strictCoalesce',$options);
+    return call_user_func_array('\\Woppe\\Wordpress\\Helper::strictCoalesce',$options);
   }
 }
 
 /**
  * Truncate a string to a specified number of words.
  *
- * @see \HarperJones\Wordpress\String::trunc()
+ * @see \Woppe\Wordpress\String::trunc()
  * @param string $string
  * @param int    $limit
  * @param string $more
@@ -89,7 +89,7 @@ if ( version_compare(PHP_VERSION,'7.0.0')) {
  */
 function str_trunc($string,$limit = 50,$more = '...')
 {
-  return \HarperJones\Wordpress\String::trunc($string,$limit,$more);
+  return \Woppe\Wordpress\String::trunc($string,$limit,$more);
 }
 
 

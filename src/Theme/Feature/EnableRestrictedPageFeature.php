@@ -4,9 +4,9 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Theme\Feature;
+namespace Woppe\Wordpress\Theme\Feature;
 
-use HarperJones\Wordpress\Arr;
+use Woppe\Wordpress\Arr;
 
 /**
  * Will redirect a user when he tries to access a page he has no access to
@@ -18,9 +18,9 @@ use HarperJones\Wordpress\Arr;
  *
  * The page ID can be passed as parameter, or as 'page' entry of an
  * associative array of options, or by defining a theme option called
- * 'harperjones_redirect_page'. (this should be an option on an options page
+ * 'woppe_redirect_page'. (this should be an option on an options page
  *
- * @package HarperJones\Wordpress\Theme\Feature
+ * @package Woppe\Wordpress\Theme\Feature
  */
 class EnableRestrictedPageFeature implements FeatureInterface
 {
@@ -33,7 +33,7 @@ class EnableRestrictedPageFeature implements FeatureInterface
     } else if ( $options ) {
       $this->redirectPageId = array_shift($options);
     } elseif ( function_exists('get_field')) {
-      $this->redirectPageId = get_field('harperjones_redirect_page','option');
+      $this->redirectPageId = get_field('woppe_redirect_page','option');
     }
 
     add_action('template_redirect',[$this,'handle404Redirection'],10);

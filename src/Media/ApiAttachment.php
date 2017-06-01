@@ -4,12 +4,12 @@
  * @package: darionwm-portal
  */
 
-namespace HarperJones\Wordpress\Media;
+namespace Woppe\Wordpress\Media;
 
 /**
  * A wrapper to use an external attachment provided by another Wordpress API site
  *
- * @package HarperJones\Wordpress\Media
+ * @package Woppe\Wordpress\Media
  */
 class ApiAttachment extends Attachment
 {

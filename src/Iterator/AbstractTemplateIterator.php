@@ -4,7 +4,7 @@
  * @package: wordpress-extensions
  */
 
-namespace HarperJones\Wordpress\Iterator;
+namespace Woppe\Wordpress\Iterator;
 
 
 abstract class AbstractTemplateIterator implements TemplateIteratorInterface
